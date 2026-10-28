@@ -5,7 +5,7 @@
       "id": "TASK-001",
       "title": "Сверить ТЗ и подготовить продуктовые решения",
       "role": "GAME_DESIGNER",
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "priority": 1,
       "dependencies": [],
       "approval_gates": [],
@@ -29,13 +29,18 @@
       "branch": "task/TASK-001-spec-v02",
       "issue_number": 1,
       "pr_url": "https://github.com/kotlyakov/barista/pull/22",
-      "commit": "838cfbc48c98542c0500e09f0c0c0340bf92d923",
+      "commit": "4f73ad65c155ec027068783e04bd1140fbc9e9db",
       "evidence": [
         "docs/GAME_SPEC.md",
         "approvals/materials/SPEC-001/v3/GAME_SPEC.md",
         "reports/SPEC_V03_REVIEW.md"
       ],
-      "review": null,
+      "review": {
+        "type": "INDEPENDENT_AGENT_REVIEW_WITH_COORDINATOR_FIX_CHECK",
+        "reviewer": "review_kit",
+        "result": "PASS",
+        "scope": "Среднее всех этапов, вкусовые дефекты, сохранение настроений; исправления обозначений и зоны проверены координатором."
+      },
       "blocker": null,
       "approval_versions": {},
       "decision_records": {}

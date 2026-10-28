@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "1.0",
   "updated_at": "2026-10-28",
-  "phase": "SPECIFICATION_APPROVED",
+  "phase": "READY_FOR_VISUAL_CONCEPT",
   "game_code_exists": false,
-  "current_task": "TASK-001",
-  "next_task": "TASK-001",
-  "next_action": "Завершить TASK-001 после проверки правок, интегрировать PR22; следующая TASK-003 — варианты визуальной концепции, TASK-004 — утверждённый технический запуск.",
+  "current_task": null,
+  "next_task": "TASK-003",
+  "next_action": "Подготовить 2–3 варианта визуальной концепции TASK-003 и показать Артуру. TASK-004 также доступна после интеграции ТЗ. Графика и звук требуют отдельного утверждения.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -14,17 +14,17 @@
     "visibility": "private",
     "created": true,
     "head": "dcb19ca944096e6e9ee2200c35af5ae347e04a78",
-    "pending_sync": true,
+    "pending_sync": false,
     "head_note": "Последний проверенный remote HEAD, не самоссылка на коммит этого файла.",
     "working_branch": "task/TASK-001-spec-v02",
-    "working_head": "838cfbc48c98542c0500e09f0c0c0340bf92d923"
+    "working_head": "4f73ad65c155ec027068783e04bd1140fbc9e9db"
   },
   "blockers": [],
   "approved_materials": [
     "SPEC-001/v3"
   ],
   "last_verified_commit": "dcb19ca944096e6e9ee2200c35af5ae347e04a78",
-  "ci_status": "NOT_VERIFIED: доступный список workflow runs фильтрует PR-запуски; legacy statuses пусты. Локальная проверка PASS.",
+  "ci_status": "Локальная проверка PASS; GitHub Actions проверить на финальном HEAD перед merge.",
   "spec_version": "0.3",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22"
 }
