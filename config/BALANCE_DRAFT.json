@@ -22,7 +22,10 @@
     "perfect_min": 1,
     "good_min": 0.8,
     "ordinary_min": 0.5,
-    "aggregation": "minimum"
+    "aggregation": "arithmetic_mean_required_stages",
+    "weights": "equal",
+    "retain_per_stage_defects": true,
+    "perfect_requires_all_stages": true
   },
   "combo": {
     "speed_threshold_seconds": null,
@@ -32,7 +35,7 @@
   },
   "shift": {
     "day_boundary": "08:00",
-    "timezone": "Captured from device once at profile creation; not yet accepted",
+    "timezone": "Captured from device once at profile creation; profile zone remains fixed",
     "duration_seconds": 480,
     "mode": "one_main_shift_per_game_day_plus_training"
   },
@@ -43,8 +46,8 @@
     "good_ratio_target": 0.8,
     "completion_bonus": 200
   },
-  "note": "ПРЕДЛОЖЕНО, НЕ УТВЕРЖДЕНО. Числа стартовые для плейтеста. speed_threshold_seconds=null отключает speed_combo только в прототипе, к приёмке пороги обязательны.",
-  "spec_version": "0.2",
+  "note": "Правила ТЗ v0.3 одобрены с правками. Числа остаются стартовой калибровкой. Каждый обязательный этап влияет на качество, дефекты сохраняются отдельно. Настроения героев хранятся в сохранениях.",
+  "spec_version": "0.3",
   "recipes": [
     {
       "id": "espresso",
@@ -91,5 +94,6 @@
     400,
     800,
     1400
-  ]
+  ],
+  "rules_status": "APPROVED"
 }

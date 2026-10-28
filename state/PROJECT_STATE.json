@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "1.0",
   "updated_at": "2026-10-28",
-  "phase": "SPECIFICATION_PRESENTED",
+  "phase": "SPECIFICATION_APPROVED",
   "game_code_exists": false,
   "current_task": "TASK-001",
   "next_task": "TASK-001",
-  "next_action": "Предъявлено ТЗ v0.2. Получить ответ Артура по D01/D02/D03/D06; затем зафиксировать решение и актуальный SPEC-001. Визуал и звук утверждаются отдельно.",
+  "next_action": "Завершить TASK-001 после проверки правок, интегрировать PR22; следующая TASK-003 — варианты визуальной концепции, TASK-004 — утверждённый технический запуск.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -14,15 +14,17 @@
     "visibility": "private",
     "created": true,
     "head": "dcb19ca944096e6e9ee2200c35af5ae347e04a78",
-    "pending_sync": false,
+    "pending_sync": true,
     "head_note": "Последний проверенный remote HEAD, не самоссылка на коммит этого файла.",
     "working_branch": "task/TASK-001-spec-v02",
     "working_head": "838cfbc48c98542c0500e09f0c0c0340bf92d923"
   },
   "blockers": [],
-  "approved_materials": [],
+  "approved_materials": [
+    "SPEC-001/v3"
+  ],
   "last_verified_commit": "dcb19ca944096e6e9ee2200c35af5ae347e04a78",
   "ci_status": "NOT_VERIFIED: доступный список workflow runs фильтрует PR-запуски; legacy statuses пусты. Локальная проверка PASS.",
-  "spec_version": "0.2",
+  "spec_version": "0.3",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22"
 }
