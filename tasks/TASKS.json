@@ -5,14 +5,17 @@
       "id": "TASK-001",
       "title": "Сверить ТЗ и подготовить продуктовые решения",
       "role": "GAME_DESIGNER",
-      "status": "TODO",
+      "status": "IN_REVIEW",
       "priority": 1,
       "dependencies": [],
       "approval_gates": [],
       "decision_gates": [],
       "allowed_paths": [
         "docs/GAME_SPEC.md",
-        "docs/DECISIONS.md"
+        "docs/DECISIONS.md",
+        "approvals/materials/SPEC-001/",
+        "reports/SPEC_V02_REVIEW.md",
+        "config/BALANCE_DRAFT.json"
       ],
       "acceptance": [
         "Все R01–R20 учтены без подмены предложениями",
@@ -20,15 +23,24 @@
         "Проверенный пакет ТЗ и продуктовых развилок предъявлен Артуру; предъявление зафиксировано. DONE означает подготовку, а не одобрение."
       ],
       "verification": "Сверка требований и валидатор; независимое чтение ТЗ",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "spec-v02-20261028",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-001-spec-v02",
       "issue_number": 1,
       "pr_url": null,
       "commit": null,
-      "evidence": [],
-      "review": null,
+      "evidence": [
+        "docs/GAME_SPEC.md",
+        "approvals/materials/SPEC-001/v2/GAME_SPEC.md",
+        "reports/SPEC_V02_REVIEW.md"
+      ],
+      "review": {
+        "type": "INDEPENDENT_AGENT_REVIEW",
+        "reviewer": "review_kit",
+        "result": "PASS",
+        "scope": "Полнота исходного ядра; таймеры, CLOSING, уход клиента и порядок событий. После трёх уточнений блокирующих противоречий не найдено."
+      },
       "blocker": null,
       "approval_versions": {},
       "decision_records": {}

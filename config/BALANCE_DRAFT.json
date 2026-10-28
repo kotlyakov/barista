@@ -32,13 +32,64 @@
   },
   "shift": {
     "day_boundary": "08:00",
-    "timezone": null,
-    "duration_seconds": null,
-    "mode": null
+    "timezone": "Captured from device once at profile creation; not yet accepted",
+    "duration_seconds": 480,
+    "mode": "one_main_shift_per_game_day_plus_training"
   },
   "run": {
-    "length_days": null,
-    "reset_policy": null
+    "length_shifts": 1,
+    "reset_policy": "temporary_perk_and_event_only",
+    "minimum_deliveries": 10,
+    "good_ratio_target": 0.8,
+    "completion_bonus": 200
   },
-  "note": "Только стартовые гипотезы. Не использовать null как 0; отсутствующее продуктовое решение блокирует соответствующую реализацию."
+  "note": "ПРЕДЛОЖЕНО, НЕ УТВЕРЖДЕНО. Числа стартовые для плейтеста. speed_threshold_seconds=null отключает speed_combo только в прототипе, к приёмке пороги обязательны.",
+  "spec_version": "0.2",
+  "recipes": [
+    {
+      "id": "espresso",
+      "operations": [
+        "grind",
+        "brew"
+      ],
+      "taps": [
+        12,
+        16
+      ],
+      "base_price": 50
+    },
+    {
+      "id": "cappuccino",
+      "operations": [
+        "grind",
+        "brew",
+        "milk"
+      ],
+      "taps": [
+        12,
+        16,
+        10
+      ],
+      "base_price": 80
+    },
+    {
+      "id": "latte",
+      "operations": [
+        "grind",
+        "brew",
+        "milk"
+      ],
+      "taps": [
+        12,
+        16,
+        14
+      ],
+      "base_price": 90
+    }
+  ],
+  "upgrade_prices": [
+    400,
+    800,
+    1400
+  ]
 }

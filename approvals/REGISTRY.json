@@ -106,6 +106,23 @@
       "source_message": null,
       "scope": "Фоновая музыкальная петля",
       "supersedes": null
+    },
+    {
+      "id": "SPEC-001",
+      "category": "spec",
+      "version": 2,
+      "status": "PRESENTED",
+      "artifact_paths": [
+        "approvals/materials/SPEC-001/v2/GAME_SPEC.md"
+      ],
+      "sha256": {
+        "approvals/materials/SPEC-001/v2/GAME_SPEC.md": "af0145e8db7b14ed2e660a3f58c73c4f6cb8bf2fe21c3fe2555cb5ded707531a"
+      },
+      "presented_at": "2026-10-28",
+      "approved_by": null,
+      "source_message": null,
+      "scope": "Правила ТЗ v0.2 и рекомендации D01/D02/D03/D06. Графика, макеты, анимации, звук и музыка не входят в одобрение ТЗ.",
+      "supersedes": "SPEC-001/v1"
     }
   ]
 }

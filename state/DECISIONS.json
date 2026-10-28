@@ -3,30 +3,36 @@
   "records": [
     {
       "id": "D01",
-      "status": "OPEN",
+      "status": "PROPOSED",
       "decision": null,
       "accepted_by": null,
       "source_message": null,
       "accepted_at": null,
-      "supersedes": null
+      "supersedes": null,
+      "proposal": "Android, 2D, landscape, офлайн; Godot 4 и GDScript; точные версии TASK-004.",
+      "proposal_source": "docs/GAME_SPEC.md v0.2; PRESENTED 28.10.2026"
     },
     {
       "id": "D02",
-      "status": "OPEN",
+      "status": "PROPOSED",
       "decision": null,
       "accepted_by": null,
       "source_message": null,
       "accepted_at": null,
-      "supersedes": null
+      "supersedes": null,
+      "proposal": "Одна основная смена на day_key, 8 минут активного времени, граница 08:00 закреплённой зоны; тренировка без экономики; CLOSING по §10.",
+      "proposal_source": "docs/GAME_SPEC.md v0.2; PRESENTED 28.10.2026"
     },
     {
       "id": "D03",
-      "status": "OPEN",
+      "status": "PROPOSED",
       "decision": null,
       "accepted_by": null,
       "source_message": null,
       "accepted_at": null,
-      "supersedes": null
+      "supersedes": null,
+      "proposal": "Забег=смена; случайное условие и выбор 1 из 3 усилений. Временное очищается, деньги/оборудование/отношения сохраняются. Цель 80% хороших и 10 выдач, награда калибруется.",
+      "proposal_source": "docs/GAME_SPEC.md v0.2; PRESENTED 28.10.2026"
     },
     {
       "id": "D04",
@@ -53,7 +59,9 @@
       "accepted_by": null,
       "source_message": null,
       "accepted_at": null,
-      "supersedes": null
+      "supersedes": null,
+      "proposal": "Качество=min обязательных этапов; с третьего хорошего серия даёт чаевые; лояльность также; быстрый идеальный удваивает только базовую цену.",
+      "proposal_source": "docs/GAME_SPEC.md v0.2; PRESENTED 28.10.2026"
     },
     {
       "id": "D07",
