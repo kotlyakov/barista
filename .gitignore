@@ -1,0 +1,14 @@
+.godot/
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+*.p12
+export_credentials.cfg
+local.properties
+build/
+dist/
+__pycache__/
+*.pyc
+.DS_Store

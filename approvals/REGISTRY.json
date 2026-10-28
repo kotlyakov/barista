@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "SPEC-001",
+      "category": "spec",
+      "version": 1,
+      "status": "DRAFT",
+      "artifact_paths": [
+        "docs/GAME_SPEC.md"
+      ],
+      "sha256": {},
+      "presented_at": null,
+      "approved_by": null,
+      "source_message": null,
+      "scope": "ТЗ, D01/D02/D03/D06 по мере принятия",
+      "supersedes": null
+    },
+    {
+      "id": "UI-001",
+      "category": "ui",
+      "version": 1,
+      "status": "DRAFT",
+      "artifact_paths": [],
+      "sha256": {},
+      "presented_at": null,
+      "approved_by": null,
+      "source_message": null,
+      "scope": "Игровая стойка и её состояния",
+      "supersedes": null
+    },
+    {
+      "id": "UI-002",
+      "category": "ui",
+      "version": 1,
+      "status": "DRAFT",
+      "artifact_paths": [],
+      "sha256": {},
+      "presented_at": null,
+      "approved_by": null,
+      "source_message": null,
+      "scope": "Магазин, итог, настройки, обучение",
+      "supersedes": null
+    },
+    {
+      "id": "ART-001",
+      "category": "art",
+      "version": 1,
+      "status": "DRAFT",
+      "artifact_paths": [],
+      "sha256": {},
+      "presented_at": null,
+      "approved_by": null,
+      "source_message": null,
+      "scope": "Стиль оборудования и окружения",
+      "supersedes": null
+    },
+    {
+      "id": "CHAR-001",
+      "category": "characters",
+      "version": 1,
+      "status": "DRAFT",
+      "artifact_paths": [],
+      "sha256": {},
+      "presented_at": null,
+      "approved_by": null,
+      "source_message": null,
+      "scope": "Шесть именных героев и эмоции",
+      "supersedes": null
+    },
+    {
+      "id": "ANIM-001",
+      "category": "animation",
+      "version": 1,
+      "status": "DRAFT",
+      "artifact_paths": [],
+      "sha256": {},
+      "presented_at": null,
+      "approved_by": null,
+      "source_message": null,
+      "scope": "Игровые анимации и переходы",
+      "supersedes": null
+    },
+    {
+      "id": "SOUND-001",
+      "category": "sound",
+      "version": 1,
+      "status": "DRAFT",
+      "artifact_paths": [],
+      "sha256": {},
+      "presented_at": null,
+      "approved_by": null,
+      "source_message": null,
+      "scope": "Эффекты событий",
+      "supersedes": null
+    },
+    {
+      "id": "MUSIC-001",
+      "category": "music",
+      "version": 1,
+      "status": "DRAFT",
+      "artifact_paths": [],
+      "sha256": {},
+      "presented_at": null,
+      "approved_by": null,
+      "source_message": null,
+      "scope": "Фоновая музыкальная петля",
+      "supersedes": null
+    }
+  ]
+}

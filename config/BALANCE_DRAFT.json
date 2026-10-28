@@ -1,0 +1,44 @@
+{
+  "status": "DRAFT_NOT_APPROVED",
+  "currency": "игровые монеты",
+  "operation_defaults": {
+    "grind": {
+      "target_taps": 12,
+      "grace_extra_taps": 0,
+      "damage_per_extra_tap": 0.08
+    },
+    "brew": {
+      "target_taps": 16,
+      "grace_extra_taps": 0,
+      "damage_per_extra_tap": 0.06
+    },
+    "milk": {
+      "target_taps": 10,
+      "grace_extra_taps": 0,
+      "damage_per_extra_tap": 0.1
+    }
+  },
+  "quality": {
+    "perfect_min": 1,
+    "good_min": 0.8,
+    "ordinary_min": 0.5,
+    "aggregation": "minimum"
+  },
+  "combo": {
+    "speed_threshold_seconds": null,
+    "multiplier": 2,
+    "multiplies": "base_price_only",
+    "good_streak_threshold": 3
+  },
+  "shift": {
+    "day_boundary": "08:00",
+    "timezone": null,
+    "duration_seconds": null,
+    "mode": null
+  },
+  "run": {
+    "length_days": null,
+    "reset_policy": null
+  },
+  "note": "Только стартовые гипотезы. Не использовать null как 0; отсутствующее продуктовое решение блокирует соответствующую реализацию."
+}

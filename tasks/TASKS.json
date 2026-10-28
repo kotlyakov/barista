@@ -1,0 +1,796 @@
+{
+  "schema_version": 1,
+  "tasks": [
+    {
+      "id": "TASK-001",
+      "title": "Сверить ТЗ и подготовить продуктовые решения",
+      "role": "GAME_DESIGNER",
+      "status": "TODO",
+      "priority": 1,
+      "dependencies": [],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "docs/GAME_SPEC.md",
+        "docs/DECISIONS.md"
+      ],
+      "acceptance": [
+        "Все R01–R20 учтены без подмены предложениями",
+        "D01/D02/D03/D06 представлены одним пакетом с рекомендацией",
+        "Проверенный пакет ТЗ и продуктовых развилок предъявлен Артуру; предъявление зафиксировано. DONE означает подготовку, а не одобрение."
+      ],
+      "verification": "Сверка требований и валидатор; независимое чтение ТЗ",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 1,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-002",
+      "title": "Создать приватный GitHub и загрузить пакет",
+      "role": "COORDINATOR",
+      "status": "IN_PROGRESS",
+      "priority": 2,
+      "dependencies": [],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "docs/GITHUB.md",
+        ".github/"
+      ],
+      "acceptance": [
+        "Существование правильного приватного репозитория подтверждено",
+        "Пакет загружен; remote и HEAD зафиксированы",
+        "docs-check реально запущен либо конкретно описан блокер"
+      ],
+      "verification": "Проверить URL/видимость/дерево/HEAD и фактический результат CI",
+      "owner": "coordinator",
+      "session_id": "github-bootstrap-20261028",
+      "lease_until": "2026-10-28T15:00:00+03:00",
+      "branch": "main",
+      "issue_number": 2,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-003",
+      "title": "Подготовить и предъявить визуальную концепцию",
+      "role": "ART_UI",
+      "status": "TODO",
+      "priority": 3,
+      "dependencies": [
+        "TASK-001"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "design/concepts/"
+      ],
+      "acceptance": [
+        "Есть 2–3 сравнимых варианта стойки и героя",
+        "Предъявлены файлы с версиями и хешами",
+        "Решение или замечания Артура записаны без самостоятельного одобрения",
+        "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
+      ],
+      "verification": "Открыть файлы, проверить читаемость и сопоставимость",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 3,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-004",
+      "title": "Зафиксировать стек и воспроизводимый запуск",
+      "role": "TECH_LEAD",
+      "status": "TODO",
+      "priority": 4,
+      "dependencies": [
+        "TASK-001"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "docs/BUILD.md",
+        "docs/ARCHITECTURE.md",
+        "game/",
+        ".github/workflows/"
+      ],
+      "acceptance": [
+        "D01 решён; точные версии зафиксированы",
+        "Чистый проект запускается на заглушках",
+        "Записаны реальные команды проверок и сборки"
+      ],
+      "verification": "Чистый запуск и debug-сборка в доступной среде; недоступное обозначить NOT_RUN",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 4,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-005",
+      "title": "Реализовать правила операций и качества",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 5,
+      "dependencies": [
+        "TASK-004"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [],
+      "allowed_paths": [
+        "game/brewing/",
+        "game/content/",
+        "game/tests/"
+      ],
+      "acceptance": [
+        "N-1/N/N+1 и запас лишних тапов проверены",
+        "Качество ограничено 0..1 и не растёт от перетапа",
+        "Порядок и блокировка прошлых операций соблюдены"
+      ],
+      "verification": "Детерминированные граничные проверки и сравнение с ТЗ",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 5,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-006",
+      "title": "Сделать три прибора и полосы на заглушках",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 6,
+      "dependencies": [
+        "TASK-005"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [],
+      "allowed_paths": [
+        "game/ui/",
+        "game/brewing/"
+      ],
+      "acceptance": [
+        "Один touch даёт один тап без дубля mouse",
+        "Переход ручной; первый тап следующего засчитывается",
+        "Готовность и порча видимы без одного лишь цвета"
+      ],
+      "verification": "Ручной сценарий на телефоне/эмуляторе и запись результата",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 6,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-007",
+      "title": "Сделать заказ, стакан, выдачу и оплату",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 7,
+      "dependencies": [
+        "TASK-006"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [],
+      "allowed_paths": [
+        "game/orders/",
+        "game/economy/",
+        "game/ui/",
+        "game/tests/"
+      ],
+      "acceptance": [
+        "Drop мимо возвращает стакан",
+        "Клиент получает один заказ, появляется один платёж",
+        "Сбор одного payment_id начисляет ровно один раз"
+      ],
+      "verification": "Полный заказ и повторные действия; проверки денег",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 7,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-008",
+      "title": "Добавить сохранение и восстановление",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 8,
+      "dependencies": [
+        "TASK-007"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [],
+      "allowed_paths": [
+        "game/persistence/",
+        "game/tests/",
+        "game/orders/",
+        "game/economy/",
+        "game/shift/"
+      ],
+      "acceptance": [
+        "schema_version и атомарная запись с резервом",
+        "Перезапуск после выдачи до оплаты не дублирует деньги",
+        "Прерывание записи восстанавливает валидное состояние"
+      ],
+      "verification": "Перезапуск на этапах и повреждение основной копии",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 8,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-009",
+      "title": "Добавить чаевые, серию и скоростной бонус",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 9,
+      "dependencies": [
+        "TASK-008"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [],
+      "allowed_paths": [
+        "game/orders/",
+        "game/economy/",
+        "game/content/",
+        "game/tests/"
+      ],
+      "acceptance": [
+        "Плохой кофе не даёт чаевых",
+        "Серия и speed_combo следуют утверждённой формуле",
+        "Порог подобран по попыткам на телефоне, время фона исключено"
+      ],
+      "verification": "Границы таймера/качества и таблица результатов плейтеста",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 9,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-010",
+      "title": "Подготовить шесть именных героев",
+      "role": "ART_UI",
+      "status": "TODO",
+      "priority": 10,
+      "dependencies": [
+        "TASK-003"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "design/characters/",
+        "game/content/customers/"
+      ],
+      "acceptance": [
+        "Шесть ID/имён/образов и эмоций представлены",
+        "У каждого указаны характер и любимый напиток",
+        "Решение Артура по конкретным версиям записано",
+        "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
+      ],
+      "verification": "Просмотр листов героев, отсутствие подмены утверждения",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 10,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-011",
+      "title": "Реализовать отношения и возвращение клиентов",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 11,
+      "dependencies": [
+        "TASK-009"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [],
+      "allowed_paths": [
+        "game/customers/",
+        "game/content/",
+        "game/tests/"
+      ],
+      "acceptance": [
+        "Отношение меняется от качества и сохраняется",
+        "Вероятности и чаевые ограничены",
+        "Даже недовольный герой может вернуться",
+        "Добавлены и проверены три рецепта: эспрессо, капучино, латте; порядок обязательных операций соответствует рецепту"
+      ],
+      "verification": "Seeded выборка, границы отношения, восстановление",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 11,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-012",
+      "title": "Реализовать смену и границу 08:00",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 12,
+      "dependencies": [
+        "TASK-011"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D02"
+      ],
+      "allowed_paths": [
+        "game/shift/",
+        "game/persistence/",
+        "game/ui/",
+        "game/tests/"
+      ],
+      "acceptance": [
+        "D02 закрыт и реализован дословно",
+        "Магазин открывается в начале нового дня",
+        "08:00, пропуск дней, фон и перевод часов не дублируют награды",
+        "Правила терпения/ухода и судьбы начатого заказа выбраны, записаны и проверены; потерь/дублей платежа нет"
+      ],
+      "verification": "Часы с подставляемым временем; сценарии из TEST_PLAN",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 12,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-013",
+      "title": "Реализовать магазин улучшений",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 13,
+      "dependencies": [
+        "TASK-012"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [],
+      "allowed_paths": [
+        "game/economy/",
+        "game/content/",
+        "game/ui/",
+        "game/tests/"
+      ],
+      "acceptance": [
+        "Покупки атомарны, двойное касание не списывает дважды",
+        "Меньше тапов/защита от порчи/реклама имеют проверяемый эффект",
+        "Есть цены, лимиты и понятный результат покупки"
+      ],
+      "verification": "Тесты покупок плюс ручная смена с улучшениями",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 13,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-014",
+      "title": "Добавить правила забега и случайные условия",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 14,
+      "dependencies": [
+        "TASK-013"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D03"
+      ],
+      "allowed_paths": [
+        "docs/GAME_SPEC.md",
+        "game/shift/",
+        "game/content/",
+        "game/tests/"
+      ],
+      "acceptance": [
+        "D03 закрыт; сбрасываемое и постоянное явно разделено",
+        "Условия воспроизводимы по seed",
+        "Поражение/конец забега не удаляет постоянное вопреки ТЗ"
+      ],
+      "verification": "Сценарий полного забега и проверка переноса прогресса",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 14,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-015",
+      "title": "Подготовить макеты всех экранов и анимаций",
+      "role": "ART_UI",
+      "status": "TODO",
+      "priority": 15,
+      "dependencies": [
+        "TASK-003"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "design/screens/",
+        "design/animations/"
+      ],
+      "acceptance": [
+        "Стойка/магазин/итог/настройки/обучение показаны",
+        "Показаны готовность/порча/drop/деньги и переходы",
+        "Материалы имеют версии; предъявлены владельцу",
+        "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
+      ],
+      "verification": "Просмотр в целевых пропорциях; решение Артура",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 15,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-016",
+      "title": "Интегрировать утверждённые макеты и графику",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 16,
+      "dependencies": [
+        "TASK-010",
+        "TASK-014",
+        "TASK-015"
+      ],
+      "approval_gates": [
+        "SPEC-001",
+        "UI-001",
+        "UI-002",
+        "ART-001",
+        "CHAR-001",
+        "ANIM-001"
+      ],
+      "decision_gates": [],
+      "allowed_paths": [
+        "game/ui/",
+        "game/content/art/"
+      ],
+      "acceptance": [
+        "Используются только нужные одобренные версии",
+        "Размеры/цвета/анимации соответствуют материалам",
+        "Нет обрезанных надписей и недоступных зон"
+      ],
+      "verification": "Сравнение скриншотов/видео реализации с утверждённым",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 16,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-017",
+      "title": "Подготовить и утвердить набор звука",
+      "role": "AUDIO",
+      "status": "TODO",
+      "priority": 17,
+      "dependencies": [
+        "TASK-001"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "audio/candidates/",
+        "audio/sources/"
+      ],
+      "acceptance": [
+        "Каждое событие имеет воспроизводимый образец",
+        "Музыка предъявлена отдельно",
+        "Указаны источники/лицензии и решение Артура по версиям",
+        "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
+      ],
+      "verification": "Прослушивание всего набора и проверка реестра",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 17,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-018",
+      "title": "Интегрировать звук и обучение",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 18,
+      "dependencies": [
+        "TASK-016",
+        "TASK-017"
+      ],
+      "approval_gates": [
+        "SOUND-001",
+        "MUSIC-001",
+        "UI-002"
+      ],
+      "decision_gates": [],
+      "allowed_paths": [
+        "game/ui/",
+        "game/content/audio/",
+        "game/persistence/",
+        "game/tests/"
+      ],
+      "acceptance": [
+        "Слышны одобренные эффекты и музыка",
+        "Громкость/выключение сохраняются; нет голосов на каждый быстрый тап без лимита",
+        "Новый игрок проходит заказ по короткому обучению"
+      ],
+      "verification": "Прослушивание на телефоне, mute/фон/быстрые тапы",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 18,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-019",
+      "title": "Проверить баланс и производительность",
+      "role": "QA_REVIEWER",
+      "status": "TODO",
+      "priority": 19,
+      "dependencies": [
+        "TASK-018"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "reports/playtests/",
+        "reports/performance/"
+      ],
+      "acceptance": [
+        "Есть устройство/ОС/commit и замеры",
+        "Экономика и пороги проверены несколькими сменами",
+        "Дефекты оформлены, блокирующие исправлены отдельными задачами"
+      ],
+      "verification": "Профиль и плейтест; не выдавать эмулятор за телефон",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 19,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-020",
+      "title": "Подготовить проверенный кандидат APK",
+      "role": "INTEGRATOR",
+      "status": "TODO",
+      "priority": 20,
+      "dependencies": [
+        "TASK-019",
+        "TASK-002"
+      ],
+      "approval_gates": [
+        "SPEC-001",
+        "UI-001",
+        "UI-002",
+        "ART-001",
+        "CHAR-001",
+        "ANIM-001",
+        "SOUND-001",
+        "MUSIC-001"
+      ],
+      "decision_gates": [
+        "D01",
+        "D02",
+        "D03",
+        "D06"
+      ],
+      "allowed_paths": [
+        "docs/BUILD.md",
+        "reports/releases/",
+        ".github/workflows/"
+      ],
+      "acceptance": [
+        "APK существует, хеш/commit/версии записаны",
+        "Установка и полный цикл проверены",
+        "Все финальные утверждения актуальны и лицензии учтены"
+      ],
+      "verification": "Чистая сборка, установка, smoke, сохранение и финальные checks",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 20,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-021",
+      "title": "Провести пробный выпуск и передать проект",
+      "role": "COORDINATOR",
+      "status": "TODO",
+      "priority": 21,
+      "dependencies": [
+        "TASK-020"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "reports/feedback/",
+        "CHANGELOG.md",
+        "state/HANDOFF.md"
+      ],
+      "acceptance": [
+        "Тестовая сборка передана Артуру",
+        "Замечания разобраны по задачам",
+        "Состояние/следующий шаг актуальны; магазин приложений без отдельного указания не публикуется"
+      ],
+      "verification": "Сверка feedback, требований, задач и реального релиза",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 21,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    }
+  ]
+}

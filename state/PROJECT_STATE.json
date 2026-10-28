@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "package_version": "1.0",
+  "updated_at": "2026-10-28",
+  "phase": "SPECIFICATION_DRAFT",
+  "game_code_exists": false,
+  "current_task": "TASK-002",
+  "next_task": "TASK-001",
+  "next_action": "Сверить проект ТЗ, подготовить Артуру конкретный пакет решений D01/D02/D03/D06; затем получить утверждение ТЗ.",
+  "repository": {
+    "owner": "kotlyakov",
+    "name": "barista",
+    "url": "https://github.com/kotlyakov/barista",
+    "visibility": "private",
+    "created": true,
+    "head": "dc85828f9cd39554eab33018e8ae847c5d6d3b9d",
+    "pending_sync": true,
+    "head_note": "Последний проверенный remote HEAD, не самоссылка на коммит этого файла."
+  },
+  "blockers": [],
+  "approved_materials": [],
+  "last_verified_commit": "dc85828f9cd39554eab33018e8ae847c5d6d3b9d"
+}

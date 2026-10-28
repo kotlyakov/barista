@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "id": "D01",
+      "status": "OPEN",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": null
+    },
+    {
+      "id": "D02",
+      "status": "OPEN",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": null
+    },
+    {
+      "id": "D03",
+      "status": "OPEN",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": null
+    },
+    {
+      "id": "D04",
+      "status": "OPEN",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": null
+    },
+    {
+      "id": "D05",
+      "status": "OPEN",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": null
+    },
+    {
+      "id": "D06",
+      "status": "PROPOSED",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": null
+    },
+    {
+      "id": "D07",
+      "status": "PROPOSED",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": null
+    }
+  ]
+}
