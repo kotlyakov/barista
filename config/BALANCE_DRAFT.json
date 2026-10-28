@@ -22,7 +22,10 @@
     "perfect_min": 1,
     "good_min": 0.8,
     "ordinary_min": 0.5,
-    "aggregation": "minimum"
+    "aggregation": "arithmetic_mean_required_stages",
+    "weights": "equal",
+    "retain_per_stage_defects": true,
+    "perfect_requires_all_stages": true
   },
   "combo": {
     "speed_threshold_seconds": null,
@@ -32,13 +35,65 @@
   },
   "shift": {
     "day_boundary": "08:00",
-    "timezone": null,
-    "duration_seconds": null,
-    "mode": null
+    "timezone": "Captured from device once at profile creation; profile zone remains fixed",
+    "duration_seconds": 480,
+    "mode": "one_main_shift_per_game_day_plus_training"
   },
   "run": {
-    "length_days": null,
-    "reset_policy": null
+    "length_shifts": 1,
+    "reset_policy": "temporary_perk_and_event_only",
+    "minimum_deliveries": 10,
+    "good_ratio_target": 0.8,
+    "completion_bonus": 200
   },
-  "note": "Только стартовые гипотезы. Не использовать null как 0; отсутствующее продуктовое решение блокирует соответствующую реализацию."
+  "note": "Правила ТЗ v0.3 одобрены с правками. Числа остаются стартовой калибровкой. Каждый обязательный этап влияет на качество, дефекты сохраняются отдельно. Настроения героев хранятся в сохранениях.",
+  "spec_version": "0.3",
+  "recipes": [
+    {
+      "id": "espresso",
+      "operations": [
+        "grind",
+        "brew"
+      ],
+      "taps": [
+        12,
+        16
+      ],
+      "base_price": 50
+    },
+    {
+      "id": "cappuccino",
+      "operations": [
+        "grind",
+        "brew",
+        "milk"
+      ],
+      "taps": [
+        12,
+        16,
+        10
+      ],
+      "base_price": 80
+    },
+    {
+      "id": "latte",
+      "operations": [
+        "grind",
+        "brew",
+        "milk"
+      ],
+      "taps": [
+        12,
+        16,
+        14
+      ],
+      "base_price": 90
+    }
+  ],
+  "upgrade_prices": [
+    400,
+    800,
+    1400
+  ],
+  "rules_status": "APPROVED"
 }
