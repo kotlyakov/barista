@@ -14,13 +14,15 @@
     "visibility": "private",
     "created": true,
     "head": "dcb19ca944096e6e9ee2200c35af5ae347e04a78",
-    "pending_sync": true,
+    "pending_sync": false,
     "head_note": "Последний проверенный remote HEAD, не самоссылка на коммит этого файла.",
-    "working_branch": "task/TASK-001-spec-v02"
+    "working_branch": "task/TASK-001-spec-v02",
+    "working_head": "838cfbc48c98542c0500e09f0c0c0340bf92d923"
   },
   "blockers": [],
   "approved_materials": [],
   "last_verified_commit": "dcb19ca944096e6e9ee2200c35af5ae347e04a78",
   "ci_status": "NOT_VERIFIED: доступный список workflow runs фильтрует PR-запуски; legacy statuses пусты. Локальная проверка PASS.",
-  "spec_version": "0.2"
+  "spec_version": "0.2",
+  "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22"
 }

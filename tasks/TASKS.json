@@ -28,8 +28,8 @@
       "lease_until": null,
       "branch": "task/TASK-001-spec-v02",
       "issue_number": 1,
-      "pr_url": null,
-      "commit": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/22",
+      "commit": "838cfbc48c98542c0500e09f0c0c0340bf92d923",
       "evidence": [
         "docs/GAME_SPEC.md",
         "approvals/materials/SPEC-001/v2/GAME_SPEC.md",
