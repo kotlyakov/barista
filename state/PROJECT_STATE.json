@@ -4,7 +4,7 @@
   "updated_at": "2026-10-28",
   "phase": "SPECIFICATION_DRAFT",
   "game_code_exists": false,
-  "current_task": "TASK-002",
+  "current_task": null,
   "next_task": "TASK-001",
   "next_action": "Сверить проект ТЗ, подготовить Артуру конкретный пакет решений D01/D02/D03/D06; затем получить утверждение ТЗ.",
   "repository": {
@@ -13,11 +13,12 @@
     "url": "https://github.com/kotlyakov/barista",
     "visibility": "private",
     "created": true,
-    "head": "dc85828f9cd39554eab33018e8ae847c5d6d3b9d",
-    "pending_sync": true,
+    "head": "dcb19ca944096e6e9ee2200c35af5ae347e04a78",
+    "pending_sync": false,
     "head_note": "Последний проверенный remote HEAD, не самоссылка на коммит этого файла."
   },
   "blockers": [],
   "approved_materials": [],
-  "last_verified_commit": "dc85828f9cd39554eab33018e8ae847c5d6d3b9d"
+  "last_verified_commit": "dcb19ca944096e6e9ee2200c35af5ae347e04a78",
+  "ci_status": "NOT_VERIFIED: доступный список workflow runs фильтрует PR-запуски; legacy statuses пусты. Локальная проверка PASS."
 }
