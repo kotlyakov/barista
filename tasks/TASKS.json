@@ -957,7 +957,7 @@
       "session_id": null,
       "lease_until": null,
       "branch": null,
-      "issue_number": null,
+      "issue_number": 25,
       "pr_url": null,
       "commit": null,
       "evidence": [],
