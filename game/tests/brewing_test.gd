@@ -1,0 +1,50 @@
+extends SceneTree
+var failures = 0
+func check(ok: bool, text: String) -> void:
+ if not ok:
+  failures += 1
+  push_error(text)
+func _init() -> void:
+ var script = load("res://brewing/brew.gd")
+ if script == null:
+  push_error("FAIL: brewing model absent")
+  quit(1)
+  return
+ var b = script.new("cappuccino")
+ check(not b.tap(1),"next stage must wait")
+ for n in range(11): b.tap(0)
+ check(not b.complete(0),"N-1")
+ b.tap(0)
+ check(b.complete(0),"N")
+ b.tap(0)
+ check(is_equal_approx(b.qualities()[0],0.92),"N+1 quality")
+ check(b.tap(1) and b.taps[1]==1,"first tap switches and counts")
+ check(not b.tap(0),"previous stage locked")
+ for n in range(15): b.tap(1)
+ for n in range(10): b.tap(2)
+ check(b.ready(),"all required stages")
+ check(is_equal_approx(b.quality(),(0.92+1+1)/3),"all stages mean")
+ check(b.defects().has("grind_bitter"),"grind defect retained")
+ for n in range(6): b.tap(2)
+ check(b.defects().has("milk_overheated"),"milk defect retained alongside grind")
+ check(b.take_cup(),"take ready cup")
+ check(not b.tap(2),"cup pickup locks brewing even after missed drop")
+ check(not b.take_cup(),"cannot duplicate cup")
+ var e = script.new("espresso")
+ for n in range(12): e.tap(0)
+ for n in range(16): e.tap(1)
+ check(e.ready() and not e.tap(2),"espresso excludes milk")
+ check(e.qualities().size()==2,"only required stages averaged")
+ var grace = script.new("latte",[12,16,14],2,1.0)
+ for n in range(14): grace.tap(0)
+ check(grace.qualities()[0]==1.0,"safe extra taps")
+ grace.tap(0)
+ check(is_equal_approx(grace.qualities()[0],0.92),"first damaging extra")
+ var last=grace.quality()
+ for n in range(100):
+  grace.tap(0)
+  check(grace.quality()<=last and grace.quality()>=0,"quality monotone bounded")
+  last=grace.quality()
+ check(not grace.tap(-1) and not grace.tap(99),"invalid station ignored")
+ if failures==0: print("PASS: brewing thresholds, handoff, grace, defects, mean, cup lock, recipes")
+ quit(0 if failures==0 else 1)

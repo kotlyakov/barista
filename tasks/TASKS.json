@@ -122,7 +122,7 @@
       "id": "TASK-004",
       "title": "Зафиксировать стек и воспроизводимый запуск",
       "role": "TECH_LEAD",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 4,
       "dependencies": [
         "TASK-001"
@@ -145,24 +145,36 @@
         "Записаны реальные команды проверок и сборки"
       ],
       "verification": "Чистый запуск и debug-сборка в доступной среде; недоступное обозначить NOT_RUN",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 4,
       "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "commit": "e951873",
+      "evidence": [
+        "game/project.godot",
+        "game/tests/smoke.gd",
+        "reports/native/PROGRESS.md"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Headless smoke and exported Linux Debug; Android NOT_RUN"
+      },
       "blocker": null,
-      "approval_versions": {},
-      "decision_records": {}
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
     },
     {
       "id": "TASK-005",
       "title": "Реализовать правила операций и качества",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 5,
       "dependencies": [
         "TASK-004"
@@ -183,17 +195,26 @@
         "Качество учитывает все обязательные этапы по v0.3; отдельные вкусовые дефекты не теряются при усреднении"
       ],
       "verification": "Детерминированные граничные проверки и сравнение с ТЗ",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 5,
       "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "commit": "pending-native-checkpoint",
+      "evidence": [
+        "game/brewing/brew.gd",
+        "game/tests/brewing_test.gd"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Headless thresholds, transition, grace, all-stage mean and defects"
+      },
       "blocker": null,
-      "approval_versions": {},
+      "approval_versions": {
+        "SPEC-001": 3
+      },
       "decision_records": {}
     },
     {
