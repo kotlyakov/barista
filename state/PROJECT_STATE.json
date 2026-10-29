@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "package_version": "1.0",
-  "updated_at": "2026-10-28",
-  "phase": "READY_FOR_VISUAL_CONCEPT",
+  "updated_at": "2026-10-29",
+  "phase": "VISUAL_APPROVED_WEB_PERSISTENCE_VERIFIED",
   "game_code_exists": false,
   "current_task": null,
-  "next_task": "TASK-003",
-  "next_action": "Подготовить 2–3 варианта визуальной концепции TASK-003 и показать Артуру. TASK-004 также доступна после интеграции ТЗ. Графика и звук требуют отдельного утверждения.",
+  "next_task": "TASK-004",
+  "next_action": "Воспроизводимый Godot/GDScript проект и запуск (TASK-004); веб-прототип сохранений проверен, нативные TASK-004–008 не закрыты.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -26,5 +26,17 @@
   "last_verified_commit": "dcb19ca944096e6e9ee2200c35af5ae347e04a78",
   "ci_status": "Локальная проверка PASS; GitHub Actions проверить на финальном HEAD перед merge.",
   "spec_version": "0.3",
-  "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22"
+  "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
+  "web_prototype": {
+    "project_id": "appgprj_6ae1b4d1e3bc8191b569fb298107c732",
+    "url": "https://barista-counter-playtest.savorycup131.chatgpt.site",
+    "source_commit": "72a14367fd7875d98bf051feed86bb977622b52b",
+    "approved_visual": "VISUAL-002/v9; реестр и неизменяемые материалы в исходниках Site",
+    "persistence": "PASS: Node + Chrome reload before/after payment; report reports/WEB_PERSISTENCE_20261029.md",
+    "deferred": [
+      "BL-001 разворот при уходе",
+      "BL-002 дистанция в очереди",
+      "BL-003 отдельные образы героев"
+    ]
+  }
 }
