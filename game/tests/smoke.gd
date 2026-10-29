@@ -6,6 +6,8 @@ func _init() -> void:
   quit(1)
   return
  var node = scene.instantiate()
+ node.career_enabled=false
+ node.save_directory="user://smoke-"+str(Time.get_ticks_usec())
  root.add_child(node)
  await process_frame
  print("PASS: Godot native main scene instantiates")

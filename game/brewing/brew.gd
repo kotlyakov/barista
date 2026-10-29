@@ -56,6 +56,9 @@ func snapshot() -> Dictionary:
 static func restore(data: Dictionary):
  var b = load("res://brewing/brew.gd").new(data.recipe,data.targets,int(data.grace),float(data.damage_scale))
  b.taps=data.taps.duplicate()
+ for index in range(b.targets.size()):
+  b.targets[index]=int(b.targets[index])
+  b.taps[index]=int(b.taps[index])
  b.stage=int(data.stage)
  b.locked=bool(data.locked)
  return b
