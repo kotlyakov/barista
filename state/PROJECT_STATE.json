@@ -13,11 +13,11 @@
     "url": "https://github.com/kotlyakov/barista",
     "visibility": "private",
     "created": true,
-    "head": "abbd0e842d680626b7718d70896aaf4eda29f81a",
+    "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
     "head_note": "Last verified main merge and tested native PR head; bookkeeping commits may follow.",
-    "working_branch": "task/TASK-023-android-preview",
-    "working_head": "3ef3c8a400bb663899895b93533f2a45b12a4dfe"
+    "working_branch": "main",
+    "working_head": "e9a37a81e4a349b0f464f063517727d6e981aef3"
   },
   "blockers": [
     "TASK-022: Android emulator boot timeout without KVM; real-device tests/calibration pending",
@@ -26,8 +26,8 @@
   "approved_materials": [
     "SPEC-001/v3"
   ],
-  "last_verified_commit": "841bdc7393f72380b57d4df118d420a536344c94",
-  "ci_status": "Local APK checks + 15 Godot tests PASS; PR26 remote checks pending.",
+  "last_verified_commit": "e9a37a81e4a349b0f464f063517727d6e981aef3",
+  "ci_status": "native-check and docs-check SUCCESS on e9a37a81e4a349b0f464f063517727d6e981aef3; PR26 merged as 4c66e9456fdb669b28b207e231de4ff6e0ac7aaa.",
   "spec_version": "0.3",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
@@ -68,7 +68,9 @@
       "runtime": "NOT_RUN: emulator software boot timeout 180s; no connected phone",
       "source_commit": "3ef3c8a400bb663899895b93533f2a45b12a4dfe",
       "pr_url": "https://github.com/kotlyakov/barista/pull/26",
-      "status": "BUILT_AND_SAVED"
+      "status": "BUILT_AND_SAVED",
+      "pr_status": "MERGED",
+      "ci": "PASS: native-check, docs-check"
     },
     "debug_signing_key_library_file_id": "libfile_76674d45c1b8819198ccdc529424af21"
   },
