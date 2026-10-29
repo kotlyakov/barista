@@ -13,11 +13,11 @@
     "url": "https://github.com/kotlyakov/barista",
     "visibility": "private",
     "created": true,
-    "head": "dcb19ca944096e6e9ee2200c35af5ae347e04a78",
-    "pending_sync": true,
-    "head_note": "Последний проверенный remote HEAD, не самоссылка на коммит этого файла.",
+    "head": "a5a0edb60a9fd4ecc2d5539ee8763fe04cb9f17e",
+    "pending_sync": false,
+    "head_note": "main after PR23; working_head is the last verified native code commit, not a self-reference.",
     "working_branch": "task/TASK-004-native-foundation",
-    "working_head": "4f73ad65c155ec027068783e04bd1140fbc9e9db"
+    "working_head": "841bdc7393f72380b57d4df118d420a536344c94"
   },
   "blockers": [
     "TASK-020: Android SDK license acceptance pending",
@@ -27,8 +27,8 @@
   "approved_materials": [
     "SPEC-001/v3"
   ],
-  "last_verified_commit": "dcb19ca944096e6e9ee2200c35af5ae347e04a78",
-  "ci_status": "Локальная проверка PASS; GitHub Actions проверить на финальном HEAD перед merge.",
+  "last_verified_commit": "841bdc7393f72380b57d4df118d420a536344c94",
+  "ci_status": "Local 15/15 Godot + docs + web regression PASS; remote CI to be checked after final metadata push.",
   "spec_version": "0.3",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
