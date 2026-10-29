@@ -13,11 +13,11 @@
     "url": "https://github.com/kotlyakov/barista",
     "visibility": "private",
     "created": true,
-    "head": "a5a0edb60a9fd4ecc2d5539ee8763fe04cb9f17e",
+    "head": "abbd0e842d680626b7718d70896aaf4eda29f81a",
     "pending_sync": false,
-    "head_note": "main after PR23; working_head is the last verified native code commit, not a self-reference.",
-    "working_branch": "task/TASK-004-native-foundation",
-    "working_head": "841bdc7393f72380b57d4df118d420a536344c94"
+    "head_note": "Last verified main merge and tested native PR head; bookkeeping commits may follow.",
+    "working_branch": "main",
+    "working_head": "82cc11cf651e881951d1bdd02c5f56cc9b573bdd"
   },
   "blockers": [
     "TASK-020: Android SDK license acceptance pending",
@@ -28,7 +28,7 @@
     "SPEC-001/v3"
   ],
   "last_verified_commit": "841bdc7393f72380b57d4df118d420a536344c94",
-  "ci_status": "Local 15/15 Godot + docs + web regression PASS; remote CI to be checked after final metadata push.",
+  "ci_status": "native-check and docs-check SUCCESS on 82cc11cf651e881951d1bdd02c5f56cc9b573bdd; PR24 merged as abbd0e842d680626b7718d70896aaf4eda29f81a.",
   "spec_version": "0.3",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
@@ -52,6 +52,8 @@
     "speed_combo": "production thresholds empty pending phone calibration",
     "zone_policy": "fixed UTC offset; DST backlog NAT-003",
     "branch": "task/TASK-004-native-foundation",
-    "pr_url": "https://github.com/kotlyakov/barista/pull/24"
+    "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+    "pr_status": "MERGED",
+    "ci": "PASS: native-check, docs-check"
   }
 }
