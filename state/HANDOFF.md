@@ -7,8 +7,14 @@ Godot 4.5.1/GDScript Compatibility. Нативные приборы/качест
 
 Независимое ревью нашло два Important; оба исправлены с RED→GREEN регрессиями: фон не стирает повреждённые сохранения, сброс тренировки не стирает основную карьеру. Один Minor отложен NAT-009.
 
-## Серьёзный блок
-Официальный Android SDK installer дошёл до `android-sdk-license — Accept? (y/N)`. Условия НЕ приняты. Command-line tools 22.0 уже скачаны и проверены; JDK17/шаблоны Godot доступны. После явного ответа Артура: /workspace/tools/android-sdk/cmdline-tools/22.0/bin/sdkmanager --sdk_root=/workspace/tools/android-sdk 'platform-tools' 'build-tools;35.0.0' 'platforms;android-35'. Затем настроить Editor Settings и выполнить export-debug Android. Сейчас APK не собран; Android/телефон/эмулятор NOT_RUN.
+## Обновление: Android technical APK 0.1.0 собран
+Артур ответил «Принимаю» на SDK license. Лицензия принята; SDK 35/build-tools 35.0.0 и шаблоны Godot установлены. Повторно спрашивать про ту же лицензию не нужно.
+
+ARM64 APK реально собран: Library `libfile_2bac8fac01f0819189f9f431da290f39`, SHA-256 `32dd22fb31d75cc6d2a64376041297ae2b08ff34cd9f680ea61f4fe7e4aab96f`, 27 620 965 bytes. `tools/build_android.sh` повторно прошёл 15 тестов, export и `check_apk.py` (v2/v3 signature, alignment, ZIP, SDK, ABI). Отчёт `reports/releases/ANDROID_TECH_0_1_0.md`. Это технические заглушки, не финальная игра.
+
+Новый блок TASK-022: /dev/kvm нет; software Android 35 emulator не загрузился за 180 секунд, лог QEMU CPU threads hung. Установка и запуск APK на Android NOT_RUN, физического телефона нет. Нельзя помечать проверенным на Pixel/Android.
+
+Debug keystore сохранён отдельно в приватной Library `libfile_76674d45c1b8819198ccdc529424af21`. После очистки среды восстановить его перед новым APK; не создавать другую подпись для обновления той же установки и не пушить ключ в Git.
 
 ## Не потерять ограничения
 - Внешний вид 09 утверждён. Источник: docs/APPROVED_VISUAL_REFERENCE.md; неизменяемые оригиналы остаются в Site. Не создавать новый концепт. Нативные кружки/прямоугольники — технические заглушки.
@@ -18,7 +24,7 @@ Godot 4.5.1/GDScript Compatibility. Нативные приборы/качест
 - Несколько стаканов веб-макета и один активный заказ ТЗ — NAT-008, не менять правило молча.
 
 ## Продолжение
-В доступной Android-среде — технический APK и реальные проверки. Затем TASK-010/015/017: конкретные материалы для утверждения; TASK-016/018 — только после соответствующих approvals. TASK-019/020/021 — производительность, финальный кандидат и обратная связь. Игра ещё НЕ закончена.
+В доступной Android-среде — установка готового технического APK и реальные проверки. Затем TASK-010/015/017: конкретные материалы для утверждения; TASK-016/018 — только после соответствующих approvals. TASK-019/020/021 — производительность, финальный кандидат и обратная связь. Игра ещё НЕ закончена.
 
 ## Проверки
 GODOT=/path/to/Godot_v4.5.1-stable_linux.x86_64 python3 tools/check_native.py; python3 tools/validate_project.py. docs/BUILD.md — версии и команды. CI проверять на финальном remote SHA; наличие workflow само по себе не PASS.

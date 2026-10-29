@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "1.0",
   "updated_at": "2026-10-29",
-  "phase": "NATIVE_CORE_VERIFIED_ANDROID_LICENSE_BLOCKED",
+  "phase": "ANDROID_TECH_APK_BUILT_RUNTIME_BLOCKED",
   "game_code_exists": true,
   "current_task": null,
   "next_task": "TASK-015",
-  "next_action": "После явного ответа Артура принять/не принять android-sdk-license; при согласии завершить SDK 35 и собрать технический APK. Оставшиеся visual/audio gates не закрывать автоматически. См. state/HANDOFF.md и BACKLOG.md.",
+  "next_action": "Технический ARM64 APK 0.1.0 сохранён для скачивания; проверить установку/запуск на доступном Android-устройстве. Эмулятор без KVM не загрузился за 180 с. Продолжить материалы TASK-010/015/017 без изменения утверждённого общего вида 09.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -16,19 +16,18 @@
     "head": "abbd0e842d680626b7718d70896aaf4eda29f81a",
     "pending_sync": false,
     "head_note": "Last verified main merge and tested native PR head; bookkeeping commits may follow.",
-    "working_branch": "main",
-    "working_head": "82cc11cf651e881951d1bdd02c5f56cc9b573bdd"
+    "working_branch": "task/TASK-023-android-preview",
+    "working_head": "3ef3c8a400bb663899895b93533f2a45b12a4dfe"
   },
   "blockers": [
-    "TASK-020: Android SDK license acceptance pending",
-    "TASK-022: device/calibration/performance not run",
+    "TASK-022: Android emulator boot timeout without KVM; real-device tests/calibration pending",
     "TASK-010/015/017: individual character/screens/audio approvals pending"
   ],
   "approved_materials": [
     "SPEC-001/v3"
   ],
   "last_verified_commit": "841bdc7393f72380b57d4df118d420a536344c94",
-  "ci_status": "native-check and docs-check SUCCESS on 82cc11cf651e881951d1bdd02c5f56cc9b573bdd; PR24 merged as abbd0e842d680626b7718d70896aaf4eda29f81a.",
+  "ci_status": "Local APK checks + 15 Godot tests PASS; PR26 remote checks pending.",
   "spec_version": "0.3",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
@@ -47,13 +46,37 @@
     "engine": "4.5.1.stable.official.f62fdbde1",
     "tests": "15/15 Godot scripts PASS",
     "linux_debug": "exported and headless launched",
-    "android_apk": "NOT_BUILT",
+    "android_apk": "BUILT_TECHNICAL_0.1.0",
     "art": "technical placeholders; approved visual 09 not yet ported",
     "speed_combo": "production thresholds empty pending phone calibration",
     "zone_policy": "fixed UTC offset; DST backlog NAT-003",
     "branch": "task/TASK-004-native-foundation",
     "pr_url": "https://github.com/kotlyakov/barista/pull/24",
     "pr_status": "MERGED",
-    "ci": "PASS: native-check, docs-check"
+    "ci": "PASS: native-check, docs-check",
+    "android_preview": {
+      "file": "Barista-0.1.0-tech-preview.apk",
+      "package": "org.kotlyakov.barista",
+      "version": "0.1.0",
+      "abi": "arm64-v8a",
+      "min_sdk": 24,
+      "target_sdk": 35,
+      "size_bytes": 27620965,
+      "sha256": "32dd22fb31d75cc6d2a64376041297ae2b08ff34cd9f680ea61f4fe7e4aab96f",
+      "library_file_id": "libfile_2bac8fac01f0819189f9f431da290f39",
+      "signature": "v2/v3 PASS; 16KB alignment PASS",
+      "runtime": "NOT_RUN: emulator software boot timeout 180s; no connected phone",
+      "source_commit": "3ef3c8a400bb663899895b93533f2a45b12a4dfe",
+      "pr_url": "https://github.com/kotlyakov/barista/pull/26",
+      "status": "BUILT_AND_SAVED"
+    },
+    "debug_signing_key_library_file_id": "libfile_76674d45c1b8819198ccdc529424af21"
+  },
+  "android_sdk_license": {
+    "status": "ACCEPTED",
+    "accepted_by": "Артур",
+    "source_message": "Принимаю",
+    "date": "2026-10-29",
+    "scope": "Android SDK license required for game APK build"
   }
 }

@@ -890,7 +890,7 @@
       "commit": null,
       "evidence": [],
       "review": null,
-      "blocker": "Android SDK: реальный запрос android-sdk-license Accept? (y/N), условия не приняты. Также не выполнены обязательные gates финального оформления/звука/устройства. Техническое ядро и Linux Debug проверены.",
+      "blocker": "Технический ARM64 APK собран, SDK license принята. Финальный кандидат ещё требует утверждений графики/экранов/звука и проверок Android/телефона TASK-022.",
       "approval_versions": {},
       "decision_records": {}
     },
@@ -962,9 +962,69 @@
       "commit": null,
       "evidence": [],
       "review": null,
-      "blocker": "Нет подключённого Android-устройства/эмулятора. SDK ожидает принятия лицензии; телефонные попытки и performance не выполнялись.",
+      "blocker": "SDK установлен и технический APK собран. /dev/kvm отсутствует; AOSP Android 35 software emulator не загрузился за 180 секунд (QEMU CPU threads hung). Установка/запуск внутри Android и реальный телефон NOT_RUN.",
       "approval_versions": {},
       "decision_records": {}
+    },
+    {
+      "id": "TASK-023",
+      "title": "Собрать и проверить технический Android APK",
+      "role": "INTEGRATOR",
+      "status": "DONE",
+      "priority": 14,
+      "dependencies": [
+        "TASK-008",
+        "TASK-014"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/export_presets.cfg",
+        "tools/",
+        "docs/BUILD.md",
+        "reports/native/",
+        "state/",
+        "tasks/TASKS.json",
+        "BACKLOG.md",
+        "game/project.godot",
+        "reports/releases/"
+      ],
+      "acceptance": [
+        "Лицензия Android SDK принята по явному сообщению Артура «Принимаю»",
+        "APK реально существует; подпись, пакет, версия, архитектура и SHA-256 проверены",
+        "Повторяемые команды и ограничения записаны; APK не выдаётся за окончательную игру",
+        "Исходники/результаты опубликованы в GitHub; файл APK сохранён для скачивания"
+      ],
+      "verification": "Godot tests, Android export, apksigner verify, aapt badging; Android runtime отдельно",
+      "owner": "coordinator",
+      "session_id": "android-20261029",
+      "lease_until": null,
+      "branch": "task/TASK-023-android-preview",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/26",
+      "commit": "3ef3c8a400bb663899895b93533f2a45b12a4dfe",
+      "evidence": [
+        "reports/releases/ANDROID_TECH_0_1_0.md",
+        "tools/build_android.sh",
+        "tools/check_apk.py",
+        "ChatGPT Library libfile_2bac8fac01f0819189f9f431da290f39"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Actual APK export, signature/ZIP/alignment/manifest/ABI, 15 GDScript tests; emulator boot timed out, runtime NOT_RUN"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
     }
   ]
 }

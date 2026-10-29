@@ -42,3 +42,19 @@ GODOT=/path/to/Godot_v4.5.1-stable_linux.x86_64 python3 tools/check_native.py
 Android command-line tools **22.0** скачаны с официального сайта и сверены с SHA-256 `4e4c464f145a7512b57d088ac6c278c03c9eea610886b35a5e0804e74eedf583`. При установке platform-tools/build-tools 35.0.0/platform 35 получен реальный запрос `License android-sdk-license — Accept? (y/N)`. Лицензия НЕ принята; установка остановлена до ответа владельца. После явного согласия повторить установку и экспорт. Локальный путь среды: `/workspace/tools/android-sdk/cmdline-tools/22.0/bin/sdkmanager`; в других средах он не является обязательным.
 
 Финальные регрессии добавили два сценария: всего **15**. Локальный запуск и обновлённый Linux Debug проходят; CI native-check должен быть проверен на окончательном remote SHA.
+
+## Android — технический APK собран 29.10.2026
+
+Предыдущая отметка NOT_RUN относится к состоянию до ответа Артура. После сообщения «Принимаю» лицензия Android SDK принята; SDK 35/build-tools 35.0.0/platform-tools 37.0.1 установлены. Ключ debug-подписи и Editor Settings настроены локально, вне Git.
+
+Проверенная команда для этой или аналогично настроенной среды:
+
+```sh
+GODOT=/path/to/Godot_v4.5.1-stable_linux.x86_64 \
+ANDROID_SDK_ROOT=/path/to/android-sdk \
+bash tools/build_android.sh
+```
+
+Результат: `artifacts/Barista-0.1.0-tech-preview.apk`, подпись/манифест/ABI/16 KB выравнивание и ZIP проверяются автоматически. Скрипт не принимает новые лицензии и не создаёт релизный ключ. Настроить Android Sdk Path/Java SDK Path/debug keystore в локальных Editor Settings перед запуском. Preset Android — ARM64; Android Emulator — отдельный x86_64 пакет для QA.
+
+Отчёт с SHA-256 и ограничениями: `reports/releases/ANDROID_TECH_0_1_0.md`. Установка/запуск на Android пока NOT_RUN: программный эмулятор без KVM не загрузился за 180 с. Готовый APK и headless тесты не заменяют проверку на телефоне.
