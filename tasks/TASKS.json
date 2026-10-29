@@ -970,7 +970,7 @@
       "id": "TASK-023",
       "title": "Собрать и проверить технический Android APK",
       "role": "INTEGRATOR",
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "priority": 14,
       "dependencies": [
         "TASK-008",
@@ -1005,8 +1005,8 @@
       "lease_until": null,
       "branch": "task/TASK-023-android-preview",
       "issue_number": null,
-      "pr_url": null,
-      "commit": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/26",
+      "commit": "3ef3c8a400bb663899895b93533f2a45b12a4dfe",
       "evidence": [
         "reports/releases/ANDROID_TECH_0_1_0.md",
         "tools/build_android.sh",
