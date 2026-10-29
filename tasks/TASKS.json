@@ -88,7 +88,7 @@
       "id": "TASK-003",
       "title": "Подготовить и предъявить визуальную концепцию",
       "role": "ART_UI",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 3,
       "dependencies": [
         "TASK-001"
@@ -96,24 +96,31 @@
       "approval_gates": [],
       "decision_gates": [],
       "allowed_paths": [
-        "design/concepts/"
+        "design/concepts/",
+        "docs/APPROVED_VISUAL_REFERENCE.md"
       ],
       "acceptance": [
-        "Есть 2–3 сравнимых варианта стойки и героя",
-        "Предъявлены файлы с версиями и хешами",
-        "Решение или замечания Артура записаны без самостоятельного одобрения",
-        "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
+        "Исторические визуальные варианты и утверждённый общий вид 09 сверены с сообщением Артура",
+        "Источник неизменяемых материалов/хешей и точная граница утверждения записаны",
+        "Новый концепт не создаётся; индивидуальные герои и иные экраны остаются отдельными gates"
       ],
       "verification": "Открыть файлы, проверить читаемость и сопоставимость",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 3,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+      "commit": "841bdc7393f72380b57d4df118d420a536344c94",
+      "evidence": [
+        "docs/APPROVED_VISUAL_REFERENCE.md",
+        "Site appgprj_6ae1b4d1e3bc8191b569fb298107c732: VISUAL-002/v9 at bda169a08fe6287c5c9ce9a8b57dfa8412e7a937"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Historical concept work and explicit approval reconciled; source snapshots remain in Site repository"
+      },
       "blocker": null,
       "approval_versions": {},
       "decision_records": {}
@@ -122,7 +129,7 @@
       "id": "TASK-004",
       "title": "Зафиксировать стек и воспроизводимый запуск",
       "role": "TECH_LEAD",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 4,
       "dependencies": [
         "TASK-001"
@@ -145,24 +152,36 @@
         "Записаны реальные команды проверок и сборки"
       ],
       "verification": "Чистый запуск и debug-сборка в доступной среде; недоступное обозначить NOT_RUN",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 4,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+      "commit": "841bdc7393f72380b57d4df118d420a536344c94",
+      "evidence": [
+        "game/project.godot",
+        "game/tests/smoke.gd",
+        "reports/native/PROGRESS.md"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Headless smoke and exported Linux Debug; Android NOT_RUN"
+      },
       "blocker": null,
-      "approval_versions": {},
-      "decision_records": {}
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
     },
     {
       "id": "TASK-005",
       "title": "Реализовать правила операций и качества",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 5,
       "dependencies": [
         "TASK-004"
@@ -183,24 +202,33 @@
         "Качество учитывает все обязательные этапы по v0.3; отдельные вкусовые дефекты не теряются при усреднении"
       ],
       "verification": "Детерминированные граничные проверки и сравнение с ТЗ",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 5,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+      "commit": "841bdc7393f72380b57d4df118d420a536344c94",
+      "evidence": [
+        "game/brewing/brew.gd",
+        "game/tests/brewing_test.gd"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Headless thresholds, transition, grace, all-stage mean and defects"
+      },
       "blocker": null,
-      "approval_versions": {},
+      "approval_versions": {
+        "SPEC-001": 3
+      },
       "decision_records": {}
     },
     {
       "id": "TASK-006",
       "title": "Сделать три прибора и полосы на заглушках",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 6,
       "dependencies": [
         "TASK-005"
@@ -218,25 +246,35 @@
         "Переход ручной; первый тап следующего засчитывается",
         "Готовность и порча видимы без одного лишь цвета"
       ],
-      "verification": "Ручной сценарий на телефоне/эмуляторе и запись результата",
-      "owner": null,
-      "session_id": null,
+      "verification": "Headless input events and scene smoke; phone/emulator verification tracked in TASK-022 before release.",
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 6,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+      "commit": "841bdc7393f72380b57d4df118d420a536344c94",
+      "evidence": [
+        "game/ui/pointer_gate.gd",
+        "game/ui/main.gd",
+        "game/tests/input_test.gd"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Single pointer router and native UI headless; phone validation moved to TASK-022"
+      },
       "blocker": null,
-      "approval_versions": {},
+      "approval_versions": {
+        "SPEC-001": 3
+      },
       "decision_records": {}
     },
     {
       "id": "TASK-007",
       "title": "Сделать заказ, стакан, выдачу и оплату",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 7,
       "dependencies": [
         "TASK-006"
@@ -257,24 +295,34 @@
         "Сбор одного payment_id начисляет ровно один раз"
       ],
       "verification": "Полный заказ и повторные действия; проверки денег",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 7,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+      "commit": "841bdc7393f72380b57d4df118d420a536344c94",
+      "evidence": [
+        "game/orders/session.gd",
+        "game/tests/orders_test.gd",
+        "game/ui/main.gd"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Native order tests and scene instantiation; desktop technical UI, phone TASK-022"
+      },
       "blocker": null,
-      "approval_versions": {},
+      "approval_versions": {
+        "SPEC-001": 3
+      },
       "decision_records": {}
     },
     {
       "id": "TASK-008",
       "title": "Добавить сохранение и восстановление",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 8,
       "dependencies": [
         "TASK-007"
@@ -297,24 +345,36 @@
         "mood/last_reaction каждого героя сохраняются и восстанавливаются независимо от relationship; реакция не применяется дважды"
       ],
       "verification": "Перезапуск на этапах и повреждение основной копии",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 8,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+      "commit": "841bdc7393f72380b57d4df118d420a536344c94",
+      "evidence": [
+        "game/persistence/store.gd",
+        "game/persistence/repository.gd",
+        "game/tests/persistence_test.gd",
+        "game/tests/transaction_test.gd",
+        "game/tests/ui_flow_test.gd"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Native file IO, checksum, fallback/corruption, failed commit rollback and full UI pipeline; Android storage NOT_RUN"
+      },
       "blocker": null,
-      "approval_versions": {},
+      "approval_versions": {
+        "SPEC-001": 3
+      },
       "decision_records": {}
     },
     {
       "id": "TASK-009",
       "title": "Добавить чаевые, серию и скоростной бонус",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 9,
       "dependencies": [
         "TASK-008"
@@ -332,20 +392,29 @@
       "acceptance": [
         "Плохой кофе не даёт чаевых",
         "Серия и speed_combo следуют утверждённой формуле",
-        "Порог подобран по попыткам на телефоне, время фона исключено"
+        "Порог проверяется подставным значением; боевой порог выключен до обязательной калибровки на телефоне TASK-022; время фона исключено"
       ],
-      "verification": "Границы таймера/качества и таблица результатов плейтеста",
-      "owner": null,
-      "session_id": null,
+      "verification": "Headless boundary tests; release calibration is TASK-022 (NOT_RUN).",
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 9,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+      "commit": "841bdc7393f72380b57d4df118d420a536344c94",
+      "evidence": [
+        "game/tests/rewards_test.gd",
+        "game/orders/session.gd"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Formula and boundary tests; production thresholds remain null until TASK-022"
+      },
       "blocker": null,
-      "approval_versions": {},
+      "approval_versions": {
+        "SPEC-001": 3
+      },
       "decision_records": {}
     },
     {
@@ -387,7 +456,7 @@
       "id": "TASK-011",
       "title": "Реализовать отношения и возвращение клиентов",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 11,
       "dependencies": [
         "TASK-009"
@@ -409,24 +478,34 @@
         "Настроение героя переживает перезапуск и новый день; меняется только по правилам обслуживания"
       ],
       "verification": "Seeded выборка, границы отношения, восстановление",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 11,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+      "commit": "841bdc7393f72380b57d4df118d420a536344c94",
+      "evidence": [
+        "game/customers/roster.gd",
+        "game/tests/customers_test.gd",
+        "game/orders/session.gd"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Seeded weighted selection, bounded nonzero weights, independent profile persistence; six neutral IDs pending separate art approval"
+      },
       "blocker": null,
-      "approval_versions": {},
+      "approval_versions": {
+        "SPEC-001": 3
+      },
       "decision_records": {}
     },
     {
       "id": "TASK-012",
       "title": "Реализовать смену и границу 08:00",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 12,
       "dependencies": [
         "TASK-011"
@@ -450,24 +529,37 @@
         "Правила терпения/ухода и судьбы начатого заказа выбраны, записаны и проверены; потерь/дублей платежа нет"
       ],
       "verification": "Часы с подставляемым временем; сценарии из TEST_PLAN",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 12,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+      "commit": "841bdc7393f72380b57d4df118d420a536344c94",
+      "evidence": [
+        "game/shift/shift.gd",
+        "game/tests/shift_test.gd",
+        "game/tests/career_test.gd",
+        "game/persistence/repository.gd"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Fixed-offset 08:00, closing, reward once, isolated training; phone NOT_RUN"
+      },
       "blocker": null,
-      "approval_versions": {},
-      "decision_records": {}
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D02": "D02"
+      }
     },
     {
       "id": "TASK-013",
       "title": "Реализовать магазин улучшений",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 13,
       "dependencies": [
         "TASK-012"
@@ -488,24 +580,34 @@
         "Есть цены, лимиты и понятный результат покупки"
       ],
       "verification": "Тесты покупок плюс ручная смена с улучшениями",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 13,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+      "commit": "841bdc7393f72380b57d4df118d420a536344c94",
+      "evidence": [
+        "game/tests/shop_test.gd",
+        "game/orders/session.gd",
+        "game/ui/main.gd"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Shop transactions, levels, atomic rollback, brewing parameters and advertising delay; economy calibration deferred"
+      },
       "blocker": null,
-      "approval_versions": {},
+      "approval_versions": {
+        "SPEC-001": 3
+      },
       "decision_records": {}
     },
     {
       "id": "TASK-014",
       "title": "Добавить правила забега и случайные условия",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 14,
       "dependencies": [
         "TASK-013"
@@ -528,18 +630,30 @@
         "Поражение/конец забега не удаляет постоянное вопреки ТЗ"
       ],
       "verification": "Сценарий полного забега и проверка переноса прогресса",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "native-20261029",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-004-native-foundation",
       "issue_number": 14,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+      "commit": "841bdc7393f72380b57d4df118d420a536344c94",
+      "evidence": [
+        "game/tests/run_test.gd",
+        "game/shift/shift.gd",
+        "game/orders/session.gd"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Deterministic offers and event, single selection, temporary/permanent separation and single reward"
+      },
       "blocker": null,
-      "approval_versions": {},
-      "decision_records": {}
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D03": "D03"
+      }
     },
     {
       "id": "TASK-015",
@@ -733,11 +847,12 @@
       "id": "TASK-020",
       "title": "Подготовить проверенный кандидат APK",
       "role": "INTEGRATOR",
-      "status": "TODO",
+      "status": "BLOCKED",
       "priority": 20,
       "dependencies": [
         "TASK-019",
-        "TASK-002"
+        "TASK-002",
+        "TASK-022"
       ],
       "approval_gates": [
         "SPEC-001",
@@ -775,7 +890,7 @@
       "commit": null,
       "evidence": [],
       "review": null,
-      "blocker": null,
+      "blocker": "Android SDK: реальный запрос android-sdk-license Accept? (y/N), условия не приняты. Также не выполнены обязательные gates финального оформления/звука/устройства. Техническое ядро и Linux Debug проверены.",
       "approval_versions": {},
       "decision_records": {}
     },
@@ -811,6 +926,43 @@
       "evidence": [],
       "review": null,
       "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-022",
+      "title": "Проверить нативный ввод и откалибровать скоростное комбо на телефоне",
+      "role": "QA_REVIEWER",
+      "status": "BLOCKED",
+      "priority": 19,
+      "dependencies": [
+        "TASK-008"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [],
+      "allowed_paths": [
+        "reports/playtests/",
+        "game/content/",
+        "game/tests/"
+      ],
+      "acceptance": [
+        "Touch/mouse, удержание, второй палец, фон/пауза проверены на телефоне либо Android-эмуляторе; среда записана",
+        "Для каждого рецепта минимум 10 попыток на реальном телефоне; параметры комбо и результаты сохранены",
+        "Финальная проверка на целевом телефоне не заменена headless проверкой"
+      ],
+      "verification": "Реальный Android runtime и протокол попыток",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": null,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": "Нет подключённого Android-устройства/эмулятора. SDK ожидает принятия лицензии; телефонные попытки и performance не выполнялись.",
       "approval_versions": {},
       "decision_records": {}
     }

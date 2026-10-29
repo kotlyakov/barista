@@ -1,0 +1,48 @@
+extends SceneTree
+func brew_all(g) -> void:
+ for index in range(g.brew.targets.size()):
+  for n in range(g.brew.targets[index]): assert(g.tap(index))
+func _init() -> void:
+ var script=load("res://orders/session.gd")
+ if script==null:
+  push_error("FAIL: native order session missing")
+  quit(1)
+  return
+ var g=script.new()
+ assert(not g.deliver(1,"guest-01"))
+ assert(not g.tap(1))
+ brew_all(g)
+ assert(g.take_cup())
+ assert(not g.tap(2))
+ assert(not g.deliver(g.data.order.id,"wrong-customer"))
+ assert(g.data.order.state=="BREWING","miss keeps locked cup")
+ assert(g.deliver(g.data.order.id,"guest-01"))
+ assert(not g.deliver(g.data.order.id,"guest-01"))
+ assert(g.data.money==0)
+ var payment=g.data.order.payment.id
+ assert(not g.collect(payment+1))
+ assert(g.collect(payment))
+ assert(g.data.money==80)
+ assert(not g.collect(payment))
+ g.advance(6)
+ assert(g.next_order("espresso"))
+ assert(g.data.order.id==2)
+ var next=script.new()
+ next.advance(35)
+ assert(next.data.order.state=="LEFT")
+ assert(not next.tap(0),"exact patience boundary processed before first tap")
+ var started=script.new()
+ started.tap(0)
+ started.advance(36)
+ assert(started.data.order.state=="BREWING","started order waits")
+ assert(started.data.order.late)
+ var late_taps=started.brew.taps[0]
+ started.advance(100,true)
+ assert(started.data.clock==36 and started.brew.taps[0]==late_taps,"pause freezes time")
+ var unpaid=script.new()
+ brew_all(unpaid);unpaid.take_cup();unpaid.deliver(unpaid.data.order.id,"guest-01")
+ unpaid.advance(12)
+ assert(not unpaid.collect(unpaid.data.order.payment.id))
+ assert(unpaid.data.money==0 and unpaid.data.order.state=="UNPAID")
+ print("PASS: native delivery, missed drop, payment IDs, duplicate collection, patience boundary, background")
+ quit(0)

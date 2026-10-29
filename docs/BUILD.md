@@ -1,12 +1,44 @@
-# Сборка и запуск — пока не настроены
-Документационный пакет проверяется: `python3 tools/validate_project.py`.
-Игрового проекта и команды сборки APK пока нет. CI для документации не является CI игры.
+# Нативный проект и проверенные команды
 
-TASK-004 обязан заполнить после утверждения стека:
-- ОС и проверенные версии движка, export templates, JDK, SDK/build-tools.
-- Команды чистого запуска, доменных проверок и debug APK из нового клона.
-- Пути результата и логов; идентификатор Android-пакета; минимальная/целевая версия Android.
-- Установка debug APK и короткий smoke-сценарий на телефоне.
-- Локальные настройки вне Git; пример env только с именами переменных.
-TASK-020 добавляет подписанный релизный процесс; ключ подписи и пароли никогда не включать в архив/репозиторий.
-Версии выбирать по доступной официальной документации на момент реализации, фиксировать точные значения.
+Godot **4.5.1.stable.official.f62fdbde1**, GDScript, Compatibility renderer, горизонтальный viewport 1600×900 с масштабированием canvas_items. OpenJDK **17.0.20**. Без внешних игровых зависимостей.
+
+Из корня репозитория (GODOT — путь к установленному официальному Godot 4.5.1):
+
+```sh
+"$GODOT" --headless --path game --editor --import
+"$GODOT" --headless --path game --script res://tests/smoke.gd
+"$GODOT" --headless --path game --script res://tests/brewing_test.gd
+"$GODOT" --path game
+mkdir -p artifacts
+"$GODOT" --headless --path game --export-debug "Linux Debug"
+./artifacts/barista-debug.x86_64 --headless --quit-after 3
+python3 tools/validate_project.py
+```
+
+Проверено 29.10.2026 в Linux: импорт, main scene, экспорт и запуск Linux Debug. Это технические заглушки, не финальное оформление и не Android-проверка.
+
+## Android — NOT_RUN
+
+Preset `Android`, пакет `org.kotlyakov.barista`, arm64-v8a, стандартный экспорт без Gradle. Использовать официальные export templates 4.5.1, JDK 17, Android SDK Platform 35 и build-tools 35.0.0. SDK в текущем исполнителе не установлен. Команда для подготовленной среды (пока НЕ проверена):
+
+```sh
+"$GODOT" --headless --path game --export-debug Android
+```
+
+Настроить Android Sdk Path и Java SDK Path в локальных Editor Settings. Ключи/пароли/локальные настройки не хранить в Git. Артефакты и логи — в игнорируемой `artifacts/`. Установка и smoke на телефоне остаются обязательными перед приёмкой Android; наличие Linux-сборки не закрывает TASK-020.
+
+Официальные источники конфигурации: https://godotengine.org/download/archive/4.5.1-stable/ и https://docs.godotengine.org/en/4.5/tutorials/export/exporting_for_android.html .
+
+## Полная автоматическая проверка нативного прототипа
+
+```sh
+GODOT=/path/to/Godot_v4.5.1-stable_linux.x86_64 python3 tools/check_native.py
+```
+
+13 исполняемых GDScript-сценариев: приготовление, одиночный ввод, выдача/оплата, повреждение снимков, откат транзакции, touch UI, чаевые, выбор клиентов/RNG, сутки/смена, тренировка, магазин и временные усиления. Проверяется реальный Godot; Python запускает его, а не повторяет доменную логику. Любой ERROR и таймаут считаются ошибкой, даже если движок вернул код 0.
+
+Сохранения в `user://saves`: два файла slot0/slot1, схема 1, payload с SHA-256, запись через отдельный временный файл и rename. Боевые speed thresholds пусты до TASK-022. Имена/рисунки шести гостей — нейтральные заглушки до отдельного утверждения. Зона профиля пока фиксированный UTC-offset с первого запуска; IANA/DST ещё не реализованы.
+
+Android command-line tools **22.0** скачаны с официального сайта и сверены с SHA-256 `4e4c464f145a7512b57d088ac6c278c03c9eea610886b35a5e0804e74eedf583`. При установке platform-tools/build-tools 35.0.0/platform 35 получен реальный запрос `License android-sdk-license — Accept? (y/N)`. Лицензия НЕ принята; установка остановлена до ответа владельца. После явного согласия повторить установку и экспорт. Локальный путь среды: `/workspace/tools/android-sdk/cmdline-tools/22.0/bin/sdkmanager`; в других средах он не является обязательным.
+
+Финальные регрессии добавили два сценария: всего **15**. Локальный запуск и обновлённый Linux Debug проходят; CI native-check должен быть проверен на окончательном remote SHA.

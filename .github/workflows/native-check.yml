@@ -1,0 +1,28 @@
+name: native-check
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  godot-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download pinned official Godot
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.5.1' -o /tmp/godot.zip
+          echo '02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  /tmp/godot.zip' | sha256sum --check
+          unzip -q /tmp/godot.zip -d /tmp/godot
+      - name: Godot import and native tests
+        env:
+          GODOT: /tmp/godot/Godot_v4.5.1-stable_linux.x86_64
+        run: |
+          "$GODOT" --headless --path game --editor --import
+          python3 tools/check_native.py
+      - name: Documentation consistency
+        run: python3 tools/validate_project.py
