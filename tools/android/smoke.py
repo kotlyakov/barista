@@ -58,7 +58,9 @@ def tap(x, y):
 
 def launch():
     global width, height
-    adb('shell', 'monkey', '-p', PACKAGE, '-c', 'android.intent.category.LAUNCHER', '1')
+    resolved = adb('shell', 'cmd', 'package', 'resolve-activity', '--brief', '-c', 'android.intent.category.LAUNCHER', PACKAGE)
+    component = next(line.strip() for line in resolved.splitlines() if '/' in line)
+    adb('shell', 'am', 'start', '-W', '-n', component)
     wait_for(state, lambda s: s is not None, seconds=15)
     adb('shell', 'uiautomator', 'dump', '/sdcard/barista-window.xml')
     xml = adb('shell', 'cat', '/sdcard/barista-window.xml')
@@ -75,65 +77,71 @@ def launch():
     tap(20, 200)  # Safe blank area: skip intro, or do nothing after its natural end.
     time.sleep(.25)
 
-source = json.loads(Path('artifacts/android-input/source.json').read_text())
-assert source['source_commit'] == '32ffa2231d66aef49b26a712d84256472e86f83c', 'Wrong pinned preview artifact'
-adb('logcat', '-c')
-adb('shell', 'wm', 'size', '1280x720')
-launch()
-width, height = capture('01-cafe')
-assert width > height and abs(width / height - 16 / 9) < .02
-initial = wait_for(state, lambda s: s is not None)
-assert initial['shift']['mode'] == 'SHOP'
-tap(540, 700)
-tap(800, 800)
-started = wait_for(state, lambda s: s['shift']['mode'] == 'RUNNING')
-tap(1490, 60)
-time.sleep(.25)
-paused = state()
-time.sleep(1.25)
-assert state()['clock'] == paused['clock'], 'Menu must freeze active Android time'
-tap(800, 525)
-wait_for(state, lambda s: s['preferences']['muted'] is True)
-tap(800, 625)
-capture('02-progress')
-time.sleep(.6)
-assert state()['clock'] == paused['clock'], 'Progress must remain paused'
-tap(200, 60)
-tap(800, 425)
-for i, (x, y) in enumerate([(170, 600), (540, 520), (850, 410)]):
-    if i < len(started['brew']['targets']):
-        for _ in range(int(started['brew']['targets'][i])):
-            tap(x, y)
-ready = wait_for(state, lambda s: s['brew']['taps'] == s['brew']['targets'])
-assert ready['brew']['taps'] == ready['brew']['targets'], 'Native Android taps must not duplicate or disappear'
-adb('shell', 'input', 'swipe', *point(650, 760), *point(1110, 450), '500')
-payment = wait_for(state, lambda s: s['order']['state'] == 'PAYMENT')
-capture('03-payment')
-amount = payment['order']['payment']['amount']
-balance = payment['money']
-order_id = payment['order']['id']
-adb('shell', 'am', 'force-stop', PACKAGE)
-launch()
-restored = state()
-assert restored['order']['state'] == 'PAYMENT' and restored['order']['id'] == order_id
-assert restored['preferences']['muted'] is True
-tap(955, 610)
-collected = wait_for(state, lambda s: s['money'] == balance + amount)
-assert collected['order']['payment']['collected'] is True
-adb('shell', 'am', 'force-stop', PACKAGE)
-launch()
-final = state()
-assert final['money'] == balance + amount, 'Relaunch must not duplicate collected money'
-assert final['profiles'] == collected['profiles'], 'Customer mood/history must survive Android relaunch'
-capture('04-restored')
-logs = adb('logcat', '-d', '-s', 'godot', 'AndroidRuntime')
-(OUTPUT / 'logcat.txt').write_text(logs)
-assert 'FATAL EXCEPTION' not in logs and 'SCRIPT ERROR:' not in logs
-assert adb('shell', 'pidof', PACKAGE).strip(), 'Android process must remain alive'
-report = {'source_commit': source['source_commit'], 'build_run': 41024619007, 'package': PACKAGE, 'device': adb('shell', 'getprop', 'ro.build.version.release').strip(),
-          'abi': adb('shell', 'getprop', 'ro.product.cpu.abi').strip(), 'resolution': [width, height],
-          'order_id': order_id, 'payment_amount': amount, 'balance_after': final['money'],
-          'checks': ['launch', 'real touch', 'menu/progress pause', 'mute', 'drag/drop',
-                     'restart before payment', 'collect once', 'restart after payment', 'customer history']}
-(OUTPUT / 'result.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
-print('PASS: actual Android install/launch/touch/coffee/payment/pause/save/relaunch', flush=True)
+try:
+    source = json.loads(Path('artifacts/android-input/source.json').read_text())
+    assert source['source_commit'] == '32ffa2231d66aef49b26a712d84256472e86f83c', 'Wrong pinned preview artifact'
+    adb('logcat', '-c')
+    adb('shell', 'wm', 'size', '1280x720')
+    launch()
+    width, height = capture('01-cafe')
+    assert width > height and abs(width / height - 16 / 9) < .02
+    initial = wait_for(state, lambda s: s is not None)
+    assert initial['shift']['mode'] == 'SHOP'
+    tap(540, 700)
+    tap(800, 800)
+    started = wait_for(state, lambda s: s['shift']['mode'] == 'RUNNING')
+    tap(1490, 60)
+    time.sleep(.25)
+    paused = state()
+    time.sleep(1.25)
+    assert state()['clock'] == paused['clock'], 'Menu must freeze active Android time'
+    tap(800, 525)
+    wait_for(state, lambda s: s['preferences']['muted'] is True)
+    tap(800, 625)
+    capture('02-progress')
+    time.sleep(.6)
+    assert state()['clock'] == paused['clock'], 'Progress must remain paused'
+    tap(200, 60)
+    tap(800, 425)
+    for i, (x, y) in enumerate([(170, 600), (540, 520), (850, 410)]):
+        if i < len(started['brew']['targets']):
+            for _ in range(int(started['brew']['targets'][i])):
+                tap(x, y)
+    ready = wait_for(state, lambda s: s['brew']['taps'] == s['brew']['targets'])
+    assert ready['brew']['taps'] == ready['brew']['targets'], 'Native Android taps must not duplicate or disappear'
+    adb('shell', 'input', 'swipe', *point(650, 760), *point(1110, 450), '500')
+    payment = wait_for(state, lambda s: s['order']['state'] == 'PAYMENT')
+    capture('03-payment')
+    amount = payment['order']['payment']['amount']
+    balance = payment['money']
+    order_id = payment['order']['id']
+    adb('shell', 'am', 'force-stop', PACKAGE)
+    launch()
+    restored = state()
+    assert restored['order']['state'] == 'PAYMENT' and restored['order']['id'] == order_id
+    assert restored['preferences']['muted'] is True
+    tap(955, 610)
+    collected = wait_for(state, lambda s: s['money'] == balance + amount)
+    assert collected['order']['payment']['collected'] is True
+    adb('shell', 'am', 'force-stop', PACKAGE)
+    launch()
+    final = state()
+    assert final['money'] == balance + amount, 'Relaunch must not duplicate collected money'
+    assert final['profiles'] == collected['profiles'], 'Customer mood/history must survive Android relaunch'
+    capture('04-restored')
+    logs = adb('logcat', '-d', '-s', 'godot', 'AndroidRuntime')
+    (OUTPUT / 'logcat.txt').write_text(logs)
+    assert 'FATAL EXCEPTION' not in logs and 'SCRIPT ERROR:' not in logs
+    assert adb('shell', 'pidof', PACKAGE).strip(), 'Android process must remain alive'
+    report = {'source_commit': source['source_commit'], 'build_run': 41024619007, 'package': PACKAGE, 'device': adb('shell', 'getprop', 'ro.build.version.release').strip(),
+              'abi': adb('shell', 'getprop', 'ro.product.cpu.abi').strip(), 'resolution': [width, height],
+              'order_id': order_id, 'payment_amount': amount, 'balance_after': final['money'],
+              'checks': ['launch', 'real touch', 'menu/progress pause', 'mute', 'drag/drop',
+                         'restart before payment', 'collect once', 'restart after payment', 'customer history']}
+    (OUTPUT / 'result.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
+    print('PASS: actual Android install/launch/touch/coffee/payment/pause/save/relaunch', flush=True)
+finally:
+    with (OUTPUT / 'logcat-all.txt').open('w') as output:
+        subprocess.run(['adb','logcat','-d'],stdout=output,stderr=subprocess.STDOUT,timeout=30,check=False)
+    with (OUTPUT / 'activities.txt').open('w') as output:
+        subprocess.run(['adb','shell','dumpsys','activity','activities'],stdout=output,stderr=subprocess.STDOUT,timeout=30,check=False)
