@@ -1284,6 +1284,65 @@
       "decision_records": {
         "D01": "D01"
       }
+    },
+    {
+      "id": "TASK-028",
+      "title": "Разобрать вылеты Android preview при нажатиях и помоле",
+      "role": "DEVELOPER",
+      "status": "WAITING_USER",
+      "priority": 0,
+      "dependencies": [
+        "TASK-027"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/",
+        "tools/",
+        ".github/workflows/",
+        "reports/",
+        "tasks/",
+        "state/",
+        "BACKLOG.md",
+        "docs/"
+      ],
+      "acceptance": [
+        "Воспроизвести сбой или собрать точные границы воспроизведения",
+        "Проверить приготовление с включёнными эффектами и частые нажатия",
+        "Исправление подтверждено регрессией; не выдавать эмулятор за телефон"
+      ],
+      "verification": "Original APK Android runtime with audio enabled, crash logs, regression checks",
+      "owner": "coordinator",
+      "session_id": "android-crash-20261030",
+      "lease_until": null,
+      "branch": "task/TASK-026-single-cafe-native",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/29",
+      "commit": "b09bf205d29f80545b754000a521480808f81ba9",
+      "evidence": [
+        "Owner report: latest APK exits on buttons/grinder; isolation answer: Без звука работает",
+        "Original0.3.0 audio-enabled Android run41072984713 SUCCESS, artifact12985387669",
+        "22 local Godot scripts PASS; diagnostic regression observed RED then GREEN",
+        "Signed0.3.1 Library libfile_33dba36456f081918b04cbdaae0929ea",
+        "reports/releases/ANDROID_AUDIO_0_3_1.md",
+        "Diagnostic Android15 x86_64 run41074761425 SUCCESS artifact12986123767;20 extra grinder taps with effects, clipboard report visually confirmed"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS for bounded diagnostic logging, no log permissions or external telemetry, unchanged career data and original signing key. Native crash fix NOT_CONFIRMED.",
+        "scope": "Mitigation/instrumentation SELF_REVIEW; actual Android smoke PASS. Root cause and physical repair not established."
+      },
+      "blocker": "Underlying native audio crash not reproduced in Android15 x86_64, including enabled effects. Owner confirms muted works; need report from physical phone.",
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
     }
   ]
 }
