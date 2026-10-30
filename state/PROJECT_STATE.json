@@ -14,10 +14,10 @@
     "visibility": "private",
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
-    "pending_sync": true,
-    "head_note": "Last verified main merge and tested native PR head; bookkeeping commits may follow.",
+    "pending_sync": false,
+    "head_note": "Native source snapshot published through GitHub API; local preparation history retained on task/TASK-024-native-cafe. Metadata commits may follow.",
     "working_branch": "task/TASK-026-single-cafe-native",
-    "working_head": "e9a37a81e4a349b0f464f063517727d6e981aef3"
+    "working_head": "42a2465a0dab58409f083ba12792102db39e65cf"
   },
   "blockers": [
     "TASK-022: physical Android runtime and calibration unavailable",
@@ -28,8 +28,8 @@
     "SPEC-001/v3",
     "VISUAL-002/v9"
   ],
-  "last_verified_commit": "e9a37a81e4a349b0f464f063517727d6e981aef3",
-  "ci_status": "native-check and docs-check SUCCESS on e9a37a81e4a349b0f464f063517727d6e981aef3; PR26 merged as 4c66e9456fdb669b28b207e231de4ff6e0ac7aaa.",
+  "last_verified_commit": "42a2465a0dab58409f083ba12792102db39e65cf",
+  "ci_status": "SUCCESS: native-check + docs-check on 42a2465; run 41014050829 rendered 7 PNGs, artifact 12959260367; viewed locally 30.10.2026",
   "spec_version": "0.3",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
@@ -53,7 +53,7 @@
     "speed_combo": "production thresholds empty pending phone calibration",
     "zone_policy": "fixed UTC offset; DST backlog NAT-003",
     "branch": "task/TASK-004-native-foundation",
-    "pr_url": "https://github.com/kotlyakov/barista/pull/24",
+    "pr_url": "https://github.com/kotlyakov/barista/pull/29",
     "pr_status": "MERGED",
     "ci": "PASS: native-check, docs-check",
     "android_preview": {
@@ -76,7 +76,8 @@
     },
     "debug_signing_key_library_file_id": "libfile_76674d45c1b8819198ccdc529424af21",
     "shell": "intro 3 s / play / menu / progress; mute migration and pause tested",
-    "audio": "synthesized candidate; listening not performed"
+    "audio": "synthesized candidate; listening not performed",
+    "render": "CI Xvfb/OpenGL PASS: 7 actual frames; scene/menu/progress inspected, not Android"
   },
   "android_sdk_license": {
     "status": "ACCEPTED",

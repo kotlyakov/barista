@@ -62,3 +62,7 @@ bash tools/build_android.sh
 Результат: `artifacts/Barista-0.1.0-tech-preview.apk`, подпись/манифест/ABI/16 KB выравнивание и ZIP проверяются автоматически. Скрипт не принимает новые лицензии и не создаёт релизный ключ. Настроить Android Sdk Path/Java SDK Path/debug keystore в локальных Editor Settings перед запуском. Preset Android — ARM64; Android Emulator — отдельный x86_64 пакет для QA.
 
 Отчёт с SHA-256 и ограничениями: `reports/releases/ANDROID_TECH_0_1_0.md`. Установка/запуск на Android пока NOT_RUN: программный эмулятор без KVM не загрузился за 180 с. Готовый APK и headless тесты не заменяют проверку на телефоне.
+
+## Проверенный native shell 30.10.2026
+Текущая реализация: intro/play/menu/progress на утвержденной графике 09, 21 автоматический сценарий. GitHub PR29 / source 42a2465. CI native-check успешно импортирует Godot 4.5.1 и снимает 7 кадров с Xvfb; `native-cafe-screens` доступен в artifacts run 41014050829.
+В текущем executor прежний SDK/editor не сохранились; `/tmp/barista-godot-4.5.1` — runtime без editor/export. Он годится для тестов, не для новой APK-сборки. APK 0.2.0 в artifacts предшествует новому shell. Подпись сохранить прежней после восстановления SDK.
