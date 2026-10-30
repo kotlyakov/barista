@@ -1,0 +1,68 @@
+[
+  {
+    "id": "tap",
+    "event": "Тап",
+    "file": "tap.wav",
+    "duration": 0.07
+  },
+  {
+    "id": "grind",
+    "event": "Помол",
+    "file": "grind.wav",
+    "duration": 1.2
+  },
+  {
+    "id": "brew",
+    "event": "Пролив",
+    "file": "brew.wav",
+    "duration": 1.4
+  },
+  {
+    "id": "steam",
+    "event": "Пар",
+    "file": "steam.wav",
+    "duration": 1.2
+  },
+  {
+    "id": "ready",
+    "event": "Готовность",
+    "file": "ready.wav",
+    "duration": 0.4
+  },
+  {
+    "id": "damage",
+    "event": "Перетап",
+    "file": "damage.wav",
+    "duration": 0.28
+  },
+  {
+    "id": "serve",
+    "event": "Выдача",
+    "file": "serve.wav",
+    "duration": 0.22
+  },
+  {
+    "id": "coins",
+    "event": "Монеты",
+    "file": "coins.wav",
+    "duration": 0.48
+  },
+  {
+    "id": "purchase",
+    "event": "Покупка",
+    "file": "purchase.wav",
+    "duration": 0.5
+  },
+  {
+    "id": "reaction",
+    "event": "Реакция гостя",
+    "file": "reaction.wav",
+    "duration": 0.36
+  },
+  {
+    "id": "music",
+    "event": "Музыка — отдельная петля",
+    "file": "music.wav",
+    "duration": 16
+  }
+]

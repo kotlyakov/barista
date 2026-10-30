@@ -668,7 +668,14 @@
       "decision_gates": [],
       "allowed_paths": [
         "design/screens/",
-        "design/animations/"
+        "design/animations/",
+        "approvals/",
+        "reports/design/",
+        "audio/",
+        "state/",
+        "tasks/TASKS.json",
+        "BACKLOG.md",
+        "CHANGELOG.md"
       ],
       "acceptance": [
         "Стойка/магазин/итог/настройки/обучение показаны",
@@ -680,15 +687,24 @@
       "owner": null,
       "session_id": null,
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-015-screen-review",
       "issue_number": 15,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/27",
+      "commit": "902aec178ea798cd25da6f0726fc4746f11dbda4",
+      "evidence": [
+        "reports/design/PROGRESS_20261030.md",
+        "design/screens/v1/review.html",
+        "design/screens/v1/build_review.py"
+      ],
+      "review": {
+        "type": "INDEPENDENT_REVIEW",
+        "result": "PASS_WITH_MINORS",
+        "scope": "review_materials: no important defects in draft; UI-REV-001/002/003 deferred; browser/human listening/Android NOT_RUN"
+      },
       "blocker": null,
       "approval_versions": {},
-      "decision_records": {}
+      "decision_records": {},
+      "notes": "Пакет review-v1 отклонён Артуром 30.10.2026; выполнять по docs/OWNER_FLOW_20261030.md на стойке 09, не просить утверждения старых отдельных экранов."
     },
     {
       "id": "TASK-016",
@@ -758,15 +774,24 @@
       "owner": null,
       "session_id": null,
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-015-screen-review",
       "issue_number": 17,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/27",
+      "commit": "902aec178ea798cd25da6f0726fc4746f11dbda4",
+      "evidence": [
+        "reports/design/PROGRESS_20261030.md",
+        "design/screens/v1/review.html",
+        "design/screens/v1/build_review.py"
+      ],
+      "review": {
+        "type": "INDEPENDENT_REVIEW",
+        "result": "PASS_WITH_MINORS",
+        "scope": "review_materials: no important defects in draft; UI-REV-001/002/003 deferred; browser/human listening/Android NOT_RUN"
+      },
       "blocker": null,
       "approval_versions": {},
-      "decision_records": {}
+      "decision_records": {},
+      "notes": "Пакет review-v1 отклонён Артуром 30.10.2026; выполнять по docs/OWNER_FLOW_20261030.md на стойке 09, не просить утверждения старых отдельных экранов."
     },
     {
       "id": "TASK-018",
@@ -1025,6 +1050,100 @@
       "decision_records": {
         "D01": "D01"
       }
+    },
+    {
+      "role": "DEVELOPER",
+      "priority": 15,
+      "owner": "coordinator",
+      "session_id": "single-cafe-20261030",
+      "lease_until": null,
+      "branch": "task/TASK-024-single-cafe",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": null,
+      "review": {
+        "type": "INDEPENDENT_REVIEW",
+        "result": "PASS_AFTER_FIXES",
+        "scope": "review_cafe_shell found rollback alias bug; fixed RED→GREEN. Browser visual QA NOT_RUN."
+      },
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {},
+      "id": "TASK-024",
+      "title": "Восстановить стойку 09 и исправить поток веб-макета по указанию Артура",
+      "status": "IN_REVIEW",
+      "dependencies": [
+        "TASK-003"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "prototypes/approved-cafe/",
+        "docs/",
+        "reports/design/",
+        "approvals/",
+        "state/",
+        "tasks/TASKS.json",
+        "BACKLOG.md",
+        "CHANGELOG.md"
+      ],
+      "acceptance": [
+        "Оригинальные материалы VISUAL-002/v9 восстановлены с совпадающими хешами",
+        "Вход 3 с/тап, HUD, меню-пауза и пустая стойка прогресса реализованы",
+        "Сохранения/покупки/звук проверены, ограничения браузерной и Android проверки указаны",
+        "Исходники и состояние опубликованы в Git"
+      ],
+      "verification": "Node shell/model/save/actor checks and original approval hashes; private Site publication",
+      "evidence": [
+        "prototypes/approved-cafe/",
+        "reports/design/SINGLE_CAFE_20261030.md"
+      ]
+    },
+    {
+      "role": "DEVELOPER",
+      "priority": 15,
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": null,
+      "pr_url": null,
+      "commit": null,
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {},
+      "id": "TASK-025",
+      "title": "Перенести утверждённую кофейню и новый поток в Godot",
+      "status": "TODO",
+      "dependencies": [
+        "TASK-004",
+        "TASK-024"
+      ],
+      "approval_gates": [
+        "SPEC-001",
+        "VISUAL-002"
+      ],
+      "decision_gates": [
+        "D01",
+        "D06"
+      ],
+      "allowed_paths": [
+        "game/",
+        "tools/",
+        "docs/BUILD.md",
+        "reports/native/",
+        "state/",
+        "tasks/TASKS.json",
+        "BACKLOG.md"
+      ],
+      "acceptance": [
+        "В Godot исходная стойка/аппараты/бариста/гости с правильными слоями",
+        "Вход 3 с и пропуск, меню сразу на паузу, HUD, пустая стойка прогресса",
+        "Используется нативный домен и его атомарное сохранение, без регрессий денег/настроений",
+        "Протестированная реализация и новый APK предъявлены с честными ограничениями"
+      ],
+      "verification": "Godot tests, visual comparison, Android export and actual runtime separately"
     }
   ]
 }

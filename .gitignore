@@ -18,3 +18,13 @@ game/.godot/
 artifacts/
 *.keystore
 *.jks
+
+# Generated review outputs; immutable approval snapshots stay tracked.
+/design/screens/v1/*.png
+/design/screens/v1/review.html
+/design/animations/v1/*.gif
+/audio/candidates/v1/*.wav
+
+# This dist directory is the hand-authored approved cafe prototype source.
+!/prototypes/approved-cafe/dist/
+!/prototypes/approved-cafe/dist/**

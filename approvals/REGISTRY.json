@@ -33,13 +33,47 @@
       "id": "UI-002",
       "category": "ui",
       "version": 1,
-      "status": "DRAFT",
-      "artifact_paths": [],
-      "sha256": {},
-      "presented_at": null,
+      "status": "CHANGES_REQUESTED",
+      "artifact_paths": [
+        "approvals/materials/UI-002/v1/README.md",
+        "approvals/materials/UI-002/v1/learn-0.svg",
+        "approvals/materials/UI-002/v1/learn-1.svg",
+        "approvals/materials/UI-002/v1/learn-2.svg",
+        "approvals/materials/UI-002/v1/learn-3.svg",
+        "approvals/materials/UI-002/v1/learn-4.svg",
+        "approvals/materials/UI-002/v1/learn-5.svg",
+        "approvals/materials/UI-002/v1/perk-selected.svg",
+        "approvals/materials/UI-002/v1/perks.svg",
+        "approvals/materials/UI-002/v1/settings.svg",
+        "approvals/materials/UI-002/v1/shop-bought.svg",
+        "approvals/materials/UI-002/v1/shop.svg",
+        "approvals/materials/UI-002/v1/start.svg",
+        "approvals/materials/UI-002/v1/summary-claimed.svg",
+        "approvals/materials/UI-002/v1/summary-fail.svg",
+        "approvals/materials/UI-002/v1/summary.svg"
+      ],
+      "sha256": {
+        "approvals/materials/UI-002/v1/README.md": "9bf09621cff908cb089a4ea66db1301b3d41b01fe044164a7e997cd3d4724ae2",
+        "approvals/materials/UI-002/v1/learn-0.svg": "fc6324dfec3c72531d01fe5069e32e3245235caf1a537e23ce5071a78129b252",
+        "approvals/materials/UI-002/v1/learn-1.svg": "fa7795a9ec10664e70fe1de8277e8b36c4e4fdf5a279eeadb16570561f7b70d4",
+        "approvals/materials/UI-002/v1/learn-2.svg": "5bda4a05dcfd1faa14a72ede46ba61b5d2ec72446ff5d972f6bbdacae68e0ed5",
+        "approvals/materials/UI-002/v1/learn-3.svg": "77be50057158fba3d409665312f6645ae3483816c953109832f047cb28e27249",
+        "approvals/materials/UI-002/v1/learn-4.svg": "bbc7a342d28ef06abe6ec6c9d32c5173b5e4d37c86362ad07b7d68a4f3e35d61",
+        "approvals/materials/UI-002/v1/learn-5.svg": "bc5d9b698dc5ba8d5a21a2712d1e3163735751a42ed7aa0c992b0b666c7fc3a6",
+        "approvals/materials/UI-002/v1/perk-selected.svg": "b0f82bcc451a504de8dbb4a6ec053a3d621a58f07a2aeabcc9038b3708af4325",
+        "approvals/materials/UI-002/v1/perks.svg": "451d1dca831158df2b13575d2dc9af914cd01b1d1d0109203bb5256721bbc270",
+        "approvals/materials/UI-002/v1/settings.svg": "5174a957354ec1c423c487cd1e56c17b23d7045fcf371964b11a45454ac6660b",
+        "approvals/materials/UI-002/v1/shop-bought.svg": "8e9e2ff4ba496186d4c079f5e8e13e8f2ba693bc85d7e60813ef7412e22583ab",
+        "approvals/materials/UI-002/v1/shop.svg": "30614cc1d76c6be1fd11dbf9d0b2d89495944e2bc8abba685924e12280bbb2f1",
+        "approvals/materials/UI-002/v1/start.svg": "61b5d5f9dc42350156c2e36bc3cb40c0ff6bab1844b21fd2675bcd80fbfd72ff",
+        "approvals/materials/UI-002/v1/summary-claimed.svg": "f27602210a65b376804a5ff0121232faa022593151934ba4e176437b3b9136c1",
+        "approvals/materials/UI-002/v1/summary-fail.svg": "5a8b0bc38352d8d862debe22396379cb2f90d77dfa29f3288c48871e645775d8",
+        "approvals/materials/UI-002/v1/summary.svg": "74579b25f82f9bbe3ce8c029a3a74b24b35c012d2bedd9606439fcc53326a4fc"
+      },
+      "presented_at": "2026-10-30",
       "approved_by": null,
-      "source_message": null,
-      "scope": "Магазин, итог, настройки, обучение",
+      "source_message": "Все хуйня. Какие экраны. Должен быть главный экран - анимация как бариста заходит в темную комнату открыв дверь. ... В меню есть кнопка со звуком и без звука. ... И кнопка прогресс. Вот тут будет один экран, та же самая стойка с аппаратами только без людей и баристы. И тут должны быть наши поверапы.",
+      "scope": "Новые меню и содержание уроков. Привязка уроков к стойке 09 не включена.",
       "supersedes": null
     },
     {
@@ -85,26 +119,58 @@
       "id": "SOUND-001",
       "category": "sound",
       "version": 1,
-      "status": "DRAFT",
-      "artifact_paths": [],
-      "sha256": {},
-      "presented_at": null,
+      "status": "CHANGES_REQUESTED",
+      "artifact_paths": [
+        "approvals/materials/SOUND-001/v1/brew.wav",
+        "approvals/materials/SOUND-001/v1/coins.wav",
+        "approvals/materials/SOUND-001/v1/damage.wav",
+        "approvals/materials/SOUND-001/v1/events.json",
+        "approvals/materials/SOUND-001/v1/grind.wav",
+        "approvals/materials/SOUND-001/v1/purchase.wav",
+        "approvals/materials/SOUND-001/v1/reaction.wav",
+        "approvals/materials/SOUND-001/v1/ready.wav",
+        "approvals/materials/SOUND-001/v1/serve.wav",
+        "approvals/materials/SOUND-001/v1/steam.wav",
+        "approvals/materials/SOUND-001/v1/tap.wav",
+        "approvals/materials/SOUND-001/v1/PROVENANCE_v1.md"
+      ],
+      "sha256": {
+        "approvals/materials/SOUND-001/v1/brew.wav": "ec34b3f958252ac890e2a0078c4ce71d28afc401388e7da98bb975b17c509cfa",
+        "approvals/materials/SOUND-001/v1/coins.wav": "88c6231519b34cf08914dd1676a02ae79fd876e6f0fc824bb8a4e60edadd2f36",
+        "approvals/materials/SOUND-001/v1/damage.wav": "7032f30b960518d9c1b416e9d4665eedd19dce4d2e4ad3128deb78612e38dc68",
+        "approvals/materials/SOUND-001/v1/events.json": "39ff39faa0d4a05d6d73c3d4c384d639a8018f2a6c1da2e2aa42a097662f1269",
+        "approvals/materials/SOUND-001/v1/grind.wav": "42ba2156f3700eec461963b87c3b705c97e67ea3e1f832786dbf1f2db3bbae06",
+        "approvals/materials/SOUND-001/v1/purchase.wav": "e761be8704529ad7d6add74cda87cb797df73427d0b869f3adf33c5723b0f126",
+        "approvals/materials/SOUND-001/v1/reaction.wav": "b0f7f7854cc38fce8f0c86ceaeaa5d6bc278e9cfc2ee5be54c21fad9fbdeba63",
+        "approvals/materials/SOUND-001/v1/ready.wav": "bd15e24623f41b99032ed0286a27f47d6b23ec0de99ff69075815f9e43a963d9",
+        "approvals/materials/SOUND-001/v1/serve.wav": "67efc2ab9e9ddf81d61211ff59e4927b138acbfb1cc343f216fc3546841f003d",
+        "approvals/materials/SOUND-001/v1/steam.wav": "07b3133f550e3f2cd2fca21afb24bf636cd99601bca3d44cd06bc71ea8f9bb96",
+        "approvals/materials/SOUND-001/v1/tap.wav": "bc05cea6a3d45f9869f88c755ed69cdb39be56297b187e1462a4bab2b852da7d",
+        "approvals/materials/SOUND-001/v1/PROVENANCE_v1.md": "c6af1f7f070e105cd351b7429da348676b469d2a40190556bc0f96a7b66e0666"
+      },
+      "presented_at": "2026-10-30",
       "approved_by": null,
-      "source_message": null,
-      "scope": "Эффекты событий",
+      "source_message": "Все хуйня. Какие экраны. Должен быть главный экран - анимация как бариста заходит в темную комнату открыв дверь. ... В меню есть кнопка со звуком и без звука. ... И кнопка прогресс. Вот тут будет один экран, та же самая стойка с аппаратами только без людей и баристы. И тут должны быть наши поверапы.",
+      "scope": "10 синтезированных эффектов для прослушивания; не финальная интеграция.",
       "supersedes": null
     },
     {
       "id": "MUSIC-001",
       "category": "music",
       "version": 1,
-      "status": "DRAFT",
-      "artifact_paths": [],
-      "sha256": {},
-      "presented_at": null,
+      "status": "CHANGES_REQUESTED",
+      "artifact_paths": [
+        "approvals/materials/MUSIC-001/v1/music.wav",
+        "approvals/materials/MUSIC-001/v1/PROVENANCE_v1.md"
+      ],
+      "sha256": {
+        "approvals/materials/MUSIC-001/v1/music.wav": "2b80e2e23a4f5535a0db16df22814d502e395aeb61ccefa3278f1d56557c4ff6",
+        "approvals/materials/MUSIC-001/v1/PROVENANCE_v1.md": "c6af1f7f070e105cd351b7429da348676b469d2a40190556bc0f96a7b66e0666"
+      },
+      "presented_at": "2026-10-30",
       "approved_by": null,
-      "source_message": null,
-      "scope": "Фоновая музыкальная петля",
+      "source_message": "Все хуйня. Какие экраны. Должен быть главный экран - анимация как бариста заходит в темную комнату открыв дверь. ... В меню есть кнопка со звуком и без звука. ... И кнопка прогресс. Вот тут будет один экран, та же самая стойка с аппаратами только без людей и баристы. И тут должны быть наши поверапы.",
+      "scope": "Отдельная оригинальная синтезированная петля 16 секунд.",
       "supersedes": null
     },
     {
@@ -140,6 +206,64 @@
       "source_message": "Качество определяется всеми этапами. Просто если один этап хуже других то кофе будет горьким и т.д.\nА настроения клиентов тоже должны сохранятся после перезапуска.\nОстальное офигенно",
       "scope": "Правила v0.2 с правками: вклад всех этапов и независимые вкусовые дефекты; настроения героев сохраняются. Равные веса — техническая конкретизация. Числа калибруются. Утверждение не распространяется на визуальные/звуковые материалы.",
       "supersedes": "SPEC-001/v2"
+    },
+    {
+      "id": "ANIM-UI-001",
+      "category": "animation",
+      "version": 1,
+      "status": "CHANGES_REQUESTED",
+      "artifact_paths": [
+        "approvals/materials/ANIM-UI-001/v1/README.md",
+        "approvals/materials/ANIM-UI-001/v1/feedback-v1.gif"
+      ],
+      "sha256": {
+        "approvals/materials/ANIM-UI-001/v1/README.md": "b42146411c6f4773d7241d8b66221810229a53f38ee057409760726bb3ca2b74",
+        "approvals/materials/ANIM-UI-001/v1/feedback-v1.gif": "5072c2a921f042acf65237feea1b22916934b4914b65f978cb6464d2aa41dc36"
+      },
+      "presented_at": "2026-10-30",
+      "approved_by": null,
+      "source_message": "Все хуйня. Какие экраны. Должен быть главный экран - анимация как бариста заходит в темную комнату открыв дверь. ... В меню есть кнопка со звуком и без звука. ... И кнопка прогресс. Вот тут будет один экран, та же самая стойка с аппаратами только без людей и баристы. И тут должны быть наши поверапы.",
+      "scope": "Только сигналы готовности/перетапа/drop/оплаты. Полный ANIM-001 остаётся DRAFT.",
+      "supersedes": null
+    },
+    {
+      "id": "VISUAL-002",
+      "category": "interactive-visual-layout",
+      "version": 9,
+      "status": "APPROVED",
+      "approved_by": "Артур",
+      "source_message": "утверждаем такой вид. Есть мелкие недоработки внеси их в бэклог. Когда посетители цходян они уходят спиной а должны повернуться. Идут по очереди как в жизни не накладывать друг на друга. Сами клиенты отдельно проработаем каждого но потом.",
+      "accepted_date": "2026-10-29",
+      "timezone": "Europe/Moscow",
+      "approved_source_commit": "bda169a08fe6287c5c9ce9a8b57dfa8412e7a937",
+      "site_version_id": "appgprj_6ae1b4d1e3bc8191b569fb298107c732~appgver_fb0a944db5448191893cb3c5fa9f8bcf",
+      "scope": "Текущий вид игрового макета 09: тёмная диагональная кофейня, девушка-бариста слева, клиенты справа; Расположение приборов, гладкие контуры и цветные полосы без чисел; Стаканы на столе с разнесёнными подписями; температура передаётся паром; Над гостями только короткое имя и заказ; мимика и короткие исчезающие реплики, лица открыты; Столешница и торец закреплены поверх фигур клиентов; Текущие временные изображения Бородача и Гавайца в составе макета; индивидуальная финальная проработка отложена",
+      "exclusions": [
+        "Разворот перед уходом: BL-001",
+        "Движение очереди без наложения посетителей: BL-002",
+        "Отдельная окончательная проработка каждого персонажа: BL-003",
+        "Это не утверждение готовности всей игры, звука, финального баланса или окончательных индивидуальных героев"
+      ],
+      "artifact_paths": [
+        "approvals/materials/VISUAL-002/v9/actors.mjs",
+        "approvals/materials/VISUAL-002/v9/app.mjs",
+        "approvals/materials/VISUAL-002/v9/approved-inline.html",
+        "approvals/materials/VISUAL-002/v9/assets/cafe-animation-room.png",
+        "approvals/materials/VISUAL-002/v9/game.mjs",
+        "approvals/materials/VISUAL-002/v9/index.html",
+        "approvals/materials/VISUAL-002/v9/style.css"
+      ],
+      "sha256": {
+        "approvals/materials/VISUAL-002/v9/actors.mjs": "111e2aa4d81ba7fe9dd67bf5fcd33aa8b38946044dcfe8f2a4c73c0c813ec0a8",
+        "approvals/materials/VISUAL-002/v9/app.mjs": "b98a0fa62a501ba6b591a2f6b23fca7402d441314c28e9593e26dac3ac0b4336",
+        "approvals/materials/VISUAL-002/v9/approved-inline.html": "f7b61994c2af243c243d5bceb2512f9d816c177e1411f2968065195bf79744e1",
+        "approvals/materials/VISUAL-002/v9/assets/cafe-animation-room.png": "36608a556388667e4aff1bf4d24c5a0e11723ef51e2f592c1f45424b2884acd9",
+        "approvals/materials/VISUAL-002/v9/game.mjs": "2d74b7af8a7e38e4854ed504f701de9fc890c2c08b5de3612163cfd4bc904cdc",
+        "approvals/materials/VISUAL-002/v9/index.html": "e4e2588f1c5a94a12e70a7798ebbf1654534b076eec561e3541323fb66914ad5",
+        "approvals/materials/VISUAL-002/v9/style.css": "62700104cd045e23f92d9d8d840c3e6664d01875be6c506b50de52eea4958866"
+      },
+      "supersedes": "VISUAL-001/v5",
+      "notes": "Утверждён общий вид текущего макета с явно отложенными замечаниями. Исторические материалы не изменены. Изменение утверждённого вида требует нового предъявления."
     }
   ]
 }
