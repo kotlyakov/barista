@@ -689,8 +689,8 @@
       "lease_until": null,
       "branch": "task/TASK-015-screen-review",
       "issue_number": 15,
-      "pr_url": null,
-      "commit": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/27",
+      "commit": "902aec178ea798cd25da6f0726fc4746f11dbda4",
       "evidence": [
         "reports/design/PROGRESS_20261030.md",
         "design/screens/v1/review.html",
@@ -775,8 +775,8 @@
       "lease_until": null,
       "branch": "task/TASK-015-screen-review",
       "issue_number": 17,
-      "pr_url": null,
-      "commit": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/27",
+      "commit": "902aec178ea798cd25da6f0726fc4746f11dbda4",
       "evidence": [
         "reports/design/PROGRESS_20261030.md",
         "design/screens/v1/review.html",

@@ -14,10 +14,10 @@
     "visibility": "private",
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
-    "pending_sync": true,
+    "pending_sync": false,
     "head_note": "Last verified main merge and tested native PR head; bookkeeping commits may follow.",
     "working_branch": "task/TASK-015-screen-review",
-    "working_head": "e9a37a81e4a349b0f464f063517727d6e981aef3"
+    "working_head": "902aec178ea798cd25da6f0726fc4746f11dbda4"
   },
   "blockers": [
     "TASK-015/017: owner review of concrete v1 materials pending",
@@ -91,6 +91,8 @@
     "music": "MUSIC-001/v1 PRESENTED",
     "report": "reports/design/PROGRESS_20261030.md",
     "library_file_id": "libfile_3af7b96752388191b8d8b4dc885e7e72",
-    "overview_library_file_id": "libfile_65ef7ad282488191a812779a20e929c6"
+    "overview_library_file_id": "libfile_65ef7ad282488191a812779a20e929c6",
+    "source_commit": "902aec178ea798cd25da6f0726fc4746f11dbda4",
+    "pr_url": "https://github.com/kotlyakov/barista/pull/27"
   }
 }
