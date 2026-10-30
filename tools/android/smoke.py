@@ -79,7 +79,7 @@ def launch():
 
 try:
     source = json.loads(Path('artifacts/android-input/source.json').read_text())
-    assert source['source_commit'] == '32ffa2231d66aef49b26a712d84256472e86f83c', 'Wrong pinned preview artifact'
+    assert source['source_commit'] == 'b09bf205d29f80545b754000a521480808f81ba9', 'Wrong pinned preview artifact'
     adb('logcat', '-c')
     launch()
     width, height = capture('01-cafe')
@@ -94,6 +94,8 @@ try:
     paused = state()
     time.sleep(1.25)
     assert state()['clock'] == paused['clock'], 'Menu must freeze active Android time'
+    tap(800, 525)  # Explicitly opt into sound after safe silent startup.
+    wait_for(state, lambda s: s['preferences']['muted'] is False)
     tap(800, 525)
     wait_for(state, lambda s: s['preferences']['muted'] is True)
     tap(800, 525)  # Re-enable audio: previous smoke accidentally skipped every station effect.
@@ -104,12 +106,17 @@ try:
     assert state()['clock'] == paused['clock'], 'Progress must remain paused'
     tap(200, 60)
     tap(800, 425)
+    expected_taps = list(started['brew']['targets'])
     for i, (x, y) in enumerate([(170, 600), (540, 520), (850, 410)]):
         if i < len(started['brew']['targets']):
             for _ in range(int(started['brew']['targets'][i])):
                 tap(x, y)
-    ready = wait_for(state, lambda s: s['brew']['taps'] == s['brew']['targets'])
-    assert ready['brew']['taps'] == ready['brew']['targets'], 'Native Android taps must not duplicate or disappear'
+            if i == 0:
+                for _ in range(20):
+                    tap(x, y)
+                expected_taps[0] += 20
+    ready = wait_for(state, lambda s: s['brew']['taps'] == expected_taps)
+    assert ready['brew']['taps'] == expected_taps, 'Native Android taps must not duplicate or disappear'
     adb('shell', 'input', 'swipe', *point(650, 760), *point(1110, 450), '500')
     payment = wait_for(state, lambda s: s['order']['state'] == 'PAYMENT')
     capture('03-payment')
@@ -121,6 +128,10 @@ try:
     restored = state()
     assert restored['order']['state'] == 'PAYMENT' and restored['order']['id'] == order_id
     assert restored['preferences']['muted'] is False
+    tap(1490, 60)
+    tap(800, 525)  # Re-enable after restart to exercise coin effect as well.
+    wait_for(state, lambda s: s['preferences']['muted'] is False)
+    tap(800, 425)
     tap(955, 610)
     collected = wait_for(state, lambda s: s['money'] == balance + amount)
     assert collected['order']['payment']['collected'] is True
@@ -129,15 +140,23 @@ try:
     final = state()
     assert final['money'] == balance + amount, 'Relaunch must not duplicate collected money'
     assert final['profiles'] == collected['profiles'], 'Customer mood/history must survive Android relaunch'
+    tap(1490, 60)
+    tap(800, 725)  # Android crash-buffer collection and clipboard report must not close app.
+    time.sleep(.5)
+    diagnostic_paths = adb('shell', 'run-as', PACKAGE, 'find', 'files', '-name', 'audio-diagnostic.txt').splitlines()
+    assert len(diagnostic_paths) == 1
+    diagnostic = adb('shell', 'run-as', PACKAGE, 'cat', diagnostic_paths[0].strip())
+    assert 'muted=true' in diagnostic
+    (OUTPUT / 'audio-diagnostic.txt').write_text(diagnostic)
     capture('04-restored')
     logs = adb('logcat', '-d', '-s', 'godot', 'AndroidRuntime')
     (OUTPUT / 'logcat.txt').write_text(logs)
     assert 'FATAL EXCEPTION' not in logs and 'SCRIPT ERROR:' not in logs
     assert adb('shell', 'pidof', PACKAGE).strip(), 'Android process must remain alive'
-    report = {'source_commit': source['source_commit'], 'build_run': 41024619007, 'package': PACKAGE, 'device': adb('shell', 'getprop', 'ro.build.version.release').strip(),
+    report = {'source_commit': source['source_commit'], 'build_run': 41074447113, 'package': PACKAGE, 'device': adb('shell', 'getprop', 'ro.build.version.release').strip(),
               'abi': adb('shell', 'getprop', 'ro.product.cpu.abi').strip(), 'resolution': [width, height],
               'order_id': order_id, 'payment_amount': amount, 'balance_after': final['money'],
-              'checks': ['launch', 'real touch', 'menu/progress pause', 'mute', 'drag/drop',
+              'checks': ['launch', 'real touch', '20 extra grinder taps with audio enabled', 'diagnostic report button', 'menu/progress pause', 'mute', 'drag/drop',
                          'restart before payment', 'collect once', 'restart after payment', 'customer history']}
     (OUTPUT / 'result.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
     print('PASS: actual Android install/launch/touch/coffee/payment/pause/save/relaunch', flush=True)

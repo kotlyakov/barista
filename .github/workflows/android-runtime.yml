@@ -22,9 +22,9 @@ jobs:
           java-version: '17.0.21'
       - uses: actions/download-artifact@v4
         with:
-          name: android-unsigned-0.3.0
+          name: android-unsigned-0.3.1
           path: artifacts/android-input
-          run-id: 41024619007
+          run-id: 41074447113
           github-token: ${{ github.token }}
       - name: Install pinned SDK commands and temporary emulator signature
         shell: bash
@@ -41,7 +41,7 @@ jobs:
           yes | "$ANDROID_HOME/cmdline-tools/22.0/bin/sdkmanager" --licenses > artifacts/android-runtime/licenses.log 2>&1
           set -o pipefail
           keytool -genkeypair -keystore /tmp/barista-emulator-test.keystore -alias androiddebugkey -storepass android -keypass android -dname 'CN=Ephemeral Emulator Test' -keyalg RSA -keysize 2048 -validity 2
-          java -jar artifacts/android-input/signing-kit/build-tools/35.0.0/lib/apksigner.jar sign --ks /tmp/barista-emulator-test.keystore --ks-pass pass:android --out /tmp/barista-emulator-test.apk artifacts/android-input/Barista-0.3.0-emulator-unsigned.apk
+          java -jar artifacts/android-input/signing-kit/build-tools/35.0.0/lib/apksigner.jar sign --ks /tmp/barista-emulator-test.keystore --ks-pass pass:android --out /tmp/barista-emulator-test.apk artifacts/android-input/Barista-0.3.1-emulator-unsigned.apk
           if [ -e /dev/kvm ]; then sudo chmod a+rw /dev/kvm; fi
       - uses: reactivecircus/android-emulator-runner@v2
         with:
