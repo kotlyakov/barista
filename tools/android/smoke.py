@@ -96,6 +96,8 @@ try:
     assert state()['clock'] == paused['clock'], 'Menu must freeze active Android time'
     tap(800, 525)
     wait_for(state, lambda s: s['preferences']['muted'] is True)
+    tap(800, 525)  # Re-enable audio: previous smoke accidentally skipped every station effect.
+    wait_for(state, lambda s: s['preferences']['muted'] is False)
     tap(800, 625)
     capture('02-progress')
     time.sleep(.6)
@@ -118,7 +120,7 @@ try:
     launch()
     restored = state()
     assert restored['order']['state'] == 'PAYMENT' and restored['order']['id'] == order_id
-    assert restored['preferences']['muted'] is True
+    assert restored['preferences']['muted'] is False
     tap(955, 610)
     collected = wait_for(state, lambda s: s['money'] == balance + amount)
     assert collected['order']['payment']['collected'] is True
