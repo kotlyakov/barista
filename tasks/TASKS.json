@@ -659,7 +659,7 @@
       "id": "TASK-015",
       "title": "Подготовить макеты всех экранов и анимаций",
       "role": "ART_UI",
-      "status": "TODO",
+      "status": "WAITING_USER",
       "priority": 15,
       "dependencies": [
         "TASK-003"
@@ -668,7 +668,14 @@
       "decision_gates": [],
       "allowed_paths": [
         "design/screens/",
-        "design/animations/"
+        "design/animations/",
+        "approvals/",
+        "reports/design/",
+        "audio/",
+        "state/",
+        "tasks/TASKS.json",
+        "BACKLOG.md",
+        "CHANGELOG.md"
       ],
       "acceptance": [
         "Стойка/магазин/итог/настройки/обучение показаны",
@@ -677,16 +684,24 @@
         "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
       ],
       "verification": "Просмотр в целевых пропорциях; решение Артура",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "screens-audio-20261030",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-015-screen-review",
       "issue_number": 15,
       "pr_url": null,
       "commit": null,
-      "evidence": [],
-      "review": null,
-      "blocker": null,
+      "evidence": [
+        "reports/design/PROGRESS_20261030.md",
+        "design/screens/v1/review.html",
+        "design/screens/v1/build_review.py"
+      ],
+      "review": {
+        "type": "INDEPENDENT_REVIEW",
+        "result": "PASS_WITH_MINORS",
+        "scope": "review_materials: no important defects in draft; UI-REV-001/002/003 deferred; browser/human listening/Android NOT_RUN"
+      },
+      "blocker": "Материалы v1 предъявлены для решения Артура; привязка обучения/сигналов к утверждённой стойке 09 ещё не показана.",
       "approval_versions": {},
       "decision_records": {}
     },
@@ -737,7 +752,7 @@
       "id": "TASK-017",
       "title": "Подготовить и утвердить набор звука",
       "role": "AUDIO",
-      "status": "TODO",
+      "status": "WAITING_USER",
       "priority": 17,
       "dependencies": [
         "TASK-001"
@@ -755,16 +770,24 @@
         "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
       ],
       "verification": "Прослушивание всего набора и проверка реестра",
-      "owner": null,
-      "session_id": null,
+      "owner": "coordinator",
+      "session_id": "screens-audio-20261030",
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-015-screen-review",
       "issue_number": 17,
       "pr_url": null,
       "commit": null,
-      "evidence": [],
-      "review": null,
-      "blocker": null,
+      "evidence": [
+        "reports/design/PROGRESS_20261030.md",
+        "design/screens/v1/review.html",
+        "design/screens/v1/build_review.py"
+      ],
+      "review": {
+        "type": "INDEPENDENT_REVIEW",
+        "result": "PASS_WITH_MINORS",
+        "scope": "review_materials: no important defects in draft; UI-REV-001/002/003 deferred; browser/human listening/Android NOT_RUN"
+      },
+      "blocker": "10 эффектов и музыкальная петля v1 подготовлены для прослушивания; нужны отдельные решения Артура по SOUND-001/v1 и MUSIC-001/v1.",
       "approval_versions": {},
       "decision_records": {}
     },

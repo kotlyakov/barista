@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "package_version": "1.0",
-  "updated_at": "2026-10-29",
-  "phase": "ANDROID_TECH_APK_BUILT_RUNTIME_BLOCKED",
+  "updated_at": "2026-10-30",
+  "phase": "SCREEN_AUDIO_V1_PRESENTED",
   "game_code_exists": true,
   "current_task": null,
   "next_task": "TASK-015",
-  "next_action": "Технический ARM64 APK 0.1.0 сохранён для скачивания; проверить установку/запуск на доступном Android-устройстве. Эмулятор без KVM не загрузился за 180 с. Продолжить материалы TASK-010/015/017 без изменения утверждённого общего вида 09.",
+  "next_action": "Показать Артуру пакет Barista-review-v1: новые меню, схемы сигналов и отдельные плееры звука/музыки. После решения — соответствующая интеграция. Продолжить точную привязку к стойке 09 после восстановления исходников.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -14,14 +14,16 @@
     "visibility": "private",
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
-    "pending_sync": false,
+    "pending_sync": true,
     "head_note": "Last verified main merge and tested native PR head; bookkeeping commits may follow.",
-    "working_branch": "main",
+    "working_branch": "task/TASK-015-screen-review",
     "working_head": "e9a37a81e4a349b0f464f063517727d6e981aef3"
   },
   "blockers": [
-    "TASK-022: Android emulator boot timeout without KVM; real-device tests/calibration pending",
-    "TASK-010/015/017: individual character/screens/audio approvals pending"
+    "TASK-015/017: owner review of concrete v1 materials pending",
+    "TASK-015/016: approved café source helper unavailable; exact scene mapping pending",
+    "TASK-010: individual character work deferred by owner",
+    "TASK-022: real Android tests and phone calibration pending"
   ],
   "approved_materials": [
     "SPEC-001/v3"
@@ -80,5 +82,15 @@
     "source_message": "Принимаю",
     "date": "2026-10-29",
     "scope": "Android SDK license required for game APK build"
+  },
+  "review_package": {
+    "version": 1,
+    "ui": "UI-002/v1 PRESENTED",
+    "animation": "ANIM-UI-001/v1 PRESENTED; full ANIM-001 DRAFT",
+    "sound": "SOUND-001/v1 PRESENTED",
+    "music": "MUSIC-001/v1 PRESENTED",
+    "report": "reports/design/PROGRESS_20261030.md",
+    "library_file_id": "libfile_3af7b96752388191b8d8b4dc885e7e72",
+    "overview_library_file_id": "libfile_65ef7ad282488191a812779a20e929c6"
   }
 }
