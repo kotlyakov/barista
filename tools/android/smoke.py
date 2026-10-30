@@ -81,7 +81,6 @@ try:
     source = json.loads(Path('artifacts/android-input/source.json').read_text())
     assert source['source_commit'] == '32ffa2231d66aef49b26a712d84256472e86f83c', 'Wrong pinned preview artifact'
     adb('logcat', '-c')
-    adb('shell', 'wm', 'size', '1280x720')
     launch()
     width, height = capture('01-cafe')
     assert width > height and abs(width / height - 16 / 9) < .02

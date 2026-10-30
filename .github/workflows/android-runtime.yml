@@ -52,7 +52,7 @@ jobs:
           disk-size: 2048M
           emulator-build: 16740729
           emulator-boot-timeout: 240
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -no-metrics
+          emulator-options: -no-window -gpu swangle -no-snapshot -noaudio -no-boot-anim -camera-back none -no-metrics
           script: |
             adb install -r /tmp/barista-emulator-test.apk
             python3 tools/android/smoke.py
