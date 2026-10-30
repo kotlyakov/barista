@@ -6,11 +6,33 @@ var active=false
 var muted=false
 var last_effect=-1000
 var sounds={}
+var diagnostic_path=""
+var previous_trace=""
+var trace_file
+func begin_diagnostics(path: String) -> void:
+ diagnostic_path=path
+ if FileAccess.file_exists(path): previous_trace=FileAccess.get_file_as_string(path)
+ trace_file=FileAccess.open(path,FileAccess.WRITE)
+ trace("Barista 0.3.1 diagnostic | "+OS.get_name()+" "+OS.get_version()+" | "+OS.get_model_name()+" | audio "+AudioServer.get_driver_name())
+func trace(event: String) -> void:
+ if trace_file and trace_file.get_position()<65536:
+  trace_file.store_line(str(Time.get_ticks_msec())+" "+event)
+  trace_file.flush()
+func report() -> String:
+ var result="BARISTA AUDIO REPORT 0.3.1\nPREVIOUS RUN\n"+previous_trace+"\nCURRENT RUN\n"+(FileAccess.get_file_as_string(diagnostic_path) if diagnostic_path!="" else "unavailable")
+ if OS.get_name()=="Android":
+  # Android restricts this unprivileged reader to our own UID. No READ_LOGS permission.
+  var output=[]
+  var status=OS.execute("/system/bin/logcat",PackedStringArray(["-d","-b","crash","-t","100"]),output)
+  result+="\nAPP CRASH BUFFER ("+str(status)+")\n"+"".join(output).right(20000)
+ return result
 func _exit_tree() -> void:
+ trace("audio exit before stop")
  music.stop()
  voice.stop()
  music.stream=null
  voice.stream=null
+ if trace_file: trace_file.close()
 func tone(seconds: float,frequency: float,noise=false) -> AudioStreamWAV:
  var stream=AudioStreamWAV.new()
  stream.mix_rate=22050
@@ -27,6 +49,7 @@ func tone(seconds: float,frequency: float,noise=false) -> AudioStreamWAV:
  stream.data=bytes
  return stream
 func _ready() -> void:
+ trace("audio ready begin")
  add_child(music)
  add_child(voice)
  var loop=AudioStreamWAV.new()
@@ -48,7 +71,9 @@ func _ready() -> void:
  music.stream=loop
  for id in ["grind","brew","steam"]: sounds[id]=tone(.13,80 if id=="grind" else 150,id!="brew")
  sounds.coins=tone(.22,1200)
+ trace("audio ready complete")
 func set_active(value: bool,prefs: Dictionary) -> void:
+ trace("set_active begin active="+str(value)+" muted="+str(prefs.get("muted",false)))
  active=value
  muted=prefs.get("muted",false)
  music.volume_db=linear_to_db(maxf(.0001,prefs.master*prefs.music))
@@ -60,9 +85,13 @@ func set_active(value: bool,prefs: Dictionary) -> void:
  else:
   music.stream_paused=true
   voice.stop()
+ trace("set_active returned")
 func effect(id: String) -> void:
  if not active or muted or Time.get_ticks_msec()-last_effect<90 or not sounds.has(id): return
  if DisplayServer.get_name()=="headless": return
  last_effect=Time.get_ticks_msec()
+ trace("effect "+id+" before stream")
  voice.stream=sounds[id]
+ trace("effect "+id+" before play")
  voice.play()
+ trace("effect "+id+" play returned")

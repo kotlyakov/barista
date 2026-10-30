@@ -7,6 +7,6 @@ cd "$repo_dir"
 mkdir -p artifacts
 python3 tools/check_native.py
 "$GODOT" --headless --path game --editor --import > artifacts/android-import.log 2>&1
-apk="$repo_dir/artifacts/Barista-0.3.0-cafe-preview.apk"
+apk="$repo_dir/artifacts/Barista-0.3.1-cafe-preview.apk"
 "$GODOT" --headless --path game --export-debug Android "$apk" > artifacts/android-export.log 2>&1
-python3 tools/check_apk.py "$apk" --sdk-root "$ANDROID_SDK_ROOT" --version-code 3 --version-name 0.3.0 | tee artifacts/android-verification.log
+python3 tools/check_apk.py "$apk" --sdk-root "$ANDROID_SDK_ROOT" --version-code 4 --version-name 0.3.1 | tee artifacts/android-verification.log

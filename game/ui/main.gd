@@ -40,8 +40,12 @@ const MENU_BUTTON=Rect2(1430,22,130,76)
 const MENU_RESUME=Rect2(560,385,480,80)
 const MENU_SOUND=Rect2(560,485,480,80)
 const MENU_PROGRESS=Rect2(560,585,480,80)
+const MENU_REPORT=Rect2(560,685,480,80)
 const BACK_BUTTON=Rect2(30,22,320,76)
 var audio
+# Temporary diagnostic mitigation: each Android launch starts silent.
+var audio_safe_start=OS.get_name()=="Android"
+var report_copied=false
 func _exit_tree() -> void:
  barista.free()
  guest.free()
@@ -62,11 +66,15 @@ func _ready() -> void:
  screen="intro" if career_enabled else ""
  if not repository.ready: message="Не удалось прочитать сохранение. Прогресс не перезаписан."
  audio=load("res://ui/cafe_audio.gd").new()
+ audio.begin_diagnostics(save_directory+"/audio-diagnostic.txt")
  add_child(audio)
  update_audio()
  queue_redraw()
 func update_audio() -> void:
- if audio: audio.set_active(not paused and screen in ["","lesson"] and repository.ready,repository.preferences())
+ if audio:
+  var prefs=repository.preferences().duplicate()
+  if audio_safe_start: prefs.muted=true
+  audio.set_active(not paused and screen in ["","lesson"] and repository.ready,prefs)
 func act(method: String,args: Array=[]) -> bool:
  var success=repository.apply(method,args)
  game=repository.session
@@ -160,9 +168,12 @@ func _input(event: InputEvent) -> void:
     return
    if MENU_RESUME.has_point(point): resume_game()
    elif MENU_SOUND.has_point(point):
-    repository.set_preference("muted",not repository.preferences().muted)
+    if repository.set_preference("muted",not audio.muted): audio_safe_start=false
     update_audio()
    elif MENU_PROGRESS.has_point(point): screen="progress"
+   elif MENU_REPORT.has_point(point):
+    DisplayServer.clipboard_set(audio.report())
+    report_copied=true
    pointer.cancel()
    queue_redraw()
    return
@@ -255,8 +266,10 @@ func _draw() -> void:
   text_at(Vector2(675,310),"ПАУЗА",48)
   if repository.ready:
    draw_button(MENU_RESUME,"Продолжить")
-   draw_button(MENU_SOUND,"Звук выключен" if repository.preferences().muted else "Звук включён")
+   draw_button(MENU_SOUND,"Звук выключен" if audio.muted else "Звук включён")
    draw_button(MENU_PROGRESS,"Прогресс")
+   draw_button(MENU_REPORT,"Отчёт скопирован" if report_copied else "Скопировать отчёт")
+   text_at(Vector2(420,815),"Диагностика 0.3.1 · при запуске звук выключен",24)
   else:
    draw_button(MENU_RESUME,"Подтвердить сброс" if reset_pending else "Сбросить профиль…")
    draw_button(MENU_SOUND,"Отмена")
