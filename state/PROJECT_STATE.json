@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "1.0",
   "updated_at": "2026-10-30",
-  "phase": "NATIVE_SINGLE_CAFE_IN_REVIEW",
+  "phase": "ANDROID_CI_BUILD_IN_PROGRESS",
   "game_code_exists": true,
-  "current_task": "TASK-026",
+  "current_task": "TASK-027",
   "next_task": "TASK-022",
-  "next_action": "Проверить CI native render и собрать Android после восстановления editor/SDK. Общий вид 09 утвержден; новые аудио/intro требуют фактической проверки.",
+  "next_action": "Собрать unsigned APK в CI; подписать локально прежним ключом без загрузки ключа в GitHub.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -14,7 +14,7 @@
     "visibility": "private",
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
-    "pending_sync": false,
+    "pending_sync": true,
     "head_note": "Native source snapshot published through GitHub API; local preparation history retained on task/TASK-024-native-cafe. Metadata commits may follow.",
     "working_branch": "task/TASK-026-single-cafe-native",
     "working_head": "42a2465a0dab58409f083ba12792102db39e65cf"

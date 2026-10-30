@@ -1215,6 +1215,56 @@
       "decision_records": {
         "D01": "D01"
       }
+    },
+    {
+      "id": "TASK-027",
+      "title": "Собрать новую кофейню Android через CI и подписать прежним ключом",
+      "role": "INTEGRATOR",
+      "status": "IN_PROGRESS",
+      "priority": 14,
+      "dependencies": [
+        "TASK-008",
+        "TASK-014"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        ".github/workflows/android-preview.yml",
+        "game/export_presets.cfg",
+        "tools/",
+        "docs/",
+        "reports/releases/",
+        "tasks/",
+        "state/",
+        "BACKLOG.md"
+      ],
+      "acceptance": [
+        "Есть APK 0.3.0 code 3 с новым shell и точным source SHA",
+        "Подпись совпадает с прежним preview; ключ не передан в Git/CI",
+        "Пройдены manifest/ABI/ZIP/16KB alignment/signature checks; runtime не выдан за проверенный",
+        "Новый файл сохранён для скачивания и handoff обновлён"
+      ],
+      "verification": "Actual CI export + official Android SDK apksigner/zipalign/aapt + source/hash verification",
+      "owner": "coordinator",
+      "session_id": "android-ci-20261030",
+      "lease_until": "2026-10-30T20:00:00Z",
+      "branch": "task/TASK-026-single-cafe-native",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/29",
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
     }
   ]
 }
