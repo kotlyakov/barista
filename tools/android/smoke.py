@@ -61,14 +61,16 @@ def launch():
     adb('shell', 'monkey', '-p', PACKAGE, '-c', 'android.intent.category.LAUNCHER', '1')
     wait_for(state, lambda s: s is not None, seconds=15)
     adb('shell', 'uiautomator', 'dump', '/sdcard/barista-window.xml')
-    hierarchy = ET.fromstring(adb('shell', 'cat', '/sdcard/barista-window.xml'))
+    xml = adb('shell', 'cat', '/sdcard/barista-window.xml')
+    (OUTPUT / 'startup-window.xml').write_text(xml)
+    hierarchy = ET.fromstring(xml)
     for element in hierarchy.iter('node'):
-        if element.get('package') == 'com.android.systemui' and element.get('text') == 'Got it':
+        if element.get('text') == 'Got it':
             bounds = [int(v) for v in re.findall(r'\d+', element.get('bounds', ''))]
             assert len(bounds) == 4
             adb('shell', 'input', 'tap', str((bounds[0]+bounds[2])//2), str((bounds[1]+bounds[3])//2))
             break
-    time.sleep(.5)
+    time.sleep(1)
     width, height = capture('startup')
     tap(20, 200)  # Safe blank area: skip intro, or do nothing after its natural end.
     time.sleep(.25)
