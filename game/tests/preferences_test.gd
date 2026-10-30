@@ -1,0 +1,36 @@
+extends SceneTree
+func _init() -> void:
+ var Repo=load("res://persistence/repository.gd")
+ var path="user://settings-"+str(Time.get_ticks_usec())
+ var repo=Repo.new(path)
+ assert(repo.has_method("set_preference"),"durable preferences missing")
+ assert(repo.set_preference("master",0.4))
+ assert(not repo.set_preference("master",2.0))
+ assert(not repo.set_preference("vibration",42))
+ assert(repo.begin_lesson())
+ var snapshot=repo.main_session.snapshot()
+ repo.session.data.money=500
+ assert(repo.set_preference("vibration",false))
+ var restored=Repo.new(path)
+ assert(is_equal_approx(restored.session.data.preferences.master,0.4))
+ assert(restored.session.data.preferences.vibration==false)
+ assert(restored.session.data.money==snapshot.money)
+ assert(restored.session.data.rng_state==snapshot.rng_state)
+ repo.end_training()
+ assert(repo.session.data.money==snapshot.money)
+ var legacy=repo.session.snapshot()
+ legacy.preferences.erase("muted")
+ var Store=load("res://persistence/store.gd")
+ assert(Store.valid(legacy),"old five-field preferences must remain readable")
+ var migrated=load("res://orders/session.gd").restore(legacy)
+ assert(migrated.data.preferences.muted==false)
+ assert(repo.set_preference("muted",true))
+ var restored_mute=Repo.new(path)
+ assert(restored_mute.preferences().muted)
+ var original_directory=repo.store.directory
+ repo.store.directory="/proc"
+ assert(not repo.set_preference("muted",false))
+ assert(repo.preferences().muted,"failed write must roll back mute")
+ repo.store.directory=original_directory
+ print("PASS: durable validated settings, independent lesson, main progress unchanged")
+ quit()

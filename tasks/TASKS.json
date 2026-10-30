@@ -421,7 +421,7 @@
       "id": "TASK-010",
       "title": "Подготовить шесть именных героев",
       "role": "ART_UI",
-      "status": "TODO",
+      "status": "IN_PROGRESS",
       "priority": 10,
       "dependencies": [
         "TASK-003"
@@ -439,10 +439,10 @@
         "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
       ],
       "verification": "Просмотр листов героев, отсутствие подмены утверждения",
-      "owner": null,
-      "session_id": null,
-      "lease_until": null,
-      "branch": null,
+      "owner": "coordinator",
+      "session_id": "native-cafe-20261029",
+      "lease_until": "2026-10-29T18:00:00Z",
+      "branch": "task/TASK-024-native-cafe",
       "issue_number": 10,
       "pr_url": null,
       "commit": null,
@@ -659,7 +659,7 @@
       "id": "TASK-015",
       "title": "Подготовить макеты всех экранов и анимаций",
       "role": "ART_UI",
-      "status": "TODO",
+      "status": "IN_PROGRESS",
       "priority": 15,
       "dependencies": [
         "TASK-003"
@@ -677,10 +677,10 @@
         "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
       ],
       "verification": "Просмотр в целевых пропорциях; решение Артура",
-      "owner": null,
-      "session_id": null,
-      "lease_until": null,
-      "branch": null,
+      "owner": "coordinator",
+      "session_id": "native-cafe-20261029",
+      "lease_until": "2026-10-29T18:00:00Z",
+      "branch": "task/TASK-024-native-cafe",
       "issue_number": 15,
       "pr_url": null,
       "commit": null,
@@ -737,7 +737,7 @@
       "id": "TASK-017",
       "title": "Подготовить и утвердить набор звука",
       "role": "AUDIO",
-      "status": "TODO",
+      "status": "IN_PROGRESS",
       "priority": 17,
       "dependencies": [
         "TASK-001"
@@ -755,10 +755,10 @@
         "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
       ],
       "verification": "Прослушивание всего набора и проверка реестра",
-      "owner": null,
-      "session_id": null,
-      "lease_until": null,
-      "branch": null,
+      "owner": "coordinator",
+      "session_id": "native-cafe-20261029",
+      "lease_until": "2026-10-29T18:00:00Z",
+      "branch": "task/TASK-024-native-cafe",
       "issue_number": 17,
       "pr_url": null,
       "commit": null,
@@ -960,9 +960,12 @@
       "issue_number": 25,
       "pr_url": null,
       "commit": null,
-      "evidence": [],
+      "evidence": [
+        "reports/releases/ANDROID_CAFE_0_3_0.md",
+        "Android runtime run41028363869 SUCCESS / evidence12964722431"
+      ],
       "review": null,
-      "blocker": "SDK установлен и технический APK собран. /dev/kvm отсутствует; AOSP Android 35 software emulator не загрузился за 180 секунд (QEMU CPU threads hung). Установка/запуск внутри Android и реальный телефон NOT_RUN.",
+      "blocker": "Фактический Android15 x86_64 smoke PASS (run41028363869), старый emulator boot блок снят. Физического ARM64/Pixel и 10 попыток на рецепт для калибровки ещё нет.",
       "approval_versions": {},
       "decision_records": {}
     },
@@ -1019,6 +1022,321 @@
         "scope": "Actual APK export, signature/ZIP/alignment/manifest/ABI, 15 GDScript tests; emulator boot timed out, runtime NOT_RUN"
       },
       "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-024",
+      "title": "Перенести утверждённую кофейню 09 в нативную сцену",
+      "role": "DEVELOPER",
+      "status": "DONE",
+      "priority": 15,
+      "dependencies": [
+        "TASK-014",
+        "TASK-023"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/ui/",
+        "game/content/art/",
+        "game/tests/",
+        "tools/art/",
+        "docs/",
+        "reports/native/",
+        "design/screens/",
+        "state/",
+        "tasks/TASKS.json",
+        "BACKLOG.md",
+        "approvals/",
+        "game/project.godot",
+        "game/export_presets.cfg",
+        "tools/build_android.sh",
+        "tools/check_apk.py",
+        "reports/releases/"
+      ],
+      "acceptance": [
+        "Фон и временные герои из точного эталона 09; происхождение и хеши записаны",
+        "Приборы, стакан, монеты, эмоции работают с существующим доменом",
+        "Уходящие гости поворачиваются; последовательные посетители не пересекаются",
+        "Проверены игровой цикл, пауза и слои; новые экраны остаются черновиками"
+      ],
+      "verification": "Godot tests, raster screenshot review, independent code review",
+      "owner": "coordinator",
+      "session_id": "native-cafe-20261029",
+      "lease_until": null,
+      "branch": "task/TASK-024-native-cafe",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": "42a2465a0dab58409f083ba12792102db39e65cf",
+      "evidence": [
+        "game/ui/main.gd",
+        "reports/native/SINGLE_CAFE_20261030.md",
+        "CI run 41014050829: 21 Godot tests + 7 native rendered PNGs",
+        "reports/releases/ANDROID_CAFE_0_3_0.md"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "PASS after training/recovery fixes; Linux renders inspected; final art/audio approval remains separate",
+        "scope": "Technical native port and single-scene implementation only; no physical Android claim"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-025",
+      "title": "Обучение и настройки в единой кофейне (старые экраны заменены R23–R25)",
+      "role": "DEVELOPER",
+      "status": "DONE",
+      "priority": 15,
+      "dependencies": [
+        "TASK-014",
+        "TASK-023"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/ui/",
+        "game/orders/session.gd",
+        "game/persistence/",
+        "game/tests/",
+        "design/screens/",
+        "docs/",
+        "reports/native/",
+        "state/",
+        "tasks/TASKS.json",
+        "BACKLOG.md",
+        "approvals/"
+      ],
+      "acceptance": [
+        "Изолированная тренировка не меняет карьеру",
+        "Настройка mute сохраняется и откатывается при отказе записи",
+        "Отдельные прежние home/settings экраны не показываются"
+      ],
+      "verification": "Godot tests, actual screen renders, review",
+      "owner": "coordinator",
+      "session_id": "native-cafe-20261029",
+      "lease_until": null,
+      "branch": "task/TASK-024-native-cafe",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": "42a2465a0dab58409f083ba12792102db39e65cf",
+      "evidence": [
+        "game/ui/main.gd",
+        "reports/native/SINGLE_CAFE_20261030.md",
+        "CI run 41014050829: 21 Godot tests + 7 native rendered PNGs",
+        "reports/releases/ANDROID_CAFE_0_3_0.md"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "PASS after training/recovery fixes; Linux renders inspected; final art/audio approval remains separate",
+        "scope": "Technical native port and single-scene implementation only; no physical Android claim"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-026",
+      "title": "Единая нативная кофейня по указанию Артура 30.10",
+      "role": "DEVELOPER",
+      "status": "DONE",
+      "priority": 15,
+      "dependencies": [
+        "TASK-014",
+        "TASK-023"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/ui/",
+        "game/content/art/",
+        "game/tests/",
+        "tools/art/",
+        "docs/",
+        "reports/native/",
+        "design/screens/",
+        "state/",
+        "tasks/TASKS.json",
+        "BACKLOG.md",
+        "approvals/",
+        "game/project.godot",
+        "game/export_presets.cfg",
+        "tools/build_android.sh",
+        "tools/check_apk.py",
+        "reports/releases/"
+      ],
+      "acceptance": [
+        "Оригинальная стойка и rigs 09 сохранены",
+        "Intro 3 секунды/тап, меню и прогресс замораживают ввод/часы/звук",
+        "Прогресс показывает ту же стойку без людей; mute переживает перезапуск",
+        "Старые сохранения совместимы; тренировка и явное восстановление доступны"
+      ],
+      "verification": "21 Godot script, native render in CI, review; Android separately",
+      "owner": "coordinator",
+      "session_id": "native-single-cafe-20261030",
+      "lease_until": null,
+      "branch": "task/TASK-026-single-cafe-native",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": "42a2465a0dab58409f083ba12792102db39e65cf",
+      "evidence": [
+        "game/tests/cafe_shell_test.gd",
+        "game/tests/recovery_ui_test.gd",
+        "reports/native/SINGLE_CAFE_20261030.md",
+        "CI run 41014050829: 21 Godot tests + 7 native rendered PNGs",
+        "reports/releases/ANDROID_CAFE_0_3_0.md"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "PASS after training/recovery fixes; Linux renders inspected; final art/audio approval remains separate",
+        "scope": "Technical native port and single-scene implementation only; no physical Android claim"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-027",
+      "title": "Собрать новую кофейню Android через CI и подписать прежним ключом",
+      "role": "INTEGRATOR",
+      "status": "DONE",
+      "priority": 14,
+      "dependencies": [
+        "TASK-008",
+        "TASK-014"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        ".github/workflows/android-preview.yml",
+        "game/export_presets.cfg",
+        "tools/",
+        "docs/",
+        "reports/releases/",
+        "tasks/",
+        "state/",
+        "BACKLOG.md"
+      ],
+      "acceptance": [
+        "Есть APK 0.3.0 code 3 с новым shell и точным source SHA",
+        "Подпись совпадает с прежним preview; ключ не передан в Git/CI",
+        "Пройдены manifest/ABI/ZIP/16KB alignment/signature checks; runtime не выдан за проверенный",
+        "Новый файл сохранён для скачивания и handoff обновлён"
+      ],
+      "verification": "Actual CI export + official Android SDK apksigner/zipalign/aapt + source/hash verification",
+      "owner": "coordinator",
+      "session_id": "android-ci-20261030",
+      "lease_until": null,
+      "branch": "task/TASK-026-single-cafe-native",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/29",
+      "commit": "32ffa2231d66aef49b26a712d84256472e86f83c",
+      "evidence": [
+        "reports/releases/ANDROID_CAFE_0_3_0.md",
+        "CI build run 41024619007 / artifact 12963425517",
+        "Library libfile_593b35c6f59081918ddbee576b8f5cf9",
+        "artifacts/android-ci-0.3.0/final-verification.log",
+        "Actual Android15 x86_64 full smoke run41028363869 SUCCESS; artifact12964722431"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW_PLUS_SELF_VERIFICATION",
+        "result": "PASS: actual unsigned export, original-key signature, official SDK checks, Android15 x86_64 end-to-end smoke. Physical Pixel separately.",
+        "scope": "review_android_build and signer/cert/ZIP/alignment/manifest/ABI checks"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-028",
+      "title": "Разобрать вылеты Android preview при нажатиях и помоле",
+      "role": "DEVELOPER",
+      "status": "WAITING_USER",
+      "priority": 0,
+      "dependencies": [
+        "TASK-027"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/",
+        "tools/",
+        ".github/workflows/",
+        "reports/",
+        "tasks/",
+        "state/",
+        "BACKLOG.md",
+        "docs/"
+      ],
+      "acceptance": [
+        "Воспроизвести сбой или собрать точные границы воспроизведения",
+        "Проверить приготовление с включёнными эффектами и частые нажатия",
+        "Исправление подтверждено регрессией; не выдавать эмулятор за телефон"
+      ],
+      "verification": "Original APK Android runtime with audio enabled, crash logs, regression checks",
+      "owner": "coordinator",
+      "session_id": "android-crash-20261030",
+      "lease_until": null,
+      "branch": "task/TASK-026-single-cafe-native",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/29",
+      "commit": "b09bf205d29f80545b754000a521480808f81ba9",
+      "evidence": [
+        "Owner report: latest APK exits on buttons/grinder; isolation answer: Без звука работает",
+        "Original0.3.0 audio-enabled Android run41072984713 SUCCESS, artifact12985387669",
+        "22 local Godot scripts PASS; diagnostic regression observed RED then GREEN",
+        "Signed0.3.1 Library libfile_33dba36456f081918b04cbdaae0929ea",
+        "reports/releases/ANDROID_AUDIO_0_3_1.md",
+        "Diagnostic Android15 x86_64 run41074761425 SUCCESS artifact12986123767;20 extra grinder taps with effects, clipboard report visually confirmed"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS for bounded diagnostic logging, no log permissions or external telemetry, unchanged career data and original signing key. Native crash fix NOT_CONFIRMED.",
+        "scope": "Mitigation/instrumentation SELF_REVIEW; actual Android smoke PASS. Root cause and physical repair not established."
+      },
+      "blocker": "Underlying native audio crash not reproduced in Android15 x86_64, including enabled effects. Owner confirms muted works; need report from physical phone.",
       "approval_versions": {
         "SPEC-001": 3
       },

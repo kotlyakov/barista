@@ -26,3 +26,14 @@ jobs:
           python3 tools/check_native.py
       - name: Documentation consistency
         run: python3 tools/validate_project.py
+      - name: Render native cafe states
+        env:
+          GODOT: /tmp/godot/Godot_v4.5.1-stable_linux.x86_64
+        run: |
+          mkdir -p artifacts/screens
+          xvfb-run -a -s '-screen 0 1600x900x24' "$GODOT" --path game --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/capture_screens.gd -- "$PWD/artifacts/screens"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-cafe-screens
+          path: artifacts/screens/*.png
+          if-no-files-found: error
