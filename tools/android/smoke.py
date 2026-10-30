@@ -13,7 +13,7 @@ OUTPUT = Path(os.environ.get('BARISTA_ANDROID_EVIDENCE', 'artifacts/android-runt
 OUTPUT.mkdir(parents=True, exist_ok=True)
 
 def adb(*args, binary=False):
-    return subprocess.check_output(['adb', *args], text=not binary, timeout=30)
+    return subprocess.check_output(['adb', *args], text=not binary, stderr=subprocess.STDOUT, timeout=30)
 
 def wait_for(read, predicate, seconds=8):
     deadline = time.monotonic() + seconds
@@ -26,7 +26,12 @@ def wait_for(read, predicate, seconds=8):
     raise AssertionError(f'Android state did not reach expected condition: {last}')
 
 def state():
-    paths = adb('shell', 'run-as', PACKAGE, 'find', 'files', '-name', 'slot*.json').splitlines()
+    try:
+        paths = adb('shell', 'run-as', PACKAGE, 'find', 'files', '-name', 'slot*.json').splitlines()
+    except subprocess.CalledProcessError as error:
+        if 'No such file or directory' in str(error.output):
+            return None
+        raise
     candidates = []
     for path in paths:
         envelope = json.loads(adb('shell', 'run-as', PACKAGE, 'cat', path.strip()))
@@ -50,9 +55,15 @@ def tap(x, y):
     adb('shell', 'input', 'tap', *point(x, y))
 
 def launch():
+    global width, height
     adb('shell', 'monkey', '-p', PACKAGE, '-c', 'android.intent.category.LAUNCHER', '1')
-    time.sleep(3.5)  # Three-second intro; no game time should pass during it.
+    wait_for(state, lambda s: s is not None, seconds=15)
+    width, height = capture('startup')
+    tap(20, 200)  # Safe blank area: skip intro, or do nothing after its natural end.
+    time.sleep(.25)
 
+source = json.loads(Path('artifacts/android-input/source.json').read_text())
+assert source['source_commit'] == '32ffa2231d66aef49b26a712d84256472e86f83c', 'Wrong pinned preview artifact'
 adb('logcat', '-c')
 adb('shell', 'wm', 'size', '1280x720')
 launch()
@@ -64,11 +75,12 @@ tap(540, 700)
 tap(800, 800)
 started = wait_for(state, lambda s: s['shift']['mode'] == 'RUNNING')
 tap(1490, 60)
+time.sleep(.25)
 paused = state()
-time.sleep(.8)
+time.sleep(1.25)
 assert state()['clock'] == paused['clock'], 'Menu must freeze active Android time'
 tap(800, 525)
-assert state()['preferences']['muted'] is True
+wait_for(state, lambda s: s['preferences']['muted'] is True)
 tap(800, 625)
 capture('02-progress')
 time.sleep(.6)
@@ -77,9 +89,9 @@ tap(200, 60)
 tap(800, 425)
 for i, (x, y) in enumerate([(170, 600), (540, 520), (850, 410)]):
     if i < len(started['brew']['targets']):
-        for _ in range(started['brew']['targets'][i]):
+        for _ in range(int(started['brew']['targets'][i])):
             tap(x, y)
-ready = state()
+ready = wait_for(state, lambda s: s['brew']['taps'] == s['brew']['targets'])
 assert ready['brew']['taps'] == ready['brew']['targets'], 'Native Android taps must not duplicate or disappear'
 adb('shell', 'input', 'swipe', *point(650, 760), *point(1110, 450), '500')
 payment = wait_for(state, lambda s: s['order']['state'] == 'PAYMENT')
@@ -105,7 +117,7 @@ logs = adb('logcat', '-d', '-s', 'godot', 'AndroidRuntime')
 (OUTPUT / 'logcat.txt').write_text(logs)
 assert 'FATAL EXCEPTION' not in logs and 'SCRIPT ERROR:' not in logs
 assert adb('shell', 'pidof', PACKAGE).strip(), 'Android process must remain alive'
-report = {'package': PACKAGE, 'device': adb('shell', 'getprop', 'ro.build.version.release').strip(),
+report = {'source_commit': source['source_commit'], 'build_run': 41024619007, 'package': PACKAGE, 'device': adb('shell', 'getprop', 'ro.build.version.release').strip(),
           'abi': adb('shell', 'getprop', 'ro.product.cpu.abi').strip(), 'resolution': [width, height],
           'order_id': order_id, 'payment_amount': amount, 'balance_after': final['money'],
           'checks': ['launch', 'real touch', 'menu/progress pause', 'mute', 'drag/drop',
