@@ -50,7 +50,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          sdkmanager --install 'platforms;android-35' 'build-tools;35.0.0' > artifacts/ci/sdk-install.log 2>&1
+          sdkmanager --install 'platforms;android-35' 'build-tools;35.0.0' 'platform-tools' > artifacts/ci/sdk-install.log 2>&1
           python3 - <<'PY'
           import json,os
           from pathlib import Path
@@ -66,6 +66,7 @@ jobs:
           PY
           java -version 2> artifacts/ci/java-version.txt
           sdkmanager --version > artifacts/ci/sdkmanager-version.txt
+          cp "$ANDROID_HOME/platform-tools/source.properties" artifacts/ci/platform-tools-version.txt
       - name: Test and export actual ARM64 APK
         env:
           GODOT: /tmp/godot/Godot_v4.5.1-stable_linux.x86_64
