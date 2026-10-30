@@ -960,9 +960,12 @@
       "issue_number": 25,
       "pr_url": null,
       "commit": null,
-      "evidence": [],
+      "evidence": [
+        "reports/releases/ANDROID_CAFE_0_3_0.md",
+        "Android runtime run41028363869 SUCCESS / evidence12964722431"
+      ],
       "review": null,
-      "blocker": "SDK установлен и технический APK собран. /dev/kvm отсутствует; AOSP Android 35 software emulator не загрузился за 180 секунд (QEMU CPU threads hung). Установка/запуск внутри Android и реальный телефон NOT_RUN.",
+      "blocker": "Фактический Android15 x86_64 smoke PASS (run41028363869), старый emulator boot блок снят. Физического ARM64/Pixel и 10 попыток на рецепт для калибровки ещё нет.",
       "approval_versions": {},
       "decision_records": {}
     },
@@ -1030,7 +1033,7 @@
       "id": "TASK-024",
       "title": "Перенести утверждённую кофейню 09 в нативную сцену",
       "role": "DEVELOPER",
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "priority": 15,
       "dependencies": [
         "TASK-014",
@@ -1073,15 +1076,17 @@
       "branch": "task/TASK-024-native-cafe",
       "issue_number": null,
       "pr_url": null,
-      "commit": null,
+      "commit": "42a2465a0dab58409f083ba12792102db39e65cf",
       "evidence": [
         "game/ui/main.gd",
-        "reports/native/SINGLE_CAFE_20261030.md"
+        "reports/native/SINGLE_CAFE_20261030.md",
+        "CI run 41014050829: 21 Godot tests + 7 native rendered PNGs",
+        "reports/releases/ANDROID_CAFE_0_3_0.md"
       ],
       "review": {
         "type": "INDEPENDENT_CODE_REVIEW",
-        "result": "Native shell reviewed; visual/device checks pending",
-        "scope": "read-only review_native_cafe, 30.10.2026; training and recovery findings fixed"
+        "result": "PASS after training/recovery fixes; Linux renders inspected; final art/audio approval remains separate",
+        "scope": "Technical native port and single-scene implementation only; no physical Android claim"
       },
       "blocker": null,
       "approval_versions": {
@@ -1095,7 +1100,7 @@
       "id": "TASK-025",
       "title": "Обучение и настройки в единой кофейне (старые экраны заменены R23–R25)",
       "role": "DEVELOPER",
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "priority": 15,
       "dependencies": [
         "TASK-014",
@@ -1132,15 +1137,17 @@
       "branch": "task/TASK-024-native-cafe",
       "issue_number": null,
       "pr_url": null,
-      "commit": null,
+      "commit": "42a2465a0dab58409f083ba12792102db39e65cf",
       "evidence": [
         "game/ui/main.gd",
-        "reports/native/SINGLE_CAFE_20261030.md"
+        "reports/native/SINGLE_CAFE_20261030.md",
+        "CI run 41014050829: 21 Godot tests + 7 native rendered PNGs",
+        "reports/releases/ANDROID_CAFE_0_3_0.md"
       ],
       "review": {
         "type": "INDEPENDENT_CODE_REVIEW",
-        "result": "Native shell reviewed; visual/device checks pending",
-        "scope": "read-only review_native_cafe, 30.10.2026; training and recovery findings fixed"
+        "result": "PASS after training/recovery fixes; Linux renders inspected; final art/audio approval remains separate",
+        "scope": "Technical native port and single-scene implementation only; no physical Android claim"
       },
       "blocker": null,
       "approval_versions": {
@@ -1154,7 +1161,7 @@
       "id": "TASK-026",
       "title": "Единая нативная кофейня по указанию Артура 30.10",
       "role": "DEVELOPER",
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "priority": 15,
       "dependencies": [
         "TASK-014",
@@ -1197,16 +1204,18 @@
       "branch": "task/TASK-026-single-cafe-native",
       "issue_number": null,
       "pr_url": null,
-      "commit": null,
+      "commit": "42a2465a0dab58409f083ba12792102db39e65cf",
       "evidence": [
         "game/tests/cafe_shell_test.gd",
         "game/tests/recovery_ui_test.gd",
-        "reports/native/SINGLE_CAFE_20261030.md"
+        "reports/native/SINGLE_CAFE_20261030.md",
+        "CI run 41014050829: 21 Godot tests + 7 native rendered PNGs",
+        "reports/releases/ANDROID_CAFE_0_3_0.md"
       ],
       "review": {
         "type": "INDEPENDENT_CODE_REVIEW",
-        "result": "Native shell reviewed; visual/device checks pending",
-        "scope": "read-only review_native_cafe, 30.10.2026; training and recovery findings fixed"
+        "result": "PASS after training/recovery fixes; Linux renders inspected; final art/audio approval remains separate",
+        "scope": "Technical native port and single-scene implementation only; no physical Android claim"
       },
       "blocker": null,
       "approval_versions": {
@@ -1220,7 +1229,7 @@
       "id": "TASK-027",
       "title": "Собрать новую кофейню Android через CI и подписать прежним ключом",
       "role": "INTEGRATOR",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "priority": 14,
       "dependencies": [
         "TASK-008",
@@ -1251,13 +1260,23 @@
       "verification": "Actual CI export + official Android SDK apksigner/zipalign/aapt + source/hash verification",
       "owner": "coordinator",
       "session_id": "android-ci-20261030",
-      "lease_until": "2026-10-30T20:00:00Z",
+      "lease_until": null,
       "branch": "task/TASK-026-single-cafe-native",
       "issue_number": null,
       "pr_url": "https://github.com/kotlyakov/barista/pull/29",
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "commit": "32ffa2231d66aef49b26a712d84256472e86f83c",
+      "evidence": [
+        "reports/releases/ANDROID_CAFE_0_3_0.md",
+        "CI build run 41024619007 / artifact 12963425517",
+        "Library libfile_593b35c6f59081918ddbee576b8f5cf9",
+        "artifacts/android-ci-0.3.0/final-verification.log",
+        "Actual Android15 x86_64 full smoke run41028363869 SUCCESS; artifact12964722431"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW_PLUS_SELF_VERIFICATION",
+        "result": "PASS: actual unsigned export, original-key signature, official SDK checks, Android15 x86_64 end-to-end smoke. Physical Pixel separately.",
+        "scope": "review_android_build and signer/cert/ZIP/alignment/manifest/ABI checks"
+      },
       "blocker": null,
       "approval_versions": {
         "SPEC-001": 3
