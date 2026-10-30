@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "1.0",
   "updated_at": "2026-10-30",
-  "phase": "SCREEN_AUDIO_V1_PRESENTED",
+  "phase": "APPROVED_CAFE_RESTORED_NEW_FLOW_PUBLISHED",
   "game_code_exists": true,
-  "current_task": null,
-  "next_task": "TASK-015",
-  "next_action": "Показать Артуру пакет Barista-review-v1: новые меню, схемы сигналов и отдельные плееры звука/музыки. После решения — соответствующая интеграция. Продолжить точную привязку к стойке 09 после восстановления исходников.",
+  "current_task": "TASK-024",
+  "next_task": "TASK-025",
+  "next_action": "Перенести prototypes/approved-cafe/ и исходный VISUAL-002/v9 в Godot по docs/OWNER_FLOW_20261030.md. Старые отдельные экраны review-v1 отклонены, не интегрировать.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -14,16 +14,15 @@
     "visibility": "private",
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
-    "pending_sync": false,
+    "pending_sync": true,
     "head_note": "Last verified main merge and tested native PR head; bookkeeping commits may follow.",
-    "working_branch": "task/TASK-015-screen-review",
+    "working_branch": "task/TASK-024-single-cafe",
     "working_head": "902aec178ea798cd25da6f0726fc4746f11dbda4"
   },
   "blockers": [
-    "TASK-015/017: owner review of concrete v1 materials pending",
-    "TASK-015/016: approved café source helper unavailable; exact scene mapping pending",
-    "TASK-010: individual character work deferred by owner",
-    "TASK-022: real Android tests and phone calibration pending"
+    "TASK-025: native port remains; web preview is not APK",
+    "TASK-022: actual Android tests and calibration pending",
+    "Individual final characters and exact new animation/audio review pending"
   ],
   "approved_materials": [
     "SPEC-001/v3"
@@ -35,14 +34,15 @@
   "web_prototype": {
     "project_id": "appgprj_6ae1b4d1e3bc8191b569fb298107c732",
     "url": "https://barista-counter-playtest.savorycup131.chatgpt.site",
-    "source_commit": "72a14367fd7875d98bf051feed86bb977622b52b",
+    "source_commit": "80acedc5d8bd1e9b947a6cac7574a5f27050a983",
     "approved_visual": "VISUAL-002/v9; реестр и неизменяемые материалы в исходниках Site",
     "persistence": "PASS: Node + Chrome reload before/after payment; report reports/WEB_PERSISTENCE_20261029.md",
     "deferred": [
       "BL-001 разворот при уходе",
       "BL-002 дистанция в очереди",
       "BL-003 отдельные образы героев"
-    ]
+    ],
+    "flow": "intro 3s/skip, one cafe, HUD, paused hamburger menu, sound toggle, empty-counter progress"
   },
   "native": {
     "engine": "4.5.1.stable.official.f62fdbde1",
@@ -93,6 +93,7 @@
     "library_file_id": "libfile_3af7b96752388191b8d8b4dc885e7e72",
     "overview_library_file_id": "libfile_65ef7ad282488191a812779a20e929c6",
     "source_commit": "902aec178ea798cd25da6f0726fc4746f11dbda4",
-    "pr_url": "https://github.com/kotlyakov/barista/pull/27"
+    "pr_url": "https://github.com/kotlyakov/barista/pull/27",
+    "status": "CHANGES_REQUESTED_BY_OWNER_20261030"
   }
 }
