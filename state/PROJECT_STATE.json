@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "package_version": "1.0",
-  "updated_at": "2026-10-29",
-  "phase": "ANDROID_TECH_APK_BUILT_RUNTIME_BLOCKED",
+  "updated_at": "2026-10-30",
+  "phase": "NATIVE_SINGLE_CAFE_IN_REVIEW",
   "game_code_exists": true,
-  "current_task": null,
-  "next_task": "TASK-015",
-  "next_action": "Технический ARM64 APK 0.1.0 сохранён для скачивания; проверить установку/запуск на доступном Android-устройстве. Эмулятор без KVM не загрузился за 180 с. Продолжить материалы TASK-010/015/017 без изменения утверждённого общего вида 09.",
+  "current_task": "TASK-026",
+  "next_task": "TASK-022",
+  "next_action": "Проверить CI native render и собрать Android после восстановления editor/SDK. Общий вид 09 утвержден; новые аудио/intro требуют фактической проверки.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -14,17 +14,19 @@
     "visibility": "private",
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
-    "pending_sync": false,
+    "pending_sync": true,
     "head_note": "Last verified main merge and tested native PR head; bookkeeping commits may follow.",
-    "working_branch": "main",
+    "working_branch": "task/TASK-026-single-cafe-native",
     "working_head": "e9a37a81e4a349b0f464f063517727d6e981aef3"
   },
   "blockers": [
-    "TASK-022: Android emulator boot timeout without KVM; real-device tests/calibration pending",
-    "TASK-010/015/017: individual character/screens/audio approvals pending"
+    "TASK-022: physical Android runtime and calibration unavailable",
+    "New APK: editor/SDK are absent in this executor; existing debug runtime supports tests only",
+    "Final native visual and audio approval checks pending"
   ],
   "approved_materials": [
-    "SPEC-001/v3"
+    "SPEC-001/v3",
+    "VISUAL-002/v9"
   ],
   "last_verified_commit": "e9a37a81e4a349b0f464f063517727d6e981aef3",
   "ci_status": "native-check and docs-check SUCCESS on e9a37a81e4a349b0f464f063517727d6e981aef3; PR26 merged as 4c66e9456fdb669b28b207e231de4ff6e0ac7aaa.",
@@ -44,10 +46,10 @@
   },
   "native": {
     "engine": "4.5.1.stable.official.f62fdbde1",
-    "tests": "15/15 Godot scripts PASS",
+    "tests": "21/21 Godot script PASS, 30.10.2026",
     "linux_debug": "exported and headless launched",
-    "android_apk": "BUILT_TECHNICAL_0.1.0",
-    "art": "technical placeholders; approved visual 09 not yet ported",
+    "android_apk": "Existing 0.2.0 predates new shell; no new APK built",
+    "art": "original room + SVG rigs 09 ported; native render pending",
     "speed_combo": "production thresholds empty pending phone calibration",
     "zone_policy": "fixed UTC offset; DST backlog NAT-003",
     "branch": "task/TASK-004-native-foundation",
@@ -72,7 +74,9 @@
       "pr_status": "MERGED",
       "ci": "PASS: native-check, docs-check"
     },
-    "debug_signing_key_library_file_id": "libfile_76674d45c1b8819198ccdc529424af21"
+    "debug_signing_key_library_file_id": "libfile_76674d45c1b8819198ccdc529424af21",
+    "shell": "intro 3 s / play / menu / progress; mute migration and pause tested",
+    "audio": "synthesized candidate; listening not performed"
   },
   "android_sdk_license": {
     "status": "ACCEPTED",

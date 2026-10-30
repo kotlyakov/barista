@@ -4,6 +4,7 @@ const Shift=preload("res://shift/shift.gd")
 const Roster=preload("res://customers/roster.gd")
 const UPGRADES={"grind":3,"brew":3,"milk":3,"tuning":3,"grace":2,"ads":3}
 const UPGRADE_PRICES=[400,800,1400]
+const DEFAULT_PREFERENCES={"master":0.8,"music":0.5,"effects":0.8,"vibration":true,"tutorial_seen":false,"muted":false}
 const PRICES={"espresso":50,"cappuccino":80,"latte":90}
 var data={"clock":0.0,"money":0,"next_id":1,"streak":0,"rng_state":"1","profiles":{},"order":{}}
 var brew
@@ -11,6 +12,7 @@ var shift
 # Empty in production until real-phone calibration (TASK-022).
 var speed_thresholds={}
 func _init() -> void:
+ data.preferences=DEFAULT_PREFERENCES.duplicate()
  data.upgrades={"grind":0,"brew":0,"milk":0,"tuning":0,"grace":0,"ads":0}
  data.profiles=Roster.defaults()
  var roster=Roster.new(12345)
@@ -137,6 +139,14 @@ func collect(payment_id: int) -> bool:
  order.state="COLLECTED"
  order.arrival_remaining=arrival_delay()
  return true
+static func valid_preference(key: String,value) -> bool:
+ if not DEFAULT_PREFERENCES.has(key): return false
+ if key in ["vibration","tutorial_seen","muted"]: return value is bool
+ return (value is int or value is float) and is_finite(float(value)) and value>=0 and value<=1
+func set_preference(key: String,value) -> bool:
+ if not valid_preference(key,value): return false
+ data.preferences[key]=value
+ return true
 func snapshot() -> Dictionary:
  var result=data.duplicate(true)
  result.brew=brew.snapshot()
@@ -144,6 +154,8 @@ func snapshot() -> Dictionary:
 static func restore(snapshot_data: Dictionary):
  var g=load("res://orders/session.gd").new()
  g.data=snapshot_data.duplicate(true)
+ if not g.data.has("preferences"): g.data.preferences=DEFAULT_PREFERENCES.duplicate()
+ if not g.data.preferences.has("muted"): g.data.preferences.muted=false
  for key in ["money","next_id","streak"]: g.data[key]=int(g.data[key])
  for profile in g.data.profiles.values():
   profile.relationship=int(profile.relationship)

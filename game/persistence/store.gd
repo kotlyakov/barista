@@ -10,6 +10,13 @@ static func integer(value,minimum=0,maximum=2147483647) -> bool:
 static func valid(s) -> bool:
  if not s is Dictionary: return false
  if not number(s.get("clock")) or not integer(s.get("money")) or not integer(s.get("next_id"),2) or not integer(s.get("streak")): return false
+ if s.has("preferences"):
+  if not s.preferences is Dictionary: return false
+  for key in s.preferences:
+   if not Session.DEFAULT_PREFERENCES.has(key): return false
+  for key in Session.DEFAULT_PREFERENCES:
+   if key=="muted" and not s.preferences.has(key): continue
+   if not Session.valid_preference(key,s.preferences.get(key)): return false
  var upgrades=s.get("upgrades")
  if not upgrades is Dictionary or upgrades.size()!=Session.UPGRADES.size(): return false
  for id in Session.UPGRADES:

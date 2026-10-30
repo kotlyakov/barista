@@ -77,3 +77,24 @@ func end_training() -> bool:
  main_session=null
  training=false
  return true
+
+func preferences() -> Dictionary:
+ return (main_session if training else session).data.preferences
+func set_preference(key: String,value) -> bool:
+ if not ready: return false
+ var target=main_session if training else session
+ var before=target.data.preferences.duplicate()
+ if not target.set_preference(key,value): return false
+ var result=store.save(target.snapshot())
+ if result.ok:
+  error=""
+  return true
+ target.data.preferences=before
+ error=result.error
+ return false
+func begin_lesson() -> bool:
+ if training or not ready or not checkpoint(): return false
+ main_session=session
+ session=Session.new()
+ training=true
+ return true
