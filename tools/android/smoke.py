@@ -1,0 +1,114 @@
+#!/usr/bin/env python3
+"""Exercise the exported game through real Android input and durable app saves."""
+import hashlib
+import json
+import os
+from pathlib import Path
+import struct
+import subprocess
+import time
+
+PACKAGE = 'org.kotlyakov.barista.emulator'
+OUTPUT = Path(os.environ.get('BARISTA_ANDROID_EVIDENCE', 'artifacts/android-runtime'))
+OUTPUT.mkdir(parents=True, exist_ok=True)
+
+def adb(*args, binary=False):
+    return subprocess.check_output(['adb', *args], text=not binary, timeout=30)
+
+def wait_for(read, predicate, seconds=8):
+    deadline = time.monotonic() + seconds
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(.25)
+    raise AssertionError(f'Android state did not reach expected condition: {last}')
+
+def state():
+    paths = adb('shell', 'run-as', PACKAGE, 'find', 'files', '-name', 'slot*.json').splitlines()
+    candidates = []
+    for path in paths:
+        envelope = json.loads(adb('shell', 'run-as', PACKAGE, 'cat', path.strip()))
+        assert hashlib.sha256(envelope['payload'].encode()).hexdigest() == envelope['sha256']
+        candidates.append(envelope)
+    if not candidates:
+        return None
+    return json.loads(max(candidates, key=lambda e: e['sequence'])['payload'])
+
+def capture(name):
+    data = adb('exec-out', 'screencap', '-p', binary=True)
+    assert data.startswith(b'\x89PNG\r\n\x1a\n')
+    (OUTPUT / (name + '.png')).write_bytes(data)
+    return struct.unpack('>II', data[16:24])
+
+def point(x, y):
+    # The emulator is configured for a 16:9 landscape screen, matching the game.
+    return str(round(x * width / 1600)), str(round(y * height / 900))
+
+def tap(x, y):
+    adb('shell', 'input', 'tap', *point(x, y))
+
+def launch():
+    adb('shell', 'monkey', '-p', PACKAGE, '-c', 'android.intent.category.LAUNCHER', '1')
+    time.sleep(3.5)  # Three-second intro; no game time should pass during it.
+
+adb('logcat', '-c')
+adb('shell', 'wm', 'size', '1280x720')
+launch()
+width, height = capture('01-cafe')
+assert width > height and abs(width / height - 16 / 9) < .02
+initial = wait_for(state, lambda s: s is not None)
+assert initial['shift']['mode'] == 'SHOP'
+tap(540, 700)
+tap(800, 800)
+started = wait_for(state, lambda s: s['shift']['mode'] == 'RUNNING')
+tap(1490, 60)
+paused = state()
+time.sleep(.8)
+assert state()['clock'] == paused['clock'], 'Menu must freeze active Android time'
+tap(800, 525)
+assert state()['preferences']['muted'] is True
+tap(800, 625)
+capture('02-progress')
+time.sleep(.6)
+assert state()['clock'] == paused['clock'], 'Progress must remain paused'
+tap(200, 60)
+tap(800, 425)
+for i, (x, y) in enumerate([(170, 600), (540, 520), (850, 410)]):
+    if i < len(started['brew']['targets']):
+        for _ in range(started['brew']['targets'][i]):
+            tap(x, y)
+ready = state()
+assert ready['brew']['taps'] == ready['brew']['targets'], 'Native Android taps must not duplicate or disappear'
+adb('shell', 'input', 'swipe', *point(650, 760), *point(1110, 450), '500')
+payment = wait_for(state, lambda s: s['order']['state'] == 'PAYMENT')
+capture('03-payment')
+amount = payment['order']['payment']['amount']
+balance = payment['money']
+order_id = payment['order']['id']
+adb('shell', 'am', 'force-stop', PACKAGE)
+launch()
+restored = state()
+assert restored['order']['state'] == 'PAYMENT' and restored['order']['id'] == order_id
+assert restored['preferences']['muted'] is True
+tap(955, 610)
+collected = wait_for(state, lambda s: s['money'] == balance + amount)
+assert collected['order']['payment']['collected'] is True
+adb('shell', 'am', 'force-stop', PACKAGE)
+launch()
+final = state()
+assert final['money'] == balance + amount, 'Relaunch must not duplicate collected money'
+assert final['profiles'] == collected['profiles'], 'Customer mood/history must survive Android relaunch'
+capture('04-restored')
+logs = adb('logcat', '-d', '-s', 'godot', 'AndroidRuntime')
+(OUTPUT / 'logcat.txt').write_text(logs)
+assert 'FATAL EXCEPTION' not in logs and 'SCRIPT ERROR:' not in logs
+assert adb('shell', 'pidof', PACKAGE).strip(), 'Android process must remain alive'
+report = {'package': PACKAGE, 'device': adb('shell', 'getprop', 'ro.build.version.release').strip(),
+          'abi': adb('shell', 'getprop', 'ro.product.cpu.abi').strip(), 'resolution': [width, height],
+          'order_id': order_id, 'payment_amount': amount, 'balance_after': final['money'],
+          'checks': ['launch', 'real touch', 'menu/progress pause', 'mute', 'drag/drop',
+                     'restart before payment', 'collect once', 'restart after payment', 'customer history']}
+(OUTPUT / 'result.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
+print('PASS: actual Android install/launch/touch/coffee/payment/pause/save/relaunch', flush=True)
