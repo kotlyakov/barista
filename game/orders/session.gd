@@ -111,6 +111,13 @@ func deliver(cup_id: int,customer_id: String) -> bool:
  order.defects=brew.defects()
  var mood="annoyed" if order.late or quality<0.5 else "happy" if quality>=0.8 else "neutral"
  var reaction="Опоздал" if order.late else "Вкусно!" if quality>=0.8 else "Обычно" if quality>=0.5 else "Невкусно"
+ if not order.late:
+  var strongest=0.0
+  for defect in Brew.DEFECTS:
+   var severity=float(order.defects.get(defect,0))
+   if severity>strongest:
+    strongest=severity
+    reaction={"grind_bitter":"Горчит", "brew_astringent":"Вяжет", "milk_overheated":"Перегрето"}[defect]
  react(mood,reaction,8 if quality==1 else 5 if quality>=0.8 else -2 if quality>=0.5 else -10)
  var base=int(PRICES[order.recipe])
  var good=quality>=0.8 and not order.late

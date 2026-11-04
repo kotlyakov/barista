@@ -1289,8 +1289,8 @@
       "id": "TASK-028",
       "title": "Разобрать вылеты Android preview при нажатиях и помоле",
       "role": "DEVELOPER",
-      "status": "WAITING_USER",
-      "priority": 0,
+      "status": "TODO",
+      "priority": 90,
       "dependencies": [
         "TASK-027"
       ],
@@ -1329,14 +1329,71 @@
         "22 local Godot scripts PASS; diagnostic regression observed RED then GREEN",
         "Signed0.3.1 Library libfile_33dba36456f081918b04cbdaae0929ea",
         "reports/releases/ANDROID_AUDIO_0_3_1.md",
-        "Diagnostic Android15 x86_64 run41074761425 SUCCESS artifact12986123767;20 extra grinder taps with effects, clipboard report visually confirmed"
+        "Diagnostic Android15 x86_64 run41074761425 SUCCESS artifact12986123767;20 extra grinder taps with effects, clipboard report visually confirmed",
+        "04.11.2026 Артур: «Вылетоб больше нет». Снять с текущего приоритета; точная аудиопричина не подтверждена."
       ],
       "review": {
         "type": "SELF_REVIEW",
         "result": "PASS for bounded diagnostic logging, no log permissions or external telemetry, unchanged career data and original signing key. Native crash fix NOT_CONFIRMED.",
         "scope": "Mitigation/instrumentation SELF_REVIEW; actual Android smoke PASS. Root cause and physical repair not established."
       },
-      "blocker": "Underlying native audio crash not reproduced in Android15 x86_64, including enabled effects. Owner confirms muted works; need report from physical phone.",
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-029",
+      "title": "Реакции по дефектам кофе и проверка исчезновения оплаты",
+      "role": "DEVELOPER",
+      "status": "IN_REVIEW",
+      "priority": 1,
+      "dependencies": [
+        "TASK-026"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/orders/",
+        "game/tests/",
+        "docs/",
+        "tasks/",
+        "state/",
+        "BACKLOG.md",
+        "reports/native/"
+      ],
+      "acceptance": [
+        "Реплика отражает наиболее выраженный вкусовой дефект, даже при хорошем среднем качестве",
+        "Просроченная оплата не начисляется и не возвращается после перезапуска; пауза замораживает срок",
+        "Актуальный план и слова владельца о прекращении вылетов записаны без заявления об исправленной первопричине звука"
+      ],
+      "verification": "Godot domain/integration suite, documentation validator, SELF_REVIEW",
+      "owner": "coordinator",
+      "session_id": "resume-20261104",
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [
+        "docs/plans/2026-11-04-resume-development.md",
+        "game/tests/taste_reaction_test.gd: observed RED then GREEN",
+        "game/tests/payment_expiry_test.gd: PASS",
+        "24/24 Godot4.5.1 scripts PASS, Linux/headless 04.11.2026"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "No critical or important findings; both new tests independently PASS",
+        "scope": "stage-defect reaction, preserved late priority and payment expiry/pause/restart"
+      },
+      "blocker": null,
       "approval_versions": {
         "SPEC-001": 3
       },

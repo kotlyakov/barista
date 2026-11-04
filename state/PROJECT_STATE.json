@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "package_version": "1.0",
-  "updated_at": "2026-10-30",
-  "phase": "ANDROID_AUDIO_CRASH_DIAGNOSTICS",
+  "updated_at": "2026-11-04",
+  "phase": "GAMEPLAY_POLISH_AFTER_OWNER_FEEDBACK",
   "game_code_exists": true,
-  "current_task": "TASK-028",
-  "next_task": "TASK-022",
-  "next_action": "Пользователь устанавливает 0.3.1 поверх игры; для диагностики включает звук, воспроизводит сбой, сразу запускает и копирует отчёт из меню. Пока играть без звука.",
+  "current_task": "TASK-029",
+  "next_task": "TASK-015",
+  "next_action": "Завершить TASK-029 и сверить нативную сцену/управление с утверждённым видом09 по docs/plans/2026-11-04-resume-development.md. Вылеты сняты с текущего приоритета по сообщению владельца.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -14,13 +14,12 @@
     "visibility": "private",
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
-    "pending_sync": false,
+    "pending_sync": true,
     "head_note": "Native source snapshot published through GitHub API; local preparation history retained on task/TASK-024-native-cafe. Metadata commits may follow.",
-    "working_branch": "task/TASK-026-single-cafe-native",
-    "working_head": "42fa97c9ebae9ffdea54984dea4825d2562e43ae"
+    "working_branch": "task/TASK-029-gameplay-polish",
+    "working_head": "c0aebb91cf83476f83c5f5082a614982c1be4d33"
   },
   "blockers": [
-    "TASK-028: physical native audio crash; exact cause awaits copied diagnostic report",
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
     "Final specific audio/intro and individual character approvals pending; general cafe 09 approved"
   ],
@@ -46,7 +45,7 @@
   },
   "native": {
     "engine": "4.5.1.stable.official.f62fdbde1",
-    "tests": "22/22 Godot scripts PASS, 30.10.2026",
+    "tests": "24/24 Godot4.5.1 scripts PASS, Linux/headless 04.11.2026",
     "linux_debug": "exported and headless launched",
     "android_apk": "DIAGNOSTIC_0.3.1_SAVED",
     "art": "Original room + SVG rigs09; actual Linux and Android graphics rendered and inspected",
@@ -79,7 +78,7 @@
     },
     "debug_signing_key_library_file_id": "libfile_76674d45c1b8819198ccdc529424af21",
     "shell": "intro 3 s / play / menu / progress; mute migration and pause tested",
-    "audio": "OPEN BLOCKER: owner reports crashes with sound, works muted; 0.3.1 Android starts silent and can copy app audio diagnostics",
+    "audio": "Владелец 04.11: вылетов больше нет; включённый звук не уточнён. Предыдущая диагностика сохранена, точная причина неизвестна.",
     "render": "PASS: Linux7-state render plus actual Android1920x1080 with ANGLE; immediate capture may show prior frame",
     "previous_android_previews": [
       {
@@ -120,7 +119,8 @@
         "runtime_artifact": 12964722431,
         "owner_isolation": "Owner reports coffee taps work with sound disabled; underlying fault unresolved"
       }
-    ]
+    ],
+    "owner_feedback": "Вылетоб больше нет; прототип пока сильно плох, вернуться к плану."
   },
   "android_sdk_license": {
     "status": "ACCEPTED",
