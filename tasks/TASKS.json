@@ -1349,7 +1349,7 @@
       "id": "TASK-029",
       "title": "Реакции по дефектам кофе и проверка исчезновения оплаты",
       "role": "DEVELOPER",
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "priority": 1,
       "dependencies": [
         "TASK-026"
@@ -1381,7 +1381,7 @@
       "branch": "task/TASK-029-gameplay-polish",
       "issue_number": null,
       "pr_url": null,
-      "commit": null,
+      "commit": "5848918fad37d5b1674f3e11bab78d1503c99ad6",
       "evidence": [
         "docs/plans/2026-11-04-resume-development.md",
         "game/tests/taste_reaction_test.gd: observed RED then GREEN",

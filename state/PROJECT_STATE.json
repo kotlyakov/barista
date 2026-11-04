@@ -4,9 +4,9 @@
   "updated_at": "2026-11-04",
   "phase": "GAMEPLAY_POLISH_AFTER_OWNER_FEEDBACK",
   "game_code_exists": true,
-  "current_task": "TASK-029",
+  "current_task": null,
   "next_task": "TASK-015",
-  "next_action": "Завершить TASK-029 и сверить нативную сцену/управление с утверждённым видом09 по docs/plans/2026-11-04-resume-development.md. Вылеты сняты с текущего приоритета по сообщению владельца.",
+  "next_action": "TASK-029 завершён. Продолжить сверку сцены и управления с утверждённым видом09 по docs/plans/2026-11-04-resume-development.md.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -14,10 +14,10 @@
     "visibility": "private",
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
-    "pending_sync": true,
-    "head_note": "Native source snapshot published through GitHub API; local preparation history retained on task/TASK-024-native-cafe. Metadata commits may follow.",
+    "pending_sync": false,
+    "head_note": "TASK-029 implementation 5848918fad37d5b1674f3e11bab78d1503c99ad6; metadata commits may follow; main and PR29 unchanged.",
     "working_branch": "task/TASK-029-gameplay-polish",
-    "working_head": "c0aebb91cf83476f83c5f5082a614982c1be4d33"
+    "working_head": "5848918fad37d5b1674f3e11bab78d1503c99ad6"
   },
   "blockers": [
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
@@ -27,8 +27,8 @@
     "SPEC-001/v3",
     "VISUAL-002/v9"
   ],
-  "last_verified_commit": "42fa97c9ebae9ffdea54984dea4825d2562e43ae",
-  "ci_status": "PASS:22 Godot scripts; build41074447113; diagnostic Android runtime41074761425. Physical audio crash OPEN.",
+  "last_verified_commit": "5848918fad37d5b1674f3e11bab78d1503c99ad6",
+  "ci_status": "24/24 Godot4.5.1 local Linux/headless PASS; documentation PASS. Remote CI status to verify on final branch SHA.",
   "spec_version": "0.3",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
