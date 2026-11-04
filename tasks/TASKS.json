@@ -1405,7 +1405,7 @@
       "id": "TASK-030",
       "title": "Исправить перетаскивание стакана и соответствие сцены",
       "role": "DEVELOPER",
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "priority": 1,
       "dependencies": [
         "TASK-029"
@@ -1441,7 +1441,7 @@
       "branch": "task/TASK-029-gameplay-polish",
       "issue_number": null,
       "pr_url": null,
-      "commit": null,
+      "commit": "4bfe9de93144130df5b73e1b143d3e21698a058c",
       "evidence": [
         "game/tests/cup_drag_test.gd: two observed RED→GREEN regressions",
         "25/25 Godot tests PASS",
@@ -1464,7 +1464,7 @@
       "id": "TASK-031",
       "title": "Показать результат покупки улучшения и подготовить сборку",
       "role": "DEVELOPER",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "priority": 1,
       "dependencies": [
         "TASK-029"
@@ -1492,20 +1492,24 @@
       "verification": "Purchase feedback RED→GREEN, complete Godot suite, actual Android export/signing checks",
       "owner": "coordinator",
       "session_id": "progress-preview-20261104",
-      "lease_until": "2026-11-04T13:13:50.876240+00:00",
+      "lease_until": null,
       "branch": "task/TASK-029-gameplay-polish",
       "issue_number": null,
       "pr_url": null,
-      "commit": null,
+      "commit": "4bfe9de93144130df5b73e1b143d3e21698a058c",
       "evidence": [
         "progress_purchase_test.gd: observed RED→GREEN",
         "26/26 Godot tests PASS",
-        "Independent review: no critical/important issues; purchase test independently PASS"
+        "Independent review: no critical/important issues; purchase test independently PASS",
+        "Android build41806172799 SUCCESS / artifact13310027875",
+        "reports/releases/ANDROID_CAFE_0_3_2.md",
+        "Signed preview Library libfile_5393467b72d88191a825a7cd930c7302; v2/v3/16KB/manifest/ABI/ZIP PASS",
+        "Android15 x86_64 runtime41806463440 SUCCESS; evidence13308749985/result.json fetched and checked"
       ],
       "review": {
-        "type": "INDEPENDENT_CODE_REVIEW",
-        "result": "PASS for purchase feedback; release verification pending",
-        "scope": "purchase feedback and durable debit/upgrade"
+        "type": "INDEPENDENT_CODE_REVIEW_PLUS_RELEASE_VERIFICATION",
+        "result": "No critical/important findings;26 Godot tests; signed APK checks and exact-source Android runtime PASS",
+        "scope": "purchase feedback independently reviewed; build/signature/certificate/ABI/ZIP and Android input/save smoke actually verified"
       },
       "blocker": null,
       "approval_versions": {
