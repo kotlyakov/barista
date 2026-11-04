@@ -4,6 +4,7 @@
   "commit": "bda169a08fe6287c5c9ce9a8b57dfa8412e7a937",
   "scope": "Original room and temporary rigs. Native pose implementation is a new work build, not final animation approval.",
   "sources": {
+    "app.mjs": "b98a0fa62a501ba6b591a2f6b23fca7402d441314c28e9593e26dac3ac0b4336",
     "actors.mjs": "111e2aa4d81ba7fe9dd67bf5fcd33aa8b38946044dcfe8f2a4c73c0c813ec0a8",
     "assets/cafe-animation-room.png": "36608a556388667e4aff1bf4d24c5a0e11723ef51e2f592c1f45424b2884acd9",
     "index.html": "e4e2588f1c5a94a12e70a7798ebbf1654534b076eec561e3541323fb66914ad5",

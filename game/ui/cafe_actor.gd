@@ -14,12 +14,15 @@ var base_scale=1.04
 var textures={}
 var walk=0.0
 var held_cup=false
+var reaching=false
+var cup_recipe="cappuccino"
 func enter(id: String,immediate=false) -> void:
  actor_id=id
  if textures.get("id")!=id:
   textures={"id":id}
   var parts=["body"]
-  if id!="barista": parts.append_array(["hips","leg0","leg1"])
+  if id=="barista": parts.append("body-reaching")
+  if id!="barista": parts.append_array(["hips","leg0","leg1","cup-espresso","cup-cappuccino","cup-latte"])
   for face in EMOTIONS:
    parts.append("head-"+face)
    parts.append("head-"+face+"-blink")
@@ -83,9 +86,10 @@ func draw_on(canvas: CanvasItem) -> void:
   for i in range(2):
    var stride=sin(clock*5.6+i*PI)*walk
    layer(canvas,"leg"+str(i),Vector2(0,-maxf(0,stride)*6),stride*.19,Vector2(-30 if i==0 else 80,hip))
- layer(canvas,"body",Vector2(0,sin(clock*1.05)*.7*(1-walk)))
+ layer(canvas,"body-reaching" if actor_id=="barista" and reaching else "body",Vector2(0,sin(clock*1.05)*.7*(1-walk)))
  var blink=fmod(clock,4.7)>.0 and fmod(clock,4.7)<.14
  var suffix="-blink" if blink else ""
  if emotion_mix<1: layer(canvas,"head-"+previous_emotion+suffix,Vector2.ZERO,0,Vector2.ZERO,1-emotion_mix)
  layer(canvas,"head-"+emotion+suffix,Vector2.ZERO,0,Vector2.ZERO,emotion_mix)
+ if held_cup and actor_id!="barista": layer(canvas,"cup-"+cup_recipe)
  canvas.draw_set_transform(Vector2.ZERO)

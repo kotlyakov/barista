@@ -1,0 +1,30 @@
+extends SceneTree
+func touch(node,point: Vector2) -> void:
+ var e=InputEventScreenTouch.new()
+ e.index=0;e.position=point;e.pressed=true;node._input(e)
+ e.pressed=false;node._input(e)
+func _init() -> void: call_deferred("run")
+func run() -> void:
+ var node=load("res://ui/main.tscn").instantiate()
+ node.save_directory="user://progress-buy-"+str(Time.get_ticks_usec())
+ root.add_child(node)
+ node.set_process(false)
+ node.finish_intro()
+ node.open_menu()
+ touch(node,node.MENU_PROGRESS.get_center())
+ var point=node.shop_card(0).get_center()
+ touch(node,point)
+ assert(node.game.data.money==0 and node.game.data.upgrades.grind==0)
+ assert("монет" in str(node.get("shop_message")),"unaffordable purchase must explain why it did nothing")
+ node.game.data.money=2000
+ node.repository.checkpoint()
+ touch(node,point)
+ assert(node.game.data.money==1600 and node.game.data.upgrades.grind==1)
+ assert("1" in node.shop_message and "Жернова" in node.shop_message,"successful purchase confirms new level")
+ assert(node.paused and node.screen=="progress")
+ var restored=load("res://persistence/repository.gd").new(node.save_directory)
+ assert(restored.session.data.money==1600 and restored.session.data.upgrades.grind==1)
+ node.queue_free()
+ await process_frame
+ print("PASS: progress purchase refusal/success feedback, durable debit/upgrade and paused scene")
+ quit()

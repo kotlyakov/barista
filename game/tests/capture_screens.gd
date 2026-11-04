@@ -32,15 +32,25 @@ func run() -> void:
   for j in range(node.game.brew.targets[i]): node.act("tap",[i])
  node.bar_progress=[1.0,1.0,1.0]
  await capture("04-cafe-cup")
+ node.dragging=true
+ node.cup_position=Vector2(900,590)
+ await capture("04b-cafe-drag")
+ node.dragging=false
+ node.cup_position=node.CUP_HOME
  node.act("take_cup")
  node.act("deliver",[node.game.data.order.id,node.game.data.order.customer_id])
  node.sync_guest()
  await capture("05-cafe-payment")
+ node.act("collect",[node.game.data.order.id])
+ node.sync_guest()
+ node.guest.step(.4)
+ node.guest.step(.4)
+ await capture("05b-cafe-leaving-with-cup")
  node.open_menu()
  await capture("06-menu")
  node.screen="progress"
  await capture("07-progress-no-people")
  node.queue_free()
  await process_frame
- print("PASS: rendered 7 native single-cafe states")
+ print("PASS: rendered 9 native single-cafe states")
  quit()

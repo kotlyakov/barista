@@ -79,7 +79,7 @@ def launch():
 
 try:
     source = json.loads(Path('artifacts/android-input/source.json').read_text())
-    assert source['source_commit'] == 'b09bf205d29f80545b754000a521480808f81ba9', 'Wrong pinned preview artifact'
+    assert source['source_commit'] == os.environ['BARISTA_EXPECTED_SOURCE_SHA'], 'Wrong pinned preview artifact'
     adb('logcat', '-c')
     launch()
     width, height = capture('01-cafe')
@@ -153,7 +153,7 @@ try:
     (OUTPUT / 'logcat.txt').write_text(logs)
     assert 'FATAL EXCEPTION' not in logs and 'SCRIPT ERROR:' not in logs
     assert adb('shell', 'pidof', PACKAGE).strip(), 'Android process must remain alive'
-    report = {'source_commit': source['source_commit'], 'build_run': 41074447113, 'package': PACKAGE, 'device': adb('shell', 'getprop', 'ro.build.version.release').strip(),
+    report = {'source_commit': source['source_commit'], 'build_run': int(os.environ['BARISTA_BUILD_RUN']), 'package': PACKAGE, 'device': adb('shell', 'getprop', 'ro.build.version.release').strip(),
               'abi': adb('shell', 'getprop', 'ro.product.cpu.abi').strip(), 'resolution': [width, height],
               'order_id': order_id, 'payment_amount': amount, 'balance_after': final['money'],
               'checks': ['launch', 'real touch', '20 extra grinder taps with audio enabled', 'diagnostic report button', 'menu/progress pause', 'mute', 'drag/drop',

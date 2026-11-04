@@ -21,7 +21,7 @@ func run() -> void:
  touch(node,node.CUP_HOME,true)
  touch(node,Vector2(10,800),false)
  assert(node.game.brew.locked and node.game.data.order.state=="BREWING")
- touch(node,node.GUEST_RECT.get_center(),true);touch(node,node.GUEST_RECT.get_center(),false)
+ touch(node,node.cup_position,true);touch(node,node.GUEST_RECT.get_center(),false)
  assert(node.game.data.order.state=="PAYMENT")
  var restored=load("res://persistence/repository.gd").new(path)
  assert(restored.session.data.order.state=="PAYMENT")

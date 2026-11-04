@@ -1400,6 +1400,120 @@
       "decision_records": {
         "D01": "D01"
       }
+    },
+    {
+      "id": "TASK-030",
+      "title": "Исправить перетаскивание стакана и соответствие сцены",
+      "role": "DEVELOPER",
+      "status": "IN_REVIEW",
+      "priority": 1,
+      "dependencies": [
+        "TASK-029"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/ui/",
+        "game/tests/",
+        "docs/",
+        "reports/native/",
+        "state/",
+        "tasks/",
+        "BACKLOG.md",
+        "game/content/art/cafe/",
+        "tools/art/"
+      ],
+      "acceptance": [
+        "Стакан сохраняет смещение захвата и выдаётся только перетаскиванием его центра в зону клиента",
+        "Тап клиента, второй палец и отменённый touch не выдают оставшийся на стойке стакан",
+        "После промаха, паузы и возврата можно снова взять стакан без скачка",
+        "Сцена сверена с эталоном09; найдённые расхождения описаны",
+        "Выданный стакан из исходной графики09 остаётся в руке гостя после сбора/исчезновения оплаты и во время ухода"
+      ],
+      "verification": "RED→GREEN touch regression, full Godot suite, rendered comparison and review",
+      "owner": "coordinator",
+      "session_id": "cafe-polish-20261104",
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [
+        "game/tests/cup_drag_test.gd: two observed RED→GREEN regressions",
+        "25/25 Godot tests PASS",
+        "9 actual Linux/Mesa rendered states; cup/drag/payment/progress viewed"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "No critical or important regressions; independently rerun 25/25 Godot tests PASS",
+        "scope": "drag/pointer cancellation, preserved offset, held cups, approved graphics exporter"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-031",
+      "title": "Показать результат покупки улучшения и подготовить сборку",
+      "role": "DEVELOPER",
+      "status": "IN_PROGRESS",
+      "priority": 1,
+      "dependencies": [
+        "TASK-029"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/",
+        "tools/",
+        ".github/workflows/",
+        "docs/",
+        "reports/",
+        "state/",
+        "tasks/",
+        "BACKLOG.md"
+      ],
+      "acceptance": [
+        "Отказ покупки явно объяснён; успешная покупка показывает новое улучшение и сохраняется",
+        "Подготовлена новая версия preview с прежним пакетом и подписью либо записан точный блок сборки"
+      ],
+      "verification": "Purchase feedback RED→GREEN, complete Godot suite, actual Android export/signing checks",
+      "owner": "coordinator",
+      "session_id": "progress-preview-20261104",
+      "lease_until": "2026-11-04T13:13:50.876240+00:00",
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [
+        "progress_purchase_test.gd: observed RED→GREEN",
+        "26/26 Godot tests PASS",
+        "Independent review: no critical/important issues; purchase test independently PASS"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "PASS for purchase feedback; release verification pending",
+        "scope": "purchase feedback and durable debit/upgrade"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
     }
   ]
 }

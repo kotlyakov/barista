@@ -8,7 +8,9 @@ const Gate = preload("res://ui/pointer_gate.gd")
 var game = Session.new()
 var cup_position=Vector2(650,760)
 var dragging=false
+var cup_grab_offset=Vector2.ZERO
 var next_in=0.0
+var shop_message=""
 var last_purchase=-1000
 var upgrade_ids=["grind","brew","milk","tuning","grace","ads"]
 var upgrade_names=["Жернова","Кофемашина","Молоко","Точная настройка","Защита","Реклама"]
@@ -33,6 +35,7 @@ var shown_order=-1
 var visual_clock=0.0
 var bar_progress=[0.0,0.0,0.0]
 var outlines=[preload("res://content/art/cafe/outline0.svg"),preload("res://content/art/cafe/outline1.svg"),preload("res://content/art/cafe/outline2.svg")]
+var cup_textures={"espresso":preload("res://content/art/cafe/cup-espresso.svg"),"cappuccino":preload("res://content/art/cafe/cup-cappuccino.svg"),"latte":preload("res://content/art/cafe/cup-latte.svg")}
 var room=preload("res://content/art/cafe/room.png")
 const RECIPE_NAMES={"espresso":"Эспрессо","cappuccino":"Капучино","latte":"Латте"}
 const BAR_POSITIONS=[Vector2(64,486),Vector2(432,360),Vector2(768,261)]
@@ -55,7 +58,8 @@ func sync_guest(immediate=false) -> void:
   shown_order=int(order.id)
   guest.enter("beard" if int(order.customer_id.right(2))%2==1 else "hawaii",immediate)
  guest.set_emotion(game.data.profiles[order.customer_id].mood)
- guest.held_cup=order.state=="PAYMENT"
+ guest.held_cup=order.state in ["PAYMENT","COLLECTED","UNPAID"]
+ guest.cup_recipe=order.recipe
  if order.state in ["COLLECTED","LEFT","UNPAID","CLOSED","DORMANT"]: guest.depart()
 func _ready() -> void:
  repository=Repository.new(save_directory,career_enabled)
@@ -144,6 +148,10 @@ func _input(event: InputEvent) -> void:
  var action=pointer.route(event)
  if action.is_empty(): return
  var point=action.position
+ if action.action=="cancel":
+  dragging=false
+  queue_redraw()
+  return
  if screen=="intro":
   if action.action=="press" and not paused:
    finish_intro()
@@ -182,7 +190,11 @@ func _input(event: InputEvent) -> void:
    elif game.shift!=null and game.shift.data.mode=="SHOP":
     for i in range(6):
      if shop_card(i).has_point(point):
-      if not act("purchase",[upgrade_ids[i],int(game.data.upgrades[upgrade_ids[i]])]): message="Недостаточно монет или достигнут максимум"
+      var level=int(game.data.upgrades[upgrade_ids[i]])
+      if act("purchase",[upgrade_ids[i],level]): shop_message=upgrade_names[i]+" · уровень "+str(level+1)
+      elif repository.error!="": shop_message="Покупка не сохранена"
+      elif level>=Session.UPGRADES[upgrade_ids[i]]: shop_message="Улучшение уже на максимуме"
+      else: shop_message="Недостаточно монет"
    pointer.cancel()
    queue_redraw()
    return
@@ -224,22 +236,21 @@ func _input(event: InputEvent) -> void:
     if act("collect",[game.data.order.payment.id]) and screen=="lesson":
      lesson_completed=true
      repository.set_preference("tutorial_seen",true)
-   elif game.brew.locked and game.data.order.state=="BREWING" and GUEST_RECT.has_point(point):
-    act("deliver",[game.data.order.id,game.data.order.customer_id])
-   elif game.data.order.state=="BREWING" and game.brew.ready() and Rect2(CUP_HOME-Vector2(60,90),Vector2(120,160)).has_point(point):
+   elif game.data.order.state=="BREWING" and game.brew.ready() and Rect2(cup_position-Vector2(60,90),Vector2(120,160)).has_point(point):
     if game.brew.locked or act("take_cup"):
      dragging=true
-     cup_position=point
+     cup_grab_offset=cup_position-point
    else:
     for index in range(station_rects.size()):
      if station_rects[index].has_point(point):
       var was_complete=game.brew.complete(index)
       if act("tap",[index]):
        if not was_complete and game.brew.complete(index) and repository.preferences().vibration: Input.vibrate_handheld(20)
- elif not paused and action.action=="move" and dragging: cup_position=point
+ elif not paused and action.action=="move" and dragging: cup_position=point+cup_grab_offset
  elif action.action=="release" and dragging:
   dragging=false
-  if not paused and GUEST_RECT.has_point(point): act("deliver",[game.data.order.id,game.data.order.customer_id])
+  cup_position=point+cup_grab_offset
+  if not paused and GUEST_RECT.has_point(cup_position): act("deliver",[game.data.order.id,game.data.order.customer_id])
  queue_redraw()
 func text_at(point: Vector2,value: String,size=26,color=Color("eddfc8")) -> void:
  draw_string(font,point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,size,color)
@@ -269,7 +280,7 @@ func _draw() -> void:
    draw_button(MENU_SOUND,"Звук выключен" if audio.muted else "Звук включён")
    draw_button(MENU_PROGRESS,"Прогресс")
    draw_button(MENU_REPORT,"Отчёт скопирован" if report_copied else "Скопировать отчёт")
-   text_at(Vector2(420,815),"Диагностика 0.3.1 · при запуске звук выключен",24)
+   text_at(Vector2(420,815),"Предпросмотр 0.3.2 · при запуске звук выключен",24)
   else:
    draw_button(MENU_RESUME,"Подтвердить сброс" if reset_pending else "Сбросить профиль…")
    draw_button(MENU_SOUND,"Отмена")
@@ -282,7 +293,7 @@ func _draw() -> void:
   text_at(Vector2(50,871),"Не удалось сохранить: "+repository.error+". Действие не записано.",23,Color("ee9a86"))
 func draw_play() -> void:
  var order=game.data.order
- if order.state in ["BREWING","PAYMENT"] and guest.phase!="gone":
+ if order.state in ["BREWING","PAYMENT"] and guest.phase=="idle":
   var label=guest.position+Vector2(-90,-155)*guest.scale.x
   text_at(label,"Бородач" if guest.actor_id=="beard" else "Гаваец",26)
   text_at(label+Vector2(0,30),RECIPE_NAMES[order.recipe],23,Color("ddc6a6"))
@@ -303,8 +314,9 @@ func draw_play() -> void:
    text_at(center+Vector2(-7,8),"₽",23,Color("80531f"))
   text_at(COIN_RECT.position+Vector2(-15,125),str(order.payment.amount)+" монет",22,Color("f2cd87"))
  if order.state=="BREWING" and game.brew.ready():
+  if barista.reaching: draw_arm(cup_position)
   draw_cup(cup_position)
-  text_at(CUP_HOME+Vector2(-68,100),RECIPE_NAMES[order.recipe],22)
+  if not barista.reaching: text_at(CUP_HOME+Vector2(-68,100),RECIPE_NAMES[order.recipe],22)
  if screen=="lesson": text_at(Vector2(420,160),lesson_hint(),24)
 func draw_day_controls() -> void:
  if repository.training:
@@ -331,6 +343,9 @@ func shop_card(index: int) -> Rect2:
 func draw_progress() -> void:
  draw_button(BACK_BUTTON,"‹ Назад в меню")
  text_at(Vector2(1070,145),"ПРОГРЕСС",32)
+ if shop_message!="":
+  draw_style_box(panel(Color("142027ed")),Rect2(355,530,1090,52))
+  text_at(Vector2(375,565),shop_message,24)
  var effects=["−1 тап за уровень","−1 тап за уровень","−1 тап за уровень","Медленнее порча","+1 безопасный перетап","Гости приходят чаще"]
  for i in range(6):
   var rect=shop_card(i)
@@ -369,6 +384,7 @@ func texture_polygon(points: PackedVector2Array) -> void:
  for point in points: uv.append(point/Vector2(1600,900))
  draw_polygon(points,PackedColorArray([Color.WHITE]),uv,room)
 func draw_cafe() -> void:
+ barista.reaching=screen in ["","lesson"] and game.data.order.state=="BREWING" and game.brew.ready() and (dragging or cup_position.distance_to(CUP_HOME)>1)
  draw_texture_rect(room,Rect2(0,0,1600,900),false)
  if screen!="progress":
   barista.draw_on(self)
@@ -378,11 +394,29 @@ func draw_cafe() -> void:
  texture_polygon(PackedVector2Array([Vector2(375,452),Vector2(478,408),Vector2(490,385),Vector2(654,384),Vector2(706,406),Vector2(709,680),Vector2(415,680),Vector2(415,568),Vector2(375,568)]))
  texture_polygon(PackedVector2Array([Vector2(760,309),Vector2(907,309),Vector2(907,420),Vector2(940,420),Vector2(940,518),Vector2(758,518)]))
  texture_polygon(PackedVector2Array([Vector2(0,681),Vector2(332,677),Vector2(698,649),Vector2(1218,617),Vector2(1220,900),Vector2(0,900)]))
+func draw_arm(at: Vector2) -> void:
+ # Same quadratic curve, origin and stroke colours as VISUAL-002/v9 drawArm().
+ var origin=barista.position+Vector2(-57+sin(barista.clock*.73)*1.2,334)*barista.scale
+ var delta=at-origin
+ var control=origin+Vector2(delta.x*.42,delta.y*.3+32)
+ var points=PackedVector2Array()
+ for i in range(33):
+  var t=i/32.0
+  points.append((1-t)*(1-t)*origin+2*(1-t)*t*control+t*t*at)
+ draw_polyline(points,Color("171318"),28,true)
+ draw_polyline(points,Color("c58155"),22,true)
+ for cap in [origin,at]:
+  draw_circle(cap,14,Color("171318"))
+  draw_circle(cap,11,Color("c58155"))
+ var palm=PackedVector2Array()
+ for i in range(65):
+  var angle=i*TAU/64
+  palm.append(at+Vector2(0,16)+Vector2(cos(angle)*18,sin(angle)*12))
+ draw_colored_polygon(palm,Color("d39264"))
+ draw_polyline(palm,Color("1d1717"),2.5,true)
 func draw_cup(at: Vector2) -> void:
  draw_set_transform(at)
- draw_colored_polygon(PackedVector2Array([Vector2(-35,-50),Vector2(35,-50),Vector2(25,45),Vector2(-25,45)]),Color("e8d6b7"))
- draw_colored_polygon(PackedVector2Array([Vector2(-31,-22),Vector2(31,-22),Vector2(28,20),Vector2(-28,20)]),Color("588a77"))
- draw_ellipse(Vector2(0,-50),Vector2(36,10),Color("f5e6cb"))
+ draw_texture_rect(cup_textures[game.data.order.recipe],Rect2(-55,-110,110,157),false)
  for i in range(3):
   var points=PackedVector2Array()
   for j in range(14):
@@ -390,10 +424,6 @@ func draw_cup(at: Vector2) -> void:
    points.append(Vector2((i-1)*12+sin(j*.4+visual_clock*2+i)*5,-55-j*3-rise*.35))
   draw_polyline(points,Color(.95,.91,.82,.25+.16*sin(visual_clock+i)),2,true)
  draw_set_transform(Vector2.ZERO)
-func draw_ellipse(center: Vector2,radius: Vector2,color: Color) -> void:
- draw_set_transform(cup_position+center,0,radius)
- draw_circle(Vector2.ZERO,1,color)
- draw_set_transform(cup_position)
 
 
 func start_lesson() -> void:

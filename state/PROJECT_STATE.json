@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "1.0",
   "updated_at": "2026-11-04",
-  "phase": "GAMEPLAY_POLISH_AFTER_OWNER_FEEDBACK",
+  "phase": "CAFE_POLISH_PREVIEW_BUILD",
   "game_code_exists": true,
-  "current_task": null,
-  "next_task": "TASK-015",
-  "next_action": "TASK-029 завершён. Продолжить сверку сцены и управления с утверждённым видом09 по docs/plans/2026-11-04-resume-development.md.",
+  "current_task": "TASK-031",
+  "next_task": "TASK-022",
+  "next_action": "Собрать0.3.2/code5 из текущей ветки, подписать прежним ключом, проверить Android runtime и сохранить preview.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -14,7 +14,7 @@
     "visibility": "private",
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
-    "pending_sync": false,
+    "pending_sync": true,
     "head_note": "TASK-029 implementation 5848918fad37d5b1674f3e11bab78d1503c99ad6; metadata commits may follow; main and PR29 unchanged.",
     "working_branch": "task/TASK-029-gameplay-polish",
     "working_head": "5848918fad37d5b1674f3e11bab78d1503c99ad6"
@@ -45,7 +45,7 @@
   },
   "native": {
     "engine": "4.5.1.stable.official.f62fdbde1",
-    "tests": "24/24 Godot4.5.1 scripts PASS, Linux/headless 04.11.2026",
+    "tests": "26/26 Godot4.5.1 Linux/headless PASS,04.11.2026",
     "linux_debug": "exported and headless launched",
     "android_apk": "DIAGNOSTIC_0.3.1_SAVED",
     "art": "Original room + SVG rigs09; actual Linux and Android graphics rendered and inspected",
