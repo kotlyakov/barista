@@ -421,7 +421,7 @@
       "id": "TASK-010",
       "title": "Подготовить шесть именных героев",
       "role": "ART_UI",
-      "status": "IN_PROGRESS",
+      "status": "TODO",
       "priority": 10,
       "dependencies": [
         "TASK-003"
@@ -439,9 +439,9 @@
         "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
       ],
       "verification": "Просмотр листов героев, отсутствие подмены утверждения",
-      "owner": "coordinator",
-      "session_id": "native-cafe-20261029",
-      "lease_until": "2026-10-29T18:00:00Z",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
       "branch": "task/TASK-024-native-cafe",
       "issue_number": 10,
       "pr_url": null,
@@ -450,7 +450,8 @@
       "review": null,
       "blocker": null,
       "approval_versions": {},
-      "decision_records": {}
+      "decision_records": {},
+      "notes": "Возврат в очередь:просроченная сессия29.10;накопленные материалы/ветка и история сохранены,финальные материалы ещё не одобрены."
     },
     {
       "id": "TASK-011",
@@ -659,7 +660,7 @@
       "id": "TASK-015",
       "title": "Подготовить макеты всех экранов и анимаций",
       "role": "ART_UI",
-      "status": "IN_PROGRESS",
+      "status": "TODO",
       "priority": 15,
       "dependencies": [
         "TASK-003"
@@ -677,9 +678,9 @@
         "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
       ],
       "verification": "Просмотр в целевых пропорциях; решение Артура",
-      "owner": "coordinator",
-      "session_id": "native-cafe-20261029",
-      "lease_until": "2026-10-29T18:00:00Z",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
       "branch": "task/TASK-024-native-cafe",
       "issue_number": 15,
       "pr_url": null,
@@ -688,7 +689,8 @@
       "review": null,
       "blocker": null,
       "approval_versions": {},
-      "decision_records": {}
+      "decision_records": {},
+      "notes": "Возврат в очередь:просроченная сессия29.10;накопленные материалы/ветка и история сохранены,финальные материалы ещё не одобрены."
     },
     {
       "id": "TASK-016",
@@ -737,7 +739,7 @@
       "id": "TASK-017",
       "title": "Подготовить и утвердить набор звука",
       "role": "AUDIO",
-      "status": "IN_PROGRESS",
+      "status": "TODO",
       "priority": 17,
       "dependencies": [
         "TASK-001"
@@ -755,9 +757,9 @@
         "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
       ],
       "verification": "Прослушивание всего набора и проверка реестра",
-      "owner": "coordinator",
-      "session_id": "native-cafe-20261029",
-      "lease_until": "2026-10-29T18:00:00Z",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
       "branch": "task/TASK-024-native-cafe",
       "issue_number": 17,
       "pr_url": null,
@@ -766,7 +768,8 @@
       "review": null,
       "blocker": null,
       "approval_versions": {},
-      "decision_records": {}
+      "decision_records": {},
+      "notes": "Возврат в очередь:просроченная сессия29.10;накопленные материалы/ветка и история сохранены,финальные материалы ещё не одобрены."
     },
     {
       "id": "TASK-018",
@@ -1289,8 +1292,8 @@
       "id": "TASK-028",
       "title": "Разобрать вылеты Android preview при нажатиях и помоле",
       "role": "DEVELOPER",
-      "status": "WAITING_USER",
-      "priority": 0,
+      "status": "TODO",
+      "priority": 90,
       "dependencies": [
         "TASK-027"
       ],
@@ -1329,20 +1332,449 @@
         "22 local Godot scripts PASS; diagnostic regression observed RED then GREEN",
         "Signed0.3.1 Library libfile_33dba36456f081918b04cbdaae0929ea",
         "reports/releases/ANDROID_AUDIO_0_3_1.md",
-        "Diagnostic Android15 x86_64 run41074761425 SUCCESS artifact12986123767;20 extra grinder taps with effects, clipboard report visually confirmed"
+        "Diagnostic Android15 x86_64 run41074761425 SUCCESS artifact12986123767;20 extra grinder taps with effects, clipboard report visually confirmed",
+        "04.11.2026 Артур: «Вылетоб больше нет». Снять с текущего приоритета; точная аудиопричина не подтверждена."
       ],
       "review": {
         "type": "SELF_REVIEW",
         "result": "PASS for bounded diagnostic logging, no log permissions or external telemetry, unchanged career data and original signing key. Native crash fix NOT_CONFIRMED.",
         "scope": "Mitigation/instrumentation SELF_REVIEW; actual Android smoke PASS. Root cause and physical repair not established."
       },
-      "blocker": "Underlying native audio crash not reproduced in Android15 x86_64, including enabled effects. Owner confirms muted works; need report from physical phone.",
+      "blocker": null,
       "approval_versions": {
         "SPEC-001": 3
       },
       "decision_records": {
         "D01": "D01"
       }
+    },
+    {
+      "id": "TASK-029",
+      "title": "Реакции по дефектам кофе и проверка исчезновения оплаты",
+      "role": "DEVELOPER",
+      "status": "DONE",
+      "priority": 1,
+      "dependencies": [
+        "TASK-026"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/orders/",
+        "game/tests/",
+        "docs/",
+        "tasks/",
+        "state/",
+        "BACKLOG.md",
+        "reports/native/"
+      ],
+      "acceptance": [
+        "Реплика отражает наиболее выраженный вкусовой дефект, даже при хорошем среднем качестве",
+        "Просроченная оплата не начисляется и не возвращается после перезапуска; пауза замораживает срок",
+        "Актуальный план и слова владельца о прекращении вылетов записаны без заявления об исправленной первопричине звука"
+      ],
+      "verification": "Godot domain/integration suite, documentation validator, SELF_REVIEW",
+      "owner": "coordinator",
+      "session_id": "resume-20261104",
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": "5848918fad37d5b1674f3e11bab78d1503c99ad6",
+      "evidence": [
+        "docs/plans/2026-11-04-resume-development.md",
+        "game/tests/taste_reaction_test.gd: observed RED then GREEN",
+        "game/tests/payment_expiry_test.gd: PASS",
+        "24/24 Godot4.5.1 scripts PASS, Linux/headless 04.11.2026"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "No critical or important findings; both new tests independently PASS",
+        "scope": "stage-defect reaction, preserved late priority and payment expiry/pause/restart"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-030",
+      "title": "Исправить перетаскивание стакана и соответствие сцены",
+      "role": "DEVELOPER",
+      "status": "DONE",
+      "priority": 1,
+      "dependencies": [
+        "TASK-029"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/ui/",
+        "game/tests/",
+        "docs/",
+        "reports/native/",
+        "state/",
+        "tasks/",
+        "BACKLOG.md",
+        "game/content/art/cafe/",
+        "tools/art/"
+      ],
+      "acceptance": [
+        "Стакан сохраняет смещение захвата и выдаётся только перетаскиванием его центра в зону клиента",
+        "Тап клиента, второй палец и отменённый touch не выдают оставшийся на стойке стакан",
+        "После промаха, паузы и возврата можно снова взять стакан без скачка",
+        "Сцена сверена с эталоном09; найдённые расхождения описаны",
+        "Выданный стакан из исходной графики09 остаётся в руке гостя после сбора/исчезновения оплаты и во время ухода"
+      ],
+      "verification": "RED→GREEN touch regression, full Godot suite, rendered comparison and review",
+      "owner": "coordinator",
+      "session_id": "cafe-polish-20261104",
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": "4bfe9de93144130df5b73e1b143d3e21698a058c",
+      "evidence": [
+        "game/tests/cup_drag_test.gd: two observed RED→GREEN regressions",
+        "25/25 Godot tests PASS",
+        "9 actual Linux/Mesa rendered states; cup/drag/payment/progress viewed"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "No critical or important regressions; independently rerun 25/25 Godot tests PASS",
+        "scope": "drag/pointer cancellation, preserved offset, held cups, approved graphics exporter"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-031",
+      "title": "Показать результат покупки улучшения и подготовить сборку",
+      "role": "DEVELOPER",
+      "status": "DONE",
+      "priority": 1,
+      "dependencies": [
+        "TASK-029"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/",
+        "tools/",
+        ".github/workflows/",
+        "docs/",
+        "reports/",
+        "state/",
+        "tasks/",
+        "BACKLOG.md"
+      ],
+      "acceptance": [
+        "Отказ покупки явно объяснён; успешная покупка показывает новое улучшение и сохраняется",
+        "Подготовлена новая версия preview с прежним пакетом и подписью либо записан точный блок сборки"
+      ],
+      "verification": "Purchase feedback RED→GREEN, complete Godot suite, actual Android export/signing checks",
+      "owner": "coordinator",
+      "session_id": "progress-preview-20261104",
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": "4bfe9de93144130df5b73e1b143d3e21698a058c",
+      "evidence": [
+        "progress_purchase_test.gd: observed RED→GREEN",
+        "26/26 Godot tests PASS",
+        "Independent review: no critical/important issues; purchase test independently PASS",
+        "Android build41806172799 SUCCESS / artifact13310027875",
+        "reports/releases/ANDROID_CAFE_0_3_2.md",
+        "Signed preview Library libfile_5393467b72d88191a825a7cd930c7302; v2/v3/16KB/manifest/ABI/ZIP PASS",
+        "Android15 x86_64 runtime41806463440 SUCCESS; evidence13308749985/result.json fetched and checked"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW_PLUS_RELEASE_VERIFICATION",
+        "result": "No critical/important findings;26 Godot tests; signed APK checks and exact-source Android runtime PASS",
+        "scope": "purchase feedback independently reviewed; build/signature/certificate/ABI/ZIP and Android input/save smoke actually verified"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "role": "GAME_DESIGNER",
+      "status": "DONE",
+      "priority": 1,
+      "dependencies": [
+        "TASK-031"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "docs/",
+        "state/",
+        "tasks/",
+        "BACKLOG.md",
+        "BUGS.md"
+      ],
+      "verification": "Сверка всех9 пунктов,10 цветовых/вкусовых и10 температурных градаций; проверка JSON; builder review документа",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/30",
+      "commit": "4775a15f0bbe683515b54e4db898a8840977e050",
+      "evidence": [
+        "docs/superpowers/specs/2026-11-05-free-service-v041-design.md",
+        "Builder review:разделены счётчики/качество;добавлены точные тепловые правила и таблица R",
+        "Формулы проверены на концах диапазона и монотонность;идеальный100/холодный25/перегрев54.2",
+        "docs/GAME_SPEC.md0.4.1;SPEC-001/v4;фиксация владельцем05.11;docs/ROGUELIKE_PROPOSALS.md отдельно",
+        "https://github.com/kotlyakov/barista/commit/4775a15f0bbe683515b54e4db898a8840977e050"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS:JSON,уникальныеID,совпадение каноническогоТЗ/снимка иSHA256,отделениеPROPOSED;GitHub docs validate success.",
+        "scope": "Документация0.4.1;игровой код не менялся."
+      },
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {},
+      "id": "TASK-032",
+      "title": "Согласовать ТЗ0.4.1:свободный стакан,5 клиентов,удовольствие и терпение",
+      "acceptance": [
+        "Уточнения тапов/состава/возврата заменяют несовместимые предложения0.4",
+        "Есть единая таблица недотапов/перетапов/температуры/ожидания/соответствия и неравновесная формула с примерами",
+        "Описаны5 клиентов,независимые пожелания/платежи,память и динамическое терпение",
+        "Нет изменений game/ресурсов/APK;канонический0.4.1 зафиксирован,новые идеи рогалика PROPOSED"
+      ]
+    },
+    {
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 2,
+      "dependencies": [
+        "TASK-031"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "game/",
+        "reports/",
+        "BUGS.md"
+      ],
+      "verification": "После согласования:воспроизведение,регрессии и повторная проверка на Android",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": 31,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/30",
+      "commit": null,
+      "evidence": [
+        "Owner report05.11.2026",
+        "https://github.com/kotlyakov/barista/issues/31"
+      ],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {},
+      "id": "TASK-033",
+      "title": "Позже исправить улыбку при перегреве (BUG-001)",
+      "acceptance": [
+        "Воспроизведены перегрев/улыбка и переходы между заказами",
+        "Мимика/реплика/сохранённое настроение согласованы с дефектами",
+        "Есть регрессии;формула качества всех этапов не подменена минимумом"
+      ]
+    },
+    {
+      "role": "ART_UI",
+      "status": "TODO",
+      "priority": 3,
+      "dependencies": [
+        "TASK-031"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "design/",
+        "docs/",
+        "approvals/"
+      ],
+      "verification": "После согласования направления:конкретные изображения/анимационные материалы и ответ владельца",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/30",
+      "commit": null,
+      "evidence": [
+        "BACKLOG FB-0503/0507/0509"
+      ],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {},
+      "id": "TASK-034",
+      "title": "Позже переработать графику,руку и окно усилений",
+      "acceptance": [
+        "Новый вид предъявлен отдельно;текущее0.3.2 не выдано за принятое",
+        "Существующая рука двигается без лишней конечности",
+        "Есть центральное кофейное окно с карточками-изображениями"
+      ]
+    },
+    {
+      "id": "TASK-035",
+      "title": "Спланировать интеграциюТЗ0.4.2 и бесконечной карьеры",
+      "role": "TECH_LEAD",
+      "status": "TODO",
+      "priority": 2,
+      "dependencies": [
+        "TASK-032",
+        "TASK-036"
+      ],
+      "approval_gates": [],
+      "decision_gates": [
+        "D12",
+        "D13",
+        "D14"
+      ],
+      "allowed_paths": [
+        "docs/plans/",
+        "docs/ARCHITECTURE.md",
+        "tasks/",
+        "state/"
+      ],
+      "acceptance": [
+        "План отделяет рабочий стакан от желаний/визитов/платежей",
+        "Учтены миграция сохранений,несколько клиентов,эмоции и терпение",
+        "Реализация начинается только по утверждённой спецификации"
+      ],
+      "verification": "План учитывает свободный стакан/5 гостей/J/историю,бесконечную карьеру,покупки/модули/постоянников/лиги/события,миграции и новый неутверждённый визуал.",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/30",
+      "commit": null,
+      "evidence": [
+        "docs/GAME_SPEC.md",
+        "docs/ROGUELIKE_SPEC.md",
+        "PROJECT_CURRENT.md"
+      ],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-036",
+      "title": "Зафиксировать утверждение механик бесконечной карьеры и отклонение графики",
+      "role": "GAME_DESIGNER",
+      "status": "DONE",
+      "priority": 3,
+      "dependencies": [
+        "TASK-032"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "docs/",
+        "state/",
+        "tasks/",
+        "approvals/",
+        "PROJECT_CURRENT.md",
+        "START_HERE.md",
+        "BACKLOG.md",
+        "README.md"
+      ],
+      "acceptance": [
+        "Бесконечная карьера и механики примера закреплены с точным ответом владельца",
+        "Механики APPROVED отделены от графики CHANGES_REQUESTED и чиселдемо",
+        "ТЗ/решения/передача/архив обновлены без изменения игрового кода"
+      ],
+      "verification": "JSON/структура,хеши снимков,Git docs validation и целостностьZIP",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/30",
+      "commit": "8d43776b3741a009071eddc4d11110e31e65f53c",
+      "evidence": [
+        "docs/ROGUELIKE_SPEC.md",
+        "docs/PLAYER_MECHANICS.md",
+        "SPEC-001/v5;MECH-001/v1;VISUAL-003/v1",
+        "https://github.com/kotlyakov/barista/commit/8d43776b3741a009071eddc4d11110e31e65f53c"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS:JSON,хеши неизменяемыхснимков,отделениеAPPROVEDмеханик отCHANGES_REQUESTEDграфики,каноническоеТЗ/решения. Кодигры не менялся."
+      },
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-037",
+      "title": "Переделать графику окна между сменами",
+      "role": "ART_UI",
+      "status": "TODO",
+      "priority": 3,
+      "dependencies": [
+        "TASK-036"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "design/intermission/",
+        "approvals/",
+        "state/",
+        "tasks/"
+      ],
+      "acceptance": [
+        "Новый графический вариант показан Артуру",
+        "МеханикиMECH001 сохранены;старыйHTML не используется как утверждённый вид",
+        "Фиксируется отдельное решение по конкретной версии"
+      ],
+      "verification": "Просмотр вAndroidlandscape;решение владельца по новому виду",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/30",
+      "commit": null,
+      "evidence": [
+        "VISUAL-003/v1 CHANGES_REQUESTED"
+      ],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
     }
   ]
 }

@@ -26,8 +26,9 @@ func run() -> void:
  node.resume_game()
  for i in range(3):
   for j in range(node.game.brew.targets[i]):touch(node,node.station_rects[i].get_center())
- touch(node,node.CUP_HOME)
- touch(node,node.GUEST_RECT.get_center())
+ var grab=InputEventScreenTouch.new()
+ grab.index=0;grab.position=node.CUP_HOME;grab.pressed=true;node._input(grab)
+ grab.position=node.GUEST_RECT.get_center();grab.pressed=false;node._input(grab)
  touch(node,node.COIN_RECT.get_center())
  assert(node.repository.preferences().tutorial_seen)
  node.finish_lesson()

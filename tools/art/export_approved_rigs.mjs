@@ -32,6 +32,7 @@ for(const id of ['barista','beard','hawaii']){
   actors.blink(id);actors.tick(.1176);save(`head-${emotion}-blink`,[head]);
   if(emotion==='neutral'){
    save('body',[id==='barista'?motion.children[0]:motion.children[1]]);
+   if(id==='barista'){actors.reach(true);save('body-reaching',[motion.children[0]]);actors.reach(false);}
    if(id!=='barista'){
     const legs=motion.children[0];
     save('hips',[legs.children[0]]);
@@ -40,11 +41,25 @@ for(const id of ['barista','beard','hawaii']){
   }
  }
 }
+// Keep the exact approved cup geometry for the counter and the customer's hand.
+const app=readFileSync(resolve(source,'app.mjs'),'utf8');
+const cupFunction=app.slice(app.indexOf('function cupSVG('),app.indexOf('\nfunction addPrepared('));
+const cupSVG=new Function(cupFunction+'; return cupSVG;')();
+for(const recipe of ['espresso','cappuccino','latte']){
+ const svg=cupSVG(recipe).replace('<svg class="cup-drawing"','<svg xmlns="http://www.w3.org/2000/svg" width="70" height="100"').replace(/<g class="steam">.*?<\/g>/,'');
+ writeFileSync(resolve(output,`cup-${recipe}.svg`),svg+'\n');
+ for(const id of ['beard','hawaii']){
+  const host=new SvgNode('svg'),actors=createActors(host);
+  actors.holdCup(id,recipe);
+  const motion=find(host,'data-actor',id).children[0];
+  writeFileSync(resolve(output,`${id}-cup-${recipe}.svg`),`<svg xmlns="http://www.w3.org/2000/svg" width="440" height="820" viewBox="-200 -130 440 820">${xml(motion.children.at(-1))}</svg>\n`);
+ }
+}
 const html=readFileSync(resolve(source,'index.html'),'utf8');
 const outlines=[...html.matchAll(/class="outline" d="([^"]+)"/g)];
 for(const [i,match] of outlines.entries())writeFileSync(resolve(output,`outline${i}.svg`),`<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900"><path d="${match[1]}" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
 copyFileSync(resolve(source,'assets/cafe-animation-room.png'),resolve(output,'room.png'));
-const paths=['actors.mjs','assets/cafe-animation-room.png','index.html','style.css'];
+const paths=['app.mjs','actors.mjs','assets/cafe-animation-room.png','index.html','style.css'];
 const sources=Object.fromEntries(paths.map(p=>[p,createHash('sha256').update(readFileSync(resolve(source,p))).digest('hex')]));
 writeFileSync(resolve(output,'SOURCE.json'),JSON.stringify({approval:'VISUAL-002/v9',site:'appgprj_6ae1b4d1e3bc8191b569fb298107c732',commit:'bda169a08fe6287c5c9ce9a8b57dfa8412e7a937',scope:'Original room and temporary rigs. Native pose implementation is a new work build, not final animation approval.',sources},null,2)+'\n');
 console.log('Exported original room and 3 layered SVG rigs / 8 emotions / blink variants.');

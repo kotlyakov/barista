@@ -1,7 +1,7 @@
 name: android-preview
 on:
   push:
-    branches: [task/TASK-026-single-cafe-native]
+    branches: [task/TASK-026-single-cafe-native, task/TASK-029-gameplay-polish]
     paths:
       - 'game/**'
       - 'tools/**'
@@ -75,22 +75,22 @@ jobs:
           set -euo pipefail
           "$GODOT" --headless --path game --editor --import > artifacts/ci/import.log 2>&1
           python3 tools/check_native.py | tee artifacts/ci/tests.log
-          "$GODOT" --headless --path game --export-debug Android "$PWD/artifacts/ci/Barista-0.3.1-unsigned.apk" > artifacts/ci/export.log 2>&1
-          test -s artifacts/ci/Barista-0.3.1-unsigned.apk
-          "$GODOT" --headless --path game --export-debug 'Android Emulator' "$PWD/artifacts/ci/Barista-0.3.1-emulator-unsigned.apk" > artifacts/ci/emulator-export.log 2>&1
-          test -s artifacts/ci/Barista-0.3.1-emulator-unsigned.apk
-          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging artifacts/ci/Barista-0.3.1-unsigned.apk > artifacts/ci/badging.txt
+          "$GODOT" --headless --path game --export-debug Android "$PWD/artifacts/ci/Barista-0.3.2-unsigned.apk" > artifacts/ci/export.log 2>&1
+          test -s artifacts/ci/Barista-0.3.2-unsigned.apk
+          "$GODOT" --headless --path game --export-debug 'Android Emulator' "$PWD/artifacts/ci/Barista-0.3.2-emulator-unsigned.apk" > artifacts/ci/emulator-export.log 2>&1
+          test -s artifacts/ci/Barista-0.3.2-emulator-unsigned.apk
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging artifacts/ci/Barista-0.3.2-unsigned.apk > artifacts/ci/badging.txt
           mkdir -p artifacts/ci/signing-kit/build-tools/35.0.0/lib
           cp "$ANDROID_HOME/build-tools/35.0.0/"{aapt,apksigner,zipalign} artifacts/ci/signing-kit/build-tools/35.0.0/
           cp "$ANDROID_HOME/build-tools/35.0.0/lib/apksigner.jar" artifacts/ci/signing-kit/build-tools/35.0.0/lib/
           if [ -d "$ANDROID_HOME/build-tools/35.0.0/lib64" ]; then cp -a "$ANDROID_HOME/build-tools/35.0.0/lib64" artifacts/ci/signing-kit/build-tools/35.0.0/; fi
           find artifacts/ci -type f -name '*.keystore' -o -name '*.jks' | tee /tmp/unexpected-keys
           test ! -s /tmp/unexpected-keys
-          sha256sum artifacts/ci/Barista-0.3.1-unsigned.apk > artifacts/ci/unsigned.sha256
+          sha256sum artifacts/ci/Barista-0.3.2-unsigned.apk > artifacts/ci/unsigned.sha256
       - uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: android-unsigned-0.3.1
+          name: android-unsigned-0.3.2
           path: artifacts/ci/
           if-no-files-found: error
           retention-days: 7

@@ -179,6 +179,76 @@
       },
       "supersedes": "VISUAL-001/v5",
       "notes": "Утверждён общий вид текущего макета с явно отложенными замечаниями. Исторические материалы не изменены. Изменение утверждённого вида требует нового предъявления."
+    },
+    {
+      "id": "SPEC-001",
+      "category": "spec",
+      "version": 4,
+      "status": "APPROVED",
+      "artifact_paths": [
+        "approvals/materials/SPEC-001/v4/GAME_SPEC.md"
+      ],
+      "sha256": {
+        "approvals/materials/SPEC-001/v4/GAME_SPEC.md": "70475e32e0bd56839573333161b8d5862c4281451a7a223a365f3740b925e4c8"
+      },
+      "presented_at": "2026-11-05",
+      "approved_by": "Артур",
+      "source_message": "Заыиксируй все это в ТЗ обнови файлы проекта чтобы были доступны из любого чата проекта. И составь предложения по механикам рогалика учитывая то что в ТЗ",
+      "scope": "Рабочее ТЗ0.4.1 и стартовые коэффициенты по последней модели;внедрение отдельно. Новые предложения рогалика,графика,звук и анимационные материалы не одобрены этим решением.",
+      "supersedes": "SPEC-001/v3"
+    },
+    {
+      "id": "SPEC-001",
+      "category": "spec",
+      "version": 5,
+      "status": "APPROVED",
+      "artifact_paths": [
+        "approvals/materials/SPEC-001/v5/GAME_SPEC.md"
+      ],
+      "sha256": {
+        "approvals/materials/SPEC-001/v5/GAME_SPEC.md": "e06b2113ef34f21972c4bd2ca825c075c49b2dad37ff053c8acc926ee83548ab"
+      },
+      "presented_at": "2026-11-05",
+      "approved_by": "Артур",
+      "source_message": "Вроде хорошо. Графика совсем не нравится но механики устраивают. Вноси утверждение в проект. И начнем в новом чате.",
+      "scope": "ТЗ0.4.2:механики бесконечной карьеры первого приближения;графика примера отклонена;демонстрационные числа не финальный баланс.",
+      "supersedes": "SPEC-001/v4"
+    },
+    {
+      "id": "MECH-001",
+      "category": "gameplay-design",
+      "version": 1,
+      "status": "APPROVED",
+      "artifact_paths": [
+        "approvals/materials/MECH-001/v1/ROGUELIKE_SPEC.md",
+        "approvals/materials/MECH-001/v1/intermission-demo.html"
+      ],
+      "sha256": {
+        "approvals/materials/MECH-001/v1/intermission-demo.html": "0dd0b6e222e7bee8f1e343c4ae8ab239453272abe3cf49a7bfca1bc615b140ab",
+        "approvals/materials/MECH-001/v1/ROGUELIKE_SPEC.md": "bab50b4f42465edcebaba129f24791884e8765deb370c1dffcde23bff51f927b"
+      },
+      "presented_at": "2026-11-05",
+      "approved_by": "Артур",
+      "source_message": "Вроде хорошо. Графика совсем не нравится но механики устраивают. Вноси утверждение в проект. И начнем в новом чате.",
+      "scope": "Только механики межсменного развития и бесконечной карьеры,перечисленные вROGUELIKE_SPEC. Исключены графика/композиция/шрифты/цвета/персонажи,демосимулятор и окончательная настройка чисел.",
+      "supersedes": null
+    },
+    {
+      "id": "VISUAL-003",
+      "category": "intermission-visual-layout",
+      "version": 1,
+      "status": "CHANGES_REQUESTED",
+      "artifact_paths": [
+        "approvals/materials/MECH-001/v1/intermission-demo.html"
+      ],
+      "sha256": {
+        "approvals/materials/MECH-001/v1/intermission-demo.html": "0dd0b6e222e7bee8f1e343c4ae8ab239453272abe3cf49a7bfca1bc615b140ab"
+      },
+      "presented_at": "2026-11-05",
+      "approved_by": null,
+      "source_message": "Вроде хорошо. Графика совсем не нравится но механики устраивают. Вноси утверждение в проект. И начнем в новом чате.",
+      "scope": "Графика окна между сменами отклонена;подготовить новый вариант на утверждение. Механики одобрены отдельно MECH-001/v1.",
+      "supersedes": null
     }
   ]
 }

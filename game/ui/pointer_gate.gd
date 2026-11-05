@@ -11,6 +11,10 @@ func route(event: InputEvent, blocked=false) -> Dictionary:
  var press=false
  var release=false
  if event is InputEventScreenTouch:
+  if event.canceled:
+   if event.index!=active: return {}
+   cancel()
+   return {"action":"cancel","position":event.position}
   id=event.index
   press=event.pressed
   release=not event.pressed

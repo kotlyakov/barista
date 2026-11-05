@@ -79,13 +79,21 @@ def launch():
 
 try:
     source = json.loads(Path('artifacts/android-input/source.json').read_text())
-    assert source['source_commit'] == 'b09bf205d29f80545b754000a521480808f81ba9', 'Wrong pinned preview artifact'
+    assert source['source_commit'] == os.environ['BARISTA_EXPECTED_SOURCE_SHA'], 'Wrong pinned preview artifact'
     adb('logcat', '-c')
     launch()
     width, height = capture('01-cafe')
     assert width > height and abs(width / height - 16 / 9) < .02
     initial = wait_for(state, lambda s: s is not None)
     assert initial['shift']['mode'] == 'SHOP'
+    tap(1490, 60)
+    tap(800, 625)
+    tap(530, 650)
+    refused = state()
+    assert refused['money'] == 0 and refused['upgrades']['grind'] == 0
+    capture('00-progress-purchase-refused')
+    tap(200, 60)
+    tap(800, 425)
     tap(540, 700)
     tap(800, 800)
     started = wait_for(state, lambda s: s['shift']['mode'] == 'RUNNING')
@@ -117,6 +125,12 @@ try:
                 expected_taps[0] += 20
     ready = wait_for(state, lambda s: s['brew']['taps'] == expected_taps)
     assert ready['brew']['taps'] == expected_taps, 'Native Android taps must not duplicate or disappear'
+    adb('shell', 'input', 'swipe', *point(650, 760), *point(40, 800), '400')
+    missed = wait_for(state, lambda s: s['brew']['locked'])
+    assert missed['order']['state'] == 'BREWING'
+    tap(1110, 450)
+    assert state()['order']['state'] == 'BREWING', 'Guest tap after a miss must not serve the counter cup'
+    time.sleep(.8)  # Allow the visible cup to return before the next real drag.
     adb('shell', 'input', 'swipe', *point(650, 760), *point(1110, 450), '500')
     payment = wait_for(state, lambda s: s['order']['state'] == 'PAYMENT')
     capture('03-payment')
@@ -153,10 +167,10 @@ try:
     (OUTPUT / 'logcat.txt').write_text(logs)
     assert 'FATAL EXCEPTION' not in logs and 'SCRIPT ERROR:' not in logs
     assert adb('shell', 'pidof', PACKAGE).strip(), 'Android process must remain alive'
-    report = {'source_commit': source['source_commit'], 'build_run': 41074447113, 'package': PACKAGE, 'device': adb('shell', 'getprop', 'ro.build.version.release').strip(),
+    report = {'source_commit': source['source_commit'], 'build_run': int(os.environ['BARISTA_BUILD_RUN']), 'package': PACKAGE, 'device': adb('shell', 'getprop', 'ro.build.version.release').strip(),
               'abi': adb('shell', 'getprop', 'ro.product.cpu.abi').strip(), 'resolution': [width, height],
               'order_id': order_id, 'payment_amount': amount, 'balance_after': final['money'],
-              'checks': ['launch', 'real touch', '20 extra grinder taps with audio enabled', 'diagnostic report button', 'menu/progress pause', 'mute', 'drag/drop',
+              'checks': ['launch', 'real touch', '20 extra grinder taps with audio enabled', 'diagnostic report button', 'menu/progress pause', 'mute', 'purchase refusal', 'missed drop', 'guest tap rejected', 'drag/drop',
                          'restart before payment', 'collect once', 'restart after payment', 'customer history']}
     (OUTPUT / 'result.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
     print('PASS: actual Android install/launch/touch/coffee/payment/pause/save/relaunch', flush=True)
