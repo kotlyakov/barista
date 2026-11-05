@@ -4,7 +4,7 @@
   "updated_at": "2026-11-05",
   "phase": "ROGUELIKE_MECHANICS_APPROVED_VISUAL_REWORK",
   "game_code_exists": true,
-  "current_task": "TASK-036",
+  "current_task": null,
   "next_task": "TASK-035",
   "next_action": "Новыйчат:TASK035 план интеграции0.4.2;TASK037 новаяграфикаокнамеждусменами. Механикиприняты,графикаотклонена.",
   "repository": {
@@ -15,9 +15,9 @@
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
-    "head_note": "HEAD передфиксациейрешения05.11;фактическийtip проверить вGit.",
+    "head_note": "Содержательныйкоммит принятиямеханик;далее может следоватькоммитметаданных. Проверятьtip вGit.",
     "working_branch": "task/TASK-029-gameplay-polish",
-    "working_head": "8c187d7cba19307104008a5d13d48ec4561f66b8"
+    "working_head": "8d43776b3741a009071eddc4d11110e31e65f53c"
   },
   "blockers": [
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
@@ -164,13 +164,13 @@
     "balance_status": "DEMO_VALUES_NOT_FINAL"
   },
   "documentation_verification": {
-    "commit": "4775a15f0bbe683515b54e4db898a8840977e050",
-    "status": "PASS",
+    "commit": "8d43776b3741a009071eddc4d11110e31e65f53c",
+    "status": "PASS_LOCAL",
     "checks": [
-      "JSON/ID",
-      "SPEC-001/v4 SHA256",
-      "canonical=frozen snapshot",
-      "GitHub docs validate"
+      "JSON",
+      "snapshot SHA256",
+      "mechanics vs visuals",
+      "canonical specification"
     ]
   },
   "owner_latest_decision": "Вроде хорошо. Графика совсем не нравится но механики устраивают. Вноси утверждение в проект. И начнем в новом чате."

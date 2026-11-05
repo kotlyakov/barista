@@ -1694,7 +1694,7 @@
       "id": "TASK-036",
       "title": "Зафиксировать утверждение механик бесконечной карьеры и отклонение графики",
       "role": "GAME_DESIGNER",
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "priority": 3,
       "dependencies": [
         "TASK-032"
@@ -1723,15 +1723,16 @@
       "branch": "task/TASK-029-gameplay-polish",
       "issue_number": null,
       "pr_url": "https://github.com/kotlyakov/barista/pull/30",
-      "commit": null,
+      "commit": "8d43776b3741a009071eddc4d11110e31e65f53c",
       "evidence": [
         "docs/ROGUELIKE_SPEC.md",
         "docs/PLAYER_MECHANICS.md",
-        "SPEC-001/v5;MECH-001/v1;VISUAL-003/v1"
+        "SPEC-001/v5;MECH-001/v1;VISUAL-003/v1",
+        "https://github.com/kotlyakov/barista/commit/8d43776b3741a009071eddc4d11110e31e65f53c"
       ],
       "review": {
         "type": "SELF_REVIEW",
-        "result": "Проверки перед фиксацией;игровой код не менялся."
+        "result": "PASS:JSON,хеши неизменяемыхснимков,отделениеAPPROVEDмеханик отCHANGES_REQUESTEDграфики,каноническоеТЗ/решения. Кодигры не менялся."
       },
       "blocker": null,
       "approval_versions": {},
