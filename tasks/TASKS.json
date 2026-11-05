@@ -1649,23 +1649,35 @@
       "id": "TASK-035",
       "title": "Спланировать интеграциюТЗ0.4.2 и бесконечной карьеры",
       "role": "TECH_LEAD",
-      "status": "TODO",
+      "status": "IN_REVIEW",
       "priority": 2,
       "dependencies": [
         "TASK-032",
         "TASK-036"
       ],
-      "approval_gates": [],
+      "approval_gates": [
+        "SPEC-001",
+        "MECH-001"
+      ],
       "decision_gates": [
+        "D10",
+        "D11",
         "D12",
         "D13",
-        "D14"
+        "D14",
+        "D15"
       ],
       "allowed_paths": [
         "docs/plans/",
         "docs/ARCHITECTURE.md",
         "tasks/",
-        "state/"
+        "state/",
+        "PROJECT_CURRENT.md",
+        "START_HERE.md",
+        "BACKLOG.md",
+        "CHANGELOG.md",
+        "ARCHIVE_SCOPE.md",
+        "MANIFEST.json"
       ],
       "acceptance": [
         "План отделяет рабочий стакан от желаний/визитов/платежей",
@@ -1673,22 +1685,36 @@
         "Реализация начинается только по утверждённой спецификации"
       ],
       "verification": "План учитывает свободный стакан/5 гостей/J/историю,бесконечную карьеру,покупки/модули/постоянников/лиги/события,миграции и новый неутверждённый визуал.",
-      "owner": null,
-      "session_id": null,
-      "lease_until": null,
-      "branch": "task/TASK-029-gameplay-polish",
+      "owner": "Codex / TECH_LEAD + COORDINATOR",
+      "session_id": "20261105-TASK035",
+      "lease_until": "2026-11-06T00:05:03.246086+00:00",
+      "branch": "task/TASK-035-v042-integration-plan",
       "issue_number": null,
       "pr_url": "https://github.com/kotlyakov/barista/pull/30",
       "commit": null,
       "evidence": [
-        "docs/GAME_SPEC.md",
-        "docs/ROGUELIKE_SPEC.md",
-        "PROJECT_CURRENT.md"
+        "docs/plans/2026-11-05-v042-integration.md",
+        "docs/ARCHITECTURE.md",
+        "Исходники GitHub на 42015e790eefd70c25808ac631da1a8d7ddc5351"
       ],
-      "review": null,
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "Сверены разделы ТЗ/контракты/миграции/баланс/визуальные ограничения; числовые примеры пересчитаны. Независимого ревью нет."
+      },
       "blocker": null,
-      "approval_versions": {},
-      "decision_records": {}
+      "approval_versions": {
+        "SPEC-001": 5,
+        "MECH-001": 1
+      },
+      "decision_records": {
+        "D10": "D10",
+        "D11": "D11",
+        "D12": "D12",
+        "D13": "D13",
+        "D14": "D14",
+        "D15": "D15"
+      },
+      "base_commit": "42015e790eefd70c25808ac631da1a8d7ddc5351"
     },
     {
       "id": "TASK-036",
@@ -1771,6 +1797,267 @@
       "evidence": [
         "VISUAL-003/v1 CHANGES_REQUESTED"
       ],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-038",
+      "title": "Свободный рабочий стакан, температура и оценка Q/J/C",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 2,
+      "dependencies": [
+        "TASK-035"
+      ],
+      "approval_gates": [
+        "SPEC-001",
+        "MECH-001"
+      ],
+      "decision_gates": [
+        "D11",
+        "D12",
+        "D14"
+      ],
+      "allowed_paths": [
+        "game/brewing/",
+        "game/tests/",
+        "reports/"
+      ],
+      "acceptance": [
+        "Стакан от любого засчитанного тапа; единственный отказ — варка без помола",
+        "10 ступеней перетапа и пара, возврат допускает доработку",
+        "Ручной рецепт/фактический состав; формулы и примеры ТЗ"
+      ],
+      "verification": "Сценарии и границы: docs/plans/2026-11-05-v042-integration.md; реальный Godot FAIL→PASS и связанные регрессии; не засчитывать прошлую0.3.2.",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": null,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-039",
+      "title": "Независимые визиты, выдача и история терпения",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 2,
+      "dependencies": [
+        "TASK-038"
+      ],
+      "approval_gates": [
+        "SPEC-001",
+        "MECH-001"
+      ],
+      "decision_gates": [
+        "D13",
+        "D14"
+      ],
+      "allowed_paths": [
+        "game/orders/",
+        "game/customers/",
+        "game/tests/",
+        "reports/"
+      ],
+      "acceptance": [
+        "До5 уникальных гостей; свободный получатель без авто-рецепта",
+        "Однократные выдача/платёж/C/L; уход не уничтожает стакан",
+        "P фиксируется при входе; напоминание не продлевает ожидание"
+      ],
+      "verification": "Сценарии и границы: docs/plans/2026-11-05-v042-integration.md; реальный Godot FAIL→PASS и связанные регрессии; не засчитывать прошлую0.3.2.",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": null,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-040",
+      "title": "Версия2 сохранений и безопасная миграция0.3.2",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 2,
+      "dependencies": [
+        "TASK-039"
+      ],
+      "approval_gates": [
+        "SPEC-001",
+        "MECH-001"
+      ],
+      "decision_gates": [
+        "D12",
+        "D13",
+        "D14"
+      ],
+      "allowed_paths": [
+        "game/persistence/",
+        "game/tests/",
+        "reports/"
+      ],
+      "acceptance": [
+        "v1 остаётся неизменной копией; v2 восстанавливает деньги/покупки/все сущности",
+        "Повторная загрузка/импорт не дублирует деньги/награды/отношения",
+        "Фикстуры всех фаз, отказ записи/повреждение; политики legacy закрыты до переключения профиля"
+      ],
+      "verification": "Сценарии и границы: docs/plans/2026-11-05-v042-integration.md; реальный Godot FAIL→PASS и связанные регрессии; не засчитывать прошлую0.3.2.",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": null,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-041",
+      "title": "Бесконечные игровые дни и ограниченное закрытие смены",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 2,
+      "dependencies": [
+        "TASK-040"
+      ],
+      "approval_gates": [
+        "SPEC-001",
+        "MECH-001"
+      ],
+      "decision_gates": [
+        "D10",
+        "D15"
+      ],
+      "allowed_paths": [
+        "game/shift/",
+        "game/orders/",
+        "game/tests/",
+        "reports/"
+      ],
+      "acceptance": [
+        "300 активных секунд, 08–17; без реальной даты",
+        "Закрытие готовки максимум15с, отдельные сроки монет",
+        "Следующий день ровно один раз; деньги/история не сбрасываются"
+      ],
+      "verification": "Сценарии и границы: docs/plans/2026-11-05-v042-integration.md; реальный Godot FAIL→PASS и связанные регрессии; не засчитывать прошлую0.3.2.",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": null,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-042",
+      "title": "Баланс и экономика межсменного развития",
+      "role": "GAME_DESIGNER",
+      "status": "TODO",
+      "priority": 2,
+      "dependencies": [
+        "TASK-041"
+      ],
+      "approval_gates": [
+        "SPEC-001",
+        "MECH-001"
+      ],
+      "decision_gates": [
+        "D15"
+      ],
+      "allowed_paths": [
+        "docs/plans/",
+        "config/",
+        "game/economy/",
+        "game/orders/",
+        "game/tests/",
+        "reports/"
+      ],
+      "acceptance": [
+        "Один платный выбор из3 или пропуск; события известны до покупки",
+        "Оборудование/два модуля/угощение/цели/известность/добровольные лиги сохраняются",
+        "Точные числа и legacy эффекты определены явно; нет долга-тупика и демоформулы дохода"
+      ],
+      "verification": "Сценарии и границы: docs/plans/2026-11-05-v042-integration.md; реальный Godot FAIL→PASS и связанные регрессии; не засчитывать прошлую0.3.2.",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": null,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-043",
+      "title": "Сенсорный интерфейс свободной выдачи и полная регрессия",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 2,
+      "dependencies": [
+        "TASK-038",
+        "TASK-039",
+        "TASK-040",
+        "TASK-041",
+        "TASK-042"
+      ],
+      "approval_gates": [
+        "SPEC-001",
+        "MECH-001"
+      ],
+      "decision_gates": [
+        "D10",
+        "D11",
+        "D12",
+        "D13",
+        "D14",
+        "D15"
+      ],
+      "allowed_paths": [
+        "game/ui/",
+        "game/tests/",
+        "tools/android/",
+        "reports/"
+      ],
+      "acceptance": [
+        "Пять гостей/пузырей/платежей без пересечений; актуальные drop-зоны",
+        "Промах/отмена/меню/фон/restart и обучение не теряют/не дублируют прогресс",
+        "Технический визуал отмечен; финальное оформление только после TASK037/утверждения; Android проверен на точном SHA"
+      ],
+      "verification": "Сценарии и границы: docs/plans/2026-11-05-v042-integration.md; реальный Godot FAIL→PASS и связанные регрессии; не засчитывать прошлую0.3.2.",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": null,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
       "review": null,
       "blocker": null,
       "approval_versions": {},
