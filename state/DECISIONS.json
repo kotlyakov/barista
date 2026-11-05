@@ -81,6 +81,42 @@
       "source_message": "Должны монеты исчезать, не успел кликнуть - пропали.",
       "accepted_at": "2026-11-04",
       "supersedes": null
+    },
+    {
+      "id": "D09",
+      "status": "PROPOSED",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": null,
+      "proposal": "Проект0.4:независимые редактируемые операции до взятия,свободный порядок/недобор,10 перетапов и новая обратная связь. Предпочтительный вариант1 ещё не выбран владельцем.",
+      "proposal_source": "docs/superpowers/specs/2026-11-05-free-brewing-design.md",
+      "owner_request": "05.11:сначала расписать и согласовать,по пункту1 пока не делать"
+    },
+    {
+      "id": "D10",
+      "status": "PROPOSED",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": "D02",
+      "proposal": "Игровой день1,2...;08:00–17:00≈300 активных секунд; множитель108; следующий день после итога/усилений без ожидания реальной даты. Ускорение/замедление часами —будущий бэклог.",
+      "proposal_source": "docs/superpowers/specs/2026-11-05-free-brewing-design.md",
+      "owner_request": "05.11,пункт8:номер дня без даты,время08–17,сменапримерно5мин"
+    },
+    {
+      "id": "D11",
+      "status": "PROPOSED",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": null,
+      "proposal": "10 уровней пара с шагом1активнаясекунда,исчезающие комиксные реплики и напоминание заказа; правило тепла/секунды —предложения автора.",
+      "proposal_source": "docs/superpowers/specs/2026-11-05-free-brewing-design.md",
+      "owner_request": "05.11,пункты5–6"
     }
   ]
 }

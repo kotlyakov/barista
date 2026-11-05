@@ -1518,6 +1518,126 @@
       "decision_records": {
         "D01": "D01"
       }
+    },
+    {
+      "role": "GAME_DESIGNER",
+      "status": "WAITING_USER",
+      "priority": 1,
+      "dependencies": [
+        "TASK-031"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "docs/",
+        "state/",
+        "tasks/",
+        "BACKLOG.md",
+        "BUGS.md"
+      ],
+      "verification": "Сверка всех9 пунктов,10 цветовых/вкусовых и10 температурных градаций; проверка JSON; builder review документа",
+      "owner": "coordinator",
+      "session_id": "feedback-20261105",
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/30",
+      "commit": null,
+      "evidence": [
+        "docs/superpowers/specs/2026-11-05-free-brewing-design.md",
+        "GitHub issue31 / BUGS.md",
+        "Builder review:основной пробел объединения тепла закрыт явным игровым предложением"
+      ],
+      "review": {
+        "type": "INDEPENDENT_DESIGN_REVIEW",
+        "result": "Выявлено объединение тепла; добавлены раздельные состояния/простое правило выбора; остальные развилки явно предложены,не утверждены",
+        "scope": "Документ; не программный код"
+      },
+      "blocker": "Прямой запрос владельца:сначала подробное описание,реализация после согласования. Нужен ответ на проект0.4.",
+      "approval_versions": {},
+      "decision_records": {},
+      "id": "TASK-032",
+      "title": "Согласовать проект ТЗ0.4 по9 замечаниям",
+      "acceptance": [
+        "Все9 замечаний представлены в проекте и бэклоге",
+        "Есть подробные правила тапов/недобора/10перетапов,пара,реплик,дня и окна усилений",
+        "Никакое предложение не объявлено APPROVED и нет изменений game/"
+      ]
+    },
+    {
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 2,
+      "dependencies": [
+        "TASK-031"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "game/",
+        "reports/",
+        "BUGS.md"
+      ],
+      "verification": "После согласования:воспроизведение,регрессии и повторная проверка на Android",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": 31,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/30",
+      "commit": null,
+      "evidence": [
+        "Owner report05.11.2026",
+        "https://github.com/kotlyakov/barista/issues/31"
+      ],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {},
+      "id": "TASK-033",
+      "title": "Позже исправить улыбку при перегреве (BUG-001)",
+      "acceptance": [
+        "Воспроизведены перегрев/улыбка и переходы между заказами",
+        "Мимика/реплика/сохранённое настроение согласованы с дефектами",
+        "Есть регрессии;формула качества всех этапов не подменена минимумом"
+      ]
+    },
+    {
+      "role": "ART_UI",
+      "status": "TODO",
+      "priority": 3,
+      "dependencies": [
+        "TASK-031"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "design/",
+        "docs/",
+        "approvals/"
+      ],
+      "verification": "После согласования направления:конкретные изображения/анимационные материалы и ответ владельца",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/30",
+      "commit": null,
+      "evidence": [
+        "BACKLOG FB-0503/0507/0509"
+      ],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {},
+      "id": "TASK-034",
+      "title": "Позже переработать графику,руку и окно усилений",
+      "acceptance": [
+        "Новый вид предъявлен отдельно;текущее0.3.2 не выдано за принятое",
+        "Существующая рука двигается без лишней конечности",
+        "Есть центральное кофейное окно с карточками-изображениями"
+      ]
     }
   ]
 }
