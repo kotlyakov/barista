@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "0.4.2",
   "updated_at": "2026-11-05",
-  "phase": "ROGUELIKE_MECHANICS_APPROVED_VISUAL_REWORK",
+  "phase": "V042_INTEGRATION_PLANNED",
   "game_code_exists": true,
   "current_task": null,
-  "next_task": "TASK-035",
-  "next_action": "Новыйчат:TASK035 план интеграции0.4.2;TASK037 новаяграфикаокнамеждусменами. Механикиприняты,графикаотклонена.",
+  "next_task": "TASK-038",
+  "next_action": "TASK-038: свободный стакан/температура/оценка с Godot-проверками; затем039–043. TASK037 — новый визуал отдельно.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -16,8 +16,8 @@
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
     "head_note": "Содержательныйкоммит принятиямеханик;далее может следоватькоммитметаданных. Проверятьtip вGit.",
-    "working_branch": "task/TASK-029-gameplay-polish",
-    "working_head": "8d43776b3741a009071eddc4d11110e31e65f53c"
+    "working_branch": "task/TASK-035-v042-integration-plan",
+    "working_head": "d5f21b5d2757241a33ba4f8788cd1b609248f41d"
   },
   "blockers": [
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
@@ -164,14 +164,38 @@
     "balance_status": "DEMO_VALUES_NOT_FINAL"
   },
   "documentation_verification": {
-    "commit": "8d43776b3741a009071eddc4d11110e31e65f53c",
-    "status": "PASS_LOCAL",
+    "commit": "d5f21b5d2757241a33ba4f8788cd1b609248f41d",
+    "status": "PASS_REMOTE",
+    "run_url": "https://github.com/kotlyakov/barista/actions/runs/42100767362",
     "checks": [
+      "docs-check",
       "JSON",
-      "snapshot SHA256",
-      "mechanics vs visuals",
-      "canonical specification"
+      "canonical snapshot",
+      "SELF_REVIEW plan coverage",
+      "numerical examples"
     ]
   },
-  "owner_latest_decision": "Вроде хорошо. Графика совсем не нравится но механики устраивают. Вноси утверждение в проект. И начнем в новом чате."
+  "owner_latest_decision": "Вроде хорошо. Графика совсем не нравится но механики устраивают. Вноси утверждение в проект. И начнем в новом чате.",
+  "integration_plan": {
+    "path": "docs/plans/2026-11-05-v042-integration.md",
+    "source_commit": "42015e790eefd70c25808ac631da1a8d7ddc5351",
+    "status": "DONE_SELF_REVIEW",
+    "runtime_changed": false,
+    "implementation_tasks": [
+      "TASK-038",
+      "TASK-039",
+      "TASK-040",
+      "TASK-041",
+      "TASK-042",
+      "TASK-043"
+    ],
+    "open_policies": [
+      "legacy tuning/grace effects",
+      "relationship categories",
+      "legacy heat/perk/reward/shift mapping",
+      "career balance values"
+    ],
+    "commit": "d5f21b5d2757241a33ba4f8788cd1b609248f41d",
+    "pr_url": "https://github.com/kotlyakov/barista/pull/32"
+  }
 }
