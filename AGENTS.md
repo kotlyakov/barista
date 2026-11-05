@@ -1,7 +1,7 @@
 # Обязательный договор работы агентов
 
 ## 1. Порядок чтения в начале КАЖДОЙ новой сессии и после сжатия контекста
-1. Этот файл полностью.
+1. PROJECT_CURRENT.md, затем этот файл полностью.
 2. state/PROJECT_STATE.json и state/HANDOFF.md.
 3. docs/REQUIREMENTS.md, docs/GAME_SPEC.md, docs/DECISIONS.md.
 4. tasks/TASKS.json: своя задача, зависимости, критерии и область файлов.

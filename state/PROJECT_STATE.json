@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "package_version": "1.0",
+  "package_version": "0.4.1",
   "updated_at": "2026-11-05",
-  "phase": "SPEC_0_4_1_DRAFT_WAITING_OWNER",
+  "phase": "SPEC_0_4_1_FIXED_IMPLEMENTATION_PENDING",
   "game_code_exists": true,
   "current_task": "TASK-032",
-  "next_task": "TASK-032",
-  "next_action": "Артур согласует проект0.4.1 и правит предложенные формулы/ручной выбор рецепта;код и APK не менять. После согласования TASK035 —план перехода.",
+  "next_task": "TASK-035",
+  "next_action": "Спланировать миграцию0.3.2→0.4.1;предложения D15 ждут выбора. Игровой код этим запросом не меняется.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -15,22 +15,21 @@
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
-    "head_note": "Spec-only0.4.1 revision follows;game/APK0.3.2 unchanged.",
+    "head_note": "Рабочий исходныйHEAD перед фиксацией0.4.1;актуальный tip проверить вGit. APK0.3.2 неизменна.",
     "working_branch": "task/TASK-029-gameplay-polish",
-    "working_head": "45deac25c2343a0b63a3da154eba6b67d78958bf"
+    "working_head": "2a25d981bd4a264a6ae3a44651c6c3432718f80b"
   },
   "blockers": [
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
-    "Final specific audio/intro and individual character approvals pending; general cafe 09 approved",
-    "TASK-032:проект0.4.1 ожидает согласования;реализация остаётся отложенной."
+    "Final specific audio/intro and individual character approvals pending; general cafe 09 approved"
   ],
   "approved_materials": [
-    "SPEC-001/v3",
+    "SPEC-001/v4",
     "VISUAL-002/v9"
   ],
   "last_verified_commit": "4bfe9de93144130df5b73e1b143d3e21698a058c",
   "ci_status": "PASS:26 local Godot scripts; build41806172799 and native/docs CI; actual Android runtime41806463440/source4bfe9de9. Metadata commits may follow.",
-  "spec_version": "0.3",
+  "spec_version": "0.4.1",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
     "project_id": "appgprj_6ae1b4d1e3bc8191b569fb298107c732",
@@ -152,8 +151,8 @@
   },
   "pending_spec": {
     "version": "0.4.1",
-    "status": "WAITING_OWNER_APPROVAL",
-    "path": "docs/superpowers/specs/2026-11-05-free-service-v041-design.md",
+    "status": "APPROVED_NOT_IMPLEMENTED",
+    "path": "docs/GAME_SPEC.md",
     "decision_ids": [
       "D10",
       "D11",
@@ -161,12 +160,11 @@
       "D13",
       "D14"
     ],
-    "runtime_changed": false,
-    "author_calls": [
-      "Один рабочий стакан;рецепт выбирает игрок",
-      "Вес Q .25/.45/.30 и множители J",
-      "История L и лимит P30–120с",
-      "Интервалы входа и короткий CLOSING"
-    ]
+    "runtime_changed": false
+  },
+  "roguelike_proposals": {
+    "status": "PROPOSED",
+    "decision": "D15",
+    "path": "docs/ROGUELIKE_PROPOSALS.md"
   }
 }

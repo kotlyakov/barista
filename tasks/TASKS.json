@@ -421,7 +421,7 @@
       "id": "TASK-010",
       "title": "Подготовить шесть именных героев",
       "role": "ART_UI",
-      "status": "IN_PROGRESS",
+      "status": "TODO",
       "priority": 10,
       "dependencies": [
         "TASK-003"
@@ -439,9 +439,9 @@
         "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
       ],
       "verification": "Просмотр листов героев, отсутствие подмены утверждения",
-      "owner": "coordinator",
-      "session_id": "native-cafe-20261029",
-      "lease_until": "2026-10-29T18:00:00Z",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
       "branch": "task/TASK-024-native-cafe",
       "issue_number": 10,
       "pr_url": null,
@@ -450,7 +450,8 @@
       "review": null,
       "blocker": null,
       "approval_versions": {},
-      "decision_records": {}
+      "decision_records": {},
+      "notes": "Возврат в очередь:просроченная сессия29.10;накопленные материалы/ветка и история сохранены,финальные материалы ещё не одобрены."
     },
     {
       "id": "TASK-011",
@@ -659,7 +660,7 @@
       "id": "TASK-015",
       "title": "Подготовить макеты всех экранов и анимаций",
       "role": "ART_UI",
-      "status": "IN_PROGRESS",
+      "status": "TODO",
       "priority": 15,
       "dependencies": [
         "TASK-003"
@@ -677,9 +678,9 @@
         "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
       ],
       "verification": "Просмотр в целевых пропорциях; решение Артура",
-      "owner": "coordinator",
-      "session_id": "native-cafe-20261029",
-      "lease_until": "2026-10-29T18:00:00Z",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
       "branch": "task/TASK-024-native-cafe",
       "issue_number": 15,
       "pr_url": null,
@@ -688,7 +689,8 @@
       "review": null,
       "blocker": null,
       "approval_versions": {},
-      "decision_records": {}
+      "decision_records": {},
+      "notes": "Возврат в очередь:просроченная сессия29.10;накопленные материалы/ветка и история сохранены,финальные материалы ещё не одобрены."
     },
     {
       "id": "TASK-016",
@@ -737,7 +739,7 @@
       "id": "TASK-017",
       "title": "Подготовить и утвердить набор звука",
       "role": "AUDIO",
-      "status": "IN_PROGRESS",
+      "status": "TODO",
       "priority": 17,
       "dependencies": [
         "TASK-001"
@@ -755,9 +757,9 @@
         "Исполнитель передал материалы/ответ владельца координатору; координатор подтвердил запись в реестре. DONE за подготовку и предъявление не заменяет APPROVED."
       ],
       "verification": "Прослушивание всего набора и проверка реестра",
-      "owner": "coordinator",
-      "session_id": "native-cafe-20261029",
-      "lease_until": "2026-10-29T18:00:00Z",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
       "branch": "task/TASK-024-native-cafe",
       "issue_number": 17,
       "pr_url": null,
@@ -766,7 +768,8 @@
       "review": null,
       "blocker": null,
       "approval_versions": {},
-      "decision_records": {}
+      "decision_records": {},
+      "notes": "Возврат в очередь:просроченная сессия29.10;накопленные материалы/ветка и история сохранены,финальные материалы ещё не одобрены."
     },
     {
       "id": "TASK-018",
@@ -1521,7 +1524,7 @@
     },
     {
       "role": "GAME_DESIGNER",
-      "status": "WAITING_USER",
+      "status": "IN_REVIEW",
       "priority": 1,
       "dependencies": [
         "TASK-031"
@@ -1546,14 +1549,14 @@
       "evidence": [
         "docs/superpowers/specs/2026-11-05-free-service-v041-design.md",
         "Builder review:разделены счётчики/качество;добавлены точные тепловые правила и таблица R",
-        "Формулы проверены на концах диапазона и монотонность;идеальный100/холодный25/перегрев54.2"
+        "Формулы проверены на концах диапазона и монотонность;идеальный100/холодный25/перегрев54.2",
+        "docs/GAME_SPEC.md0.4.1;SPEC-001/v4;фиксация владельцем05.11;docs/ROGUELIKE_PROPOSALS.md отдельно"
       ],
       "review": {
-        "type": "INDEPENDENT_DESIGN_REVIEW",
-        "result": "Три важных пробела закрыты явными определениями:счётчик vs q,температурная функция,классификация R",
-        "scope": "Только спецификация0.4.1,не код"
+        "type": "SELF_REVIEW",
+        "result": "Проверить ссылки,JSON,снимок/хеш,архив иGit;игровые тесты не относятся к этому изменению."
       },
-      "blocker": "Владелец согласует переработанный проект0.4.1;веса/калибровка и ручной выбор рецепта ещё предложения.",
+      "blocker": null,
       "approval_versions": {},
       "decision_records": {},
       "id": "TASK-032",
@@ -1562,7 +1565,7 @@
         "Уточнения тапов/состава/возврата заменяют несовместимые предложения0.4",
         "Есть единая таблица недотапов/перетапов/температуры/ожидания/соответствия и неравновесная формула с примерами",
         "Описаны5 клиентов,независимые пожелания/платежи,память и динамическое терпение",
-        "Нет изменений game/ресурсов/APK;предложения не объявлены APPROVED"
+        "Нет изменений game/ресурсов/APK;канонический0.4.1 зафиксирован,новые идеи рогалика PROPOSED"
       ]
     },
     {
@@ -1644,7 +1647,7 @@
       "id": "TASK-035",
       "title": "После согласования спланировать переход к свободному стакану и5 гостям",
       "role": "TECH_LEAD",
-      "status": "WAITING_USER",
+      "status": "TODO",
       "priority": 2,
       "dependencies": [
         "TASK-032"
@@ -1666,7 +1669,7 @@
         "Учтены миграция сохранений,несколько клиентов,эмоции и терпение",
         "Реализация начинается только по утверждённой спецификации"
       ],
-      "verification": "Сверка плана с согласованным0.4.1 и миграцией;сейчас не исполнять",
+      "verification": "Сверка плана с0.4.1 и миграцией;в текущем запросе игровой код не менять.",
       "owner": null,
       "session_id": null,
       "lease_until": null,
@@ -1675,10 +1678,49 @@
       "pr_url": "https://github.com/kotlyakov/barista/pull/30",
       "commit": null,
       "evidence": [
-        "docs/superpowers/specs/2026-11-05-free-service-v041-design.md"
+        "docs/GAME_SPEC.md",
+        "PROJECT_CURRENT.md"
       ],
       "review": null,
-      "blocker": "TASK032 WAITING_USER:спецификация и коэффициенты не согласованы.",
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-036",
+      "title": "Выбрать формат и механики рогалика",
+      "role": "GAME_DESIGNER",
+      "status": "WAITING_USER",
+      "priority": 3,
+      "dependencies": [
+        "TASK-032"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "docs/ROGUELIKE_PROPOSALS.md",
+        "state/",
+        "tasks/",
+        "docs/GAME_SPEC.md"
+      ],
+      "acceptance": [
+        "Владелец выбрал A/B/C и правила провала",
+        "Выбранные карты/риск/сохранение описаны без конфликта с0.4.1",
+        "Невыбранные предложения остаются PROPOSED"
+      ],
+      "verification": "Сверить ответ владельца с предложенными вариантами и D03/D15.",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/30",
+      "commit": null,
+      "evidence": [
+        "docs/ROGUELIKE_PROPOSALS.md"
+      ],
+      "review": null,
+      "blocker": "Новые идеи рогалика представлены для выбора;D15 пока PROPOSED.",
       "approval_versions": {},
       "decision_records": {}
     }
