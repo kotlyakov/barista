@@ -1647,12 +1647,13 @@
     },
     {
       "id": "TASK-035",
-      "title": "После согласования спланировать переход к свободному стакану и5 гостям",
+      "title": "Спланировать интеграциюТЗ0.4.2 и бесконечной карьеры",
       "role": "TECH_LEAD",
       "status": "TODO",
       "priority": 2,
       "dependencies": [
-        "TASK-032"
+        "TASK-032",
+        "TASK-036"
       ],
       "approval_gates": [],
       "decision_gates": [
@@ -1671,7 +1672,7 @@
         "Учтены миграция сохранений,несколько клиентов,эмоции и терпение",
         "Реализация начинается только по утверждённой спецификации"
       ],
-      "verification": "Сверка плана с0.4.1 и миграцией;в текущем запросе игровой код не менять.",
+      "verification": "План учитывает свободный стакан/5 гостей/J/историю,бесконечную карьеру,покупки/модули/постоянников/лиги/события,миграции и новый неутверждённый визуал.",
       "owner": null,
       "session_id": null,
       "lease_until": null,
@@ -1681,6 +1682,7 @@
       "commit": null,
       "evidence": [
         "docs/GAME_SPEC.md",
+        "docs/ROGUELIKE_SPEC.md",
         "PROJECT_CURRENT.md"
       ],
       "review": null,
@@ -1690,9 +1692,9 @@
     },
     {
       "id": "TASK-036",
-      "title": "Выбрать формат и механики рогалика",
+      "title": "Зафиксировать утверждение механик бесконечной карьеры и отклонение графики",
       "role": "GAME_DESIGNER",
-      "status": "WAITING_USER",
+      "status": "IN_REVIEW",
       "priority": 3,
       "dependencies": [
         "TASK-032"
@@ -1700,17 +1702,21 @@
       "approval_gates": [],
       "decision_gates": [],
       "allowed_paths": [
-        "docs/ROGUELIKE_PROPOSALS.md",
+        "docs/",
         "state/",
         "tasks/",
-        "docs/GAME_SPEC.md"
+        "approvals/",
+        "PROJECT_CURRENT.md",
+        "START_HERE.md",
+        "BACKLOG.md",
+        "README.md"
       ],
       "acceptance": [
-        "Владелец выбрал A/B/C и правила провала",
-        "Выбранные карты/риск/сохранение описаны без конфликта с0.4.1",
-        "Невыбранные предложения остаются PROPOSED"
+        "Бесконечная карьера и механики примера закреплены с точным ответом владельца",
+        "Механики APPROVED отделены от графики CHANGES_REQUESTED и чиселдемо",
+        "ТЗ/решения/передача/архив обновлены без изменения игрового кода"
       ],
-      "verification": "Сверить ответ владельца с предложенными вариантами и D03/D15.",
+      "verification": "JSON/структура,хеши снимков,Git docs validation и целостностьZIP",
       "owner": null,
       "session_id": null,
       "lease_until": null,
@@ -1719,10 +1725,53 @@
       "pr_url": "https://github.com/kotlyakov/barista/pull/30",
       "commit": null,
       "evidence": [
-        "docs/ROGUELIKE_PROPOSALS.md"
+        "docs/ROGUELIKE_SPEC.md",
+        "docs/PLAYER_MECHANICS.md",
+        "SPEC-001/v5;MECH-001/v1;VISUAL-003/v1"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "Проверки перед фиксацией;игровой код не менялся."
+      },
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-037",
+      "title": "Переделать графику окна между сменами",
+      "role": "ART_UI",
+      "status": "TODO",
+      "priority": 3,
+      "dependencies": [
+        "TASK-036"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "design/intermission/",
+        "approvals/",
+        "state/",
+        "tasks/"
+      ],
+      "acceptance": [
+        "Новый графический вариант показан Артуру",
+        "МеханикиMECH001 сохранены;старыйHTML не используется как утверждённый вид",
+        "Фиксируется отдельное решение по конкретной версии"
+      ],
+      "verification": "Просмотр вAndroidlandscape;решение владельца по новому виду",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/30",
+      "commit": null,
+      "evidence": [
+        "VISUAL-003/v1 CHANGES_REQUESTED"
       ],
       "review": null,
-      "blocker": "Новые идеи рогалика представлены для выбора;D15 пока PROPOSED.",
+      "blocker": null,
       "approval_versions": {},
       "decision_records": {}
     }

@@ -1,3 +1,7 @@
+# Последнее решение05.11.2026 —ТЗ0.4.2
+
+Механики бесконечной карьеры и межсменного развития APPROVED:MECH001v1,SPEC001v5,D15ACCEPTED. Графика примера CHANGES_REQUESTED:VISUAL003v1. Текущиеправила docs/ROGUELIKE_SPEC.md;начало новогочата PROJECT_CURRENT.md. Исторические упоминанияниже проD15PROPOSED/ТЗ0.4.1/5смен не являются текущимстатусом. Игровойкод/APK0.3.2 ещёнеобновлялись.
+
 # Актуальное состояние05.11.2026
 
 ТЗ0.4.1 зафиксировано:docs/GAME_SPEC.md (SPEC-001/v4). Начало любой сессии —PROJECT_CURRENT.md иSTART_HERE.md. APK0.3.2 ещё использует предыдущие правила. Текущая ветка task/TASK-029-gameplay-polish,PR30;main старее. Предложения рогалика —docs/ROGUELIKE_PROPOSALS.md,PROPOSED. Следующий шаг TASK-035.

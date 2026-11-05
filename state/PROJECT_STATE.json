@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "package_version": "0.4.1",
+  "package_version": "0.4.2",
   "updated_at": "2026-11-05",
-  "phase": "SPEC_0_4_1_FIXED_IMPLEMENTATION_PENDING",
+  "phase": "ROGUELIKE_MECHANICS_APPROVED_VISUAL_REWORK",
   "game_code_exists": true,
-  "current_task": null,
+  "current_task": "TASK-036",
   "next_task": "TASK-035",
-  "next_action": "Спланировать миграцию0.3.2→0.4.1;предложения D15 ждут выбора. Игровой код этим запросом не меняется.",
+  "next_action": "Новыйчат:TASK035 план интеграции0.4.2;TASK037 новаяграфикаокнамеждусменами. Механикиприняты,графикаотклонена.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -15,21 +15,22 @@
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
-    "head_note": "Коммит содержательной фиксацииТЗ;завершающий коммит метаданных может следовать. Фактическийtip проверить вGit.",
+    "head_note": "HEAD передфиксациейрешения05.11;фактическийtip проверить вGit.",
     "working_branch": "task/TASK-029-gameplay-polish",
-    "working_head": "4775a15f0bbe683515b54e4db898a8840977e050"
+    "working_head": "8c187d7cba19307104008a5d13d48ec4561f66b8"
   },
   "blockers": [
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
     "Final specific audio/intro and individual character approvals pending; general cafe 09 approved"
   ],
   "approved_materials": [
-    "SPEC-001/v4",
-    "VISUAL-002/v9"
+    "SPEC-001/v5",
+    "VISUAL-002/v9",
+    "MECH-001/v1"
   ],
   "last_verified_commit": "4bfe9de93144130df5b73e1b143d3e21698a058c",
   "ci_status": "PASS:26 local Godot scripts; build41806172799 and native/docs CI; actual Android runtime41806463440/source4bfe9de9. Metadata commits may follow.",
-  "spec_version": "0.4.1",
+  "spec_version": "0.4.2",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
     "project_id": "appgprj_6ae1b4d1e3bc8191b569fb298107c732",
@@ -150,22 +151,17 @@
     "scope": "Android SDK license required for game APK build"
   },
   "pending_spec": {
-    "version": "0.4.1",
+    "version": "0.4.2",
     "status": "APPROVED_NOT_IMPLEMENTED",
     "path": "docs/GAME_SPEC.md",
-    "decision_ids": [
-      "D10",
-      "D11",
-      "D12",
-      "D13",
-      "D14"
-    ],
     "runtime_changed": false
   },
   "roguelike_proposals": {
-    "status": "PROPOSED",
+    "status": "ACCEPTED",
     "decision": "D15",
-    "path": "docs/ROGUELIKE_PROPOSALS.md"
+    "path": "docs/ROGUELIKE_SPEC.md",
+    "visual_status": "CHANGES_REQUESTED",
+    "balance_status": "DEMO_VALUES_NOT_FINAL"
   },
   "documentation_verification": {
     "commit": "4775a15f0bbe683515b54e4db898a8840977e050",
@@ -176,5 +172,6 @@
       "canonical=frozen snapshot",
       "GitHub docs validate"
     ]
-  }
+  },
+  "owner_latest_decision": "Вроде хорошо. Графика совсем не нравится но механики устраивают. Вноси утверждение в проект. И начнем в новом чате."
 }
