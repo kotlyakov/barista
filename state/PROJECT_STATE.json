@@ -4,7 +4,7 @@
   "updated_at": "2026-11-05",
   "phase": "SPEC_0_4_1_FIXED_IMPLEMENTATION_PENDING",
   "game_code_exists": true,
-  "current_task": "TASK-032",
+  "current_task": null,
   "next_task": "TASK-035",
   "next_action": "Спланировать миграцию0.3.2→0.4.1;предложения D15 ждут выбора. Игровой код этим запросом не меняется.",
   "repository": {
@@ -15,9 +15,9 @@
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
-    "head_note": "Рабочий исходныйHEAD перед фиксацией0.4.1;актуальный tip проверить вGit. APK0.3.2 неизменна.",
+    "head_note": "Коммит содержательной фиксацииТЗ;завершающий коммит метаданных может следовать. Фактическийtip проверить вGit.",
     "working_branch": "task/TASK-029-gameplay-polish",
-    "working_head": "2a25d981bd4a264a6ae3a44651c6c3432718f80b"
+    "working_head": "4775a15f0bbe683515b54e4db898a8840977e050"
   },
   "blockers": [
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
@@ -166,5 +166,15 @@
     "status": "PROPOSED",
     "decision": "D15",
     "path": "docs/ROGUELIKE_PROPOSALS.md"
+  },
+  "documentation_verification": {
+    "commit": "4775a15f0bbe683515b54e4db898a8840977e050",
+    "status": "PASS",
+    "checks": [
+      "JSON/ID",
+      "SPEC-001/v4 SHA256",
+      "canonical=frozen snapshot",
+      "GitHub docs validate"
+    ]
   }
 }

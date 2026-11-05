@@ -1524,7 +1524,7 @@
     },
     {
       "role": "GAME_DESIGNER",
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "priority": 1,
       "dependencies": [
         "TASK-031"
@@ -1539,22 +1539,24 @@
         "BUGS.md"
       ],
       "verification": "Сверка всех9 пунктов,10 цветовых/вкусовых и10 температурных градаций; проверка JSON; builder review документа",
-      "owner": "coordinator",
-      "session_id": "feedback-20261105",
+      "owner": null,
+      "session_id": null,
       "lease_until": null,
       "branch": "task/TASK-029-gameplay-polish",
       "issue_number": null,
       "pr_url": "https://github.com/kotlyakov/barista/pull/30",
-      "commit": null,
+      "commit": "4775a15f0bbe683515b54e4db898a8840977e050",
       "evidence": [
         "docs/superpowers/specs/2026-11-05-free-service-v041-design.md",
         "Builder review:разделены счётчики/качество;добавлены точные тепловые правила и таблица R",
         "Формулы проверены на концах диапазона и монотонность;идеальный100/холодный25/перегрев54.2",
-        "docs/GAME_SPEC.md0.4.1;SPEC-001/v4;фиксация владельцем05.11;docs/ROGUELIKE_PROPOSALS.md отдельно"
+        "docs/GAME_SPEC.md0.4.1;SPEC-001/v4;фиксация владельцем05.11;docs/ROGUELIKE_PROPOSALS.md отдельно",
+        "https://github.com/kotlyakov/barista/commit/4775a15f0bbe683515b54e4db898a8840977e050"
       ],
       "review": {
         "type": "SELF_REVIEW",
-        "result": "Проверить ссылки,JSON,снимок/хеш,архив иGit;игровые тесты не относятся к этому изменению."
+        "result": "PASS:JSON,уникальныеID,совпадение каноническогоТЗ/снимка иSHA256,отделениеPROPOSED;GitHub docs validate success.",
+        "scope": "Документация0.4.1;игровой код не менялся."
       },
       "blocker": null,
       "approval_versions": {},
