@@ -84,7 +84,7 @@
     },
     {
       "id": "D09",
-      "status": "PROPOSED",
+      "status": "SUPERSEDED",
       "decision": null,
       "accepted_by": null,
       "source_message": null,
@@ -92,7 +92,9 @@
       "supersedes": null,
       "proposal": "Проект0.4:независимые редактируемые операции до взятия,свободный порядок/недобор,10 перетапов и новая обратная связь. Предпочтительный вариант1 ещё не выбран владельцем.",
       "proposal_source": "docs/superpowers/specs/2026-11-05-free-brewing-design.md",
-      "owner_request": "05.11:сначала расписать и согласовать,по пункту1 пока не делать"
+      "owner_request": "05.11:сначала расписать и согласовать,по пункту1 пока не делать",
+      "superseded_by": "D12",
+      "notes": "Предложение0.4 заменено прямыми уточнениями владельца;не было ACCEPTED."
     },
     {
       "id": "D10",
@@ -103,8 +105,9 @@
       "accepted_at": null,
       "supersedes": "D02",
       "proposal": "Игровой день1,2...;08:00–17:00≈300 активных секунд; множитель108; следующий день после итога/усилений без ожидания реальной даты. Ускорение/замедление часами —будущий бэклог.",
-      "proposal_source": "docs/superpowers/specs/2026-11-05-free-brewing-design.md",
-      "owner_request": "05.11,пункт8:номер дня без даты,время08–17,сменапримерно5мин"
+      "proposal_source": "docs/superpowers/specs/2026-11-05-free-service-v041-design.md",
+      "owner_request": "05.11,пункт8:номер дня без даты,время08–17,сменапримерно5мин",
+      "previous_proposal_source": "docs/superpowers/specs/2026-11-05-free-brewing-design.md"
     },
     {
       "id": "D11",
@@ -115,8 +118,45 @@
       "accepted_at": null,
       "supersedes": null,
       "proposal": "10 уровней пара с шагом1активнаясекунда,исчезающие комиксные реплики и напоминание заказа; правило тепла/секунды —предложения автора.",
-      "proposal_source": "docs/superpowers/specs/2026-11-05-free-brewing-design.md",
-      "owner_request": "05.11,пункты5–6"
+      "proposal_source": "docs/superpowers/specs/2026-11-05-free-service-v041-design.md",
+      "owner_request": "05.11,пункты5–6",
+      "previous_proposal_source": "docs/superpowers/specs/2026-11-05-free-brewing-design.md"
+    },
+    {
+      "id": "D12",
+      "status": "PROPOSED",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": "D09",
+      "proposal": "Свободный рабочий стакан:исключение только варка при0помола;первый тап любой машины даёт стакан;промах разрешает доработку. Один рабочий стакан и ручной выбор рецепта предложены автором.",
+      "proposal_source": "docs/superpowers/specs/2026-11-05-free-service-v041-design.md",
+      "owner_request": "05.11:уточнения тапов/молока/промаха;переработать ТЗ"
+    },
+    {
+      "id": "D13",
+      "status": "PROPOSED",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": null,
+      "proposal": "До5 гостей с независимыми желаниями/оплатой;свободная выдача,нет активного авто-рецепта;3с пузыря/напоминание/без перекрытий. Интервал входа предложен автором.",
+      "proposal_source": "docs/superpowers/specs/2026-11-05-free-service-v041-design.md",
+      "owner_request": "05.11:клиентов до5,выдача первому/последнему/середине"
+    },
+    {
+      "id": "D14",
+      "status": "PROPOSED",
+      "decision": null,
+      "accepted_by": null,
+      "source_message": null,
+      "accepted_at": null,
+      "supersedes": null,
+      "proposal": "Q=.25g+.45b+.30m;J с отдельными факторами рецепта,температуры,дефекта и ожидания;история C→L→терпение P. Формулы/веса/пороги предложены автором.",
+      "proposal_source": "docs/superpowers/specs/2026-11-05-free-service-v041-design.md",
+      "owner_request": "05.11:каждый критерий влияет не одинаково;холод снижает удовольствие;терпение от истории напитков"
     }
   ]
 }

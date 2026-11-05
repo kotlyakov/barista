@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "1.0",
   "updated_at": "2026-11-05",
-  "phase": "SPEC_0_4_DRAFT_WAITING_OWNER",
+  "phase": "SPEC_0_4_1_DRAFT_WAITING_OWNER",
   "game_code_exists": true,
   "current_task": "TASK-032",
   "next_task": "TASK-032",
-  "next_action": "Артур согласует или корректирует docs/superpowers/specs/2026-11-05-free-brewing-design.md;до этого не менять игровой код/ресурсы/APK. BUG-001 исправлять позже;графика/рука/окно усилений —в бэклоге.",
+  "next_action": "Артур согласует проект0.4.1 и правит предложенные формулы/ручной выбор рецепта;код и APK не менять. После согласования TASK035 —план перехода.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -15,14 +15,14 @@
     "created": true,
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
-    "head_note": "Feedback-only documentation commit may follow;preview0.3.2 and game source unchanged.",
+    "head_note": "Spec-only0.4.1 revision follows;game/APK0.3.2 unchanged.",
     "working_branch": "task/TASK-029-gameplay-polish",
-    "working_head": "36335fab3cb19da7abf0902a7d8f196fecc826fa"
+    "working_head": "45deac25c2343a0b63a3da154eba6b67d78958bf"
   },
   "blockers": [
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
     "Final specific audio/intro and individual character approvals pending; general cafe 09 approved",
-    "TASK-032:проект0.4 требует согласования;реализация новых правил прямо отложена владельцем"
+    "TASK-032:проект0.4.1 ожидает согласования;реализация остаётся отложенной."
   ],
   "approved_materials": [
     "SPEC-001/v3",
@@ -140,7 +140,7 @@
         "root_cause": "Native audio fault not identified; need owner report after physical crash"
       }
     ],
-    "owner_feedback": "05.11:9 новых замечаний;подробный проект до согласования;перегрев+улыбка зарегистрирован,исправить позже;графика0.3.2 не принята.",
+    "owner_feedback": "05.11:единственный отказ —варка без помола;стакан от любого аппарата;промах позволяет доделать;единая формула удовольствия;до5 клиентов/свободная выдача/история терпения.",
     "art_acceptance": "CHANGES_REQUESTED:05.11,переработка графики позже. Исторический09 не изменён."
   },
   "android_sdk_license": {
@@ -151,25 +151,22 @@
     "scope": "Android SDK license required for game APK build"
   },
   "pending_spec": {
-    "version": "0.4",
+    "version": "0.4.1",
     "status": "WAITING_OWNER_APPROVAL",
-    "path": "docs/superpowers/specs/2026-11-05-free-brewing-design.md",
+    "path": "docs/superpowers/specs/2026-11-05-free-service-v041-design.md",
     "decision_ids": [
-      "D09",
       "D10",
-      "D11"
+      "D11",
+      "D12",
+      "D13",
+      "D14"
     ],
-    "feedback_ids": [
-      "FB-0501",
-      "FB-0502",
-      "FB-0503",
-      "FB-0504",
-      "FB-0505",
-      "FB-0506",
-      "FB-0507",
-      "FB-0508",
-      "FB-0509"
-    ],
-    "runtime_changed": false
+    "runtime_changed": false,
+    "author_calls": [
+      "Один рабочий стакан;рецепт выбирает игрок",
+      "Вес Q .25/.45/.30 и множители J",
+      "История L и лимит P30–120с",
+      "Интервалы входа и короткий CLOSING"
+    ]
   }
 }
