@@ -1649,7 +1649,7 @@
       "id": "TASK-035",
       "title": "Спланировать интеграциюТЗ0.4.2 и бесконечной карьеры",
       "role": "TECH_LEAD",
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "priority": 2,
       "dependencies": [
         "TASK-032",
@@ -1685,21 +1685,23 @@
         "Реализация начинается только по утверждённой спецификации"
       ],
       "verification": "План учитывает свободный стакан/5 гостей/J/историю,бесконечную карьеру,покупки/модули/постоянников/лиги/события,миграции и новый неутверждённый визуал.",
-      "owner": "Codex / TECH_LEAD + COORDINATOR",
-      "session_id": "20261105-TASK035",
-      "lease_until": "2026-11-06T00:05:03.246086+00:00",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
       "branch": "task/TASK-035-v042-integration-plan",
       "issue_number": null,
-      "pr_url": "https://github.com/kotlyakov/barista/pull/30",
-      "commit": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/32",
+      "commit": "d5f21b5d2757241a33ba4f8788cd1b609248f41d",
       "evidence": [
         "docs/plans/2026-11-05-v042-integration.md",
         "docs/ARCHITECTURE.md",
-        "Исходники GitHub на 42015e790eefd70c25808ac631da1a8d7ddc5351"
+        "Исходники GitHub на 42015e790eefd70c25808ac631da1a8d7ddc5351",
+        "https://github.com/kotlyakov/barista/commit/d5f21b5d2757241a33ba4f8788cd1b609248f41d",
+        "docs-check success: https://github.com/kotlyakov/barista/actions/runs/42100767362"
       ],
       "review": {
         "type": "SELF_REVIEW",
-        "result": "Сверены разделы ТЗ/контракты/миграции/баланс/визуальные ограничения; числовые примеры пересчитаны. Независимого ревью нет."
+        "result": "Сверены разделы ТЗ/контракты/миграции/баланс/визуальные ограничения; числовые примеры пересчитаны. Независимого ревью нет. Удалённый docs-check на содержательном коммите PASS (run42100767362)."
       },
       "blocker": null,
       "approval_versions": {
