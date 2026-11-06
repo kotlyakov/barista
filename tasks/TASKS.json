@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 22022)
-Total output lines: 2303
-
 {
   "schema_version": 1,
   "tasks": [
@@ -851,7 +848,648 @@ Total output lines: 2303
     },
     {
       "id": "TASK-020",
-      "title": "Подготовить проверенный кандида…6022 tokens truncated…купки явно объяснён; успешная покупка показывает новое улучшение и сохраняется",
+      "title": "Подготовить проверенный кандидат APK",
+      "role": "INTEGRATOR",
+      "status": "BLOCKED",
+      "priority": 20,
+      "dependencies": [
+        "TASK-019",
+        "TASK-002",
+        "TASK-022"
+      ],
+      "approval_gates": [
+        "SPEC-001",
+        "UI-001",
+        "UI-002",
+        "ART-001",
+        "CHAR-001",
+        "ANIM-001",
+        "SOUND-001",
+        "MUSIC-001"
+      ],
+      "decision_gates": [
+        "D01",
+        "D02",
+        "D03",
+        "D06"
+      ],
+      "allowed_paths": [
+        "docs/BUILD.md",
+        "reports/releases/",
+        ".github/workflows/"
+      ],
+      "acceptance": [
+        "APK существует, хеш/commit/версии записаны",
+        "Установка и полный цикл проверены",
+        "Все финальные утверждения актуальны и лицензии учтены"
+      ],
+      "verification": "Чистая сборка, установка, smoke, сохранение и финальные checks",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 20,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": "Технический ARM64 APK собран, SDK license принята. Финальный кандидат ещё требует утверждений графики/экранов/звука и проверок Android/телефона TASK-022.",
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-021",
+      "title": "Провести пробный выпуск и передать проект",
+      "role": "COORDINATOR",
+      "status": "TODO",
+      "priority": 21,
+      "dependencies": [
+        "TASK-020"
+      ],
+      "approval_gates": [],
+      "decision_gates": [],
+      "allowed_paths": [
+        "reports/feedback/",
+        "CHANGELOG.md",
+        "state/HANDOFF.md"
+      ],
+      "acceptance": [
+        "Тестовая сборка передана Артуру",
+        "Замечания разобраны по задачам",
+        "Состояние/следующий шаг актуальны; магазин приложений без отдельного указания не публикуется"
+      ],
+      "verification": "Сверка feedback, требований, задач и реального релиза",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 21,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [],
+      "review": null,
+      "blocker": null,
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-022",
+      "title": "Проверить нативный ввод и откалибровать скоростное комбо на телефоне",
+      "role": "QA_REVIEWER",
+      "status": "BLOCKED",
+      "priority": 19,
+      "dependencies": [
+        "TASK-008"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [],
+      "allowed_paths": [
+        "reports/playtests/",
+        "game/content/",
+        "game/tests/"
+      ],
+      "acceptance": [
+        "Touch/mouse, удержание, второй палец, фон/пауза проверены на телефоне либо Android-эмуляторе; среда записана",
+        "Для каждого рецепта минимум 10 попыток на реальном телефоне; параметры комбо и результаты сохранены",
+        "Финальная проверка на целевом телефоне не заменена headless проверкой"
+      ],
+      "verification": "Реальный Android runtime и протокол попыток",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
+      "branch": null,
+      "issue_number": 25,
+      "pr_url": null,
+      "commit": null,
+      "evidence": [
+        "reports/releases/ANDROID_CAFE_0_3_0.md",
+        "Android runtime run41028363869 SUCCESS / evidence12964722431"
+      ],
+      "review": null,
+      "blocker": "Фактический Android15 x86_64 smoke PASS (run41028363869), старый emulator boot блок снят. Физического ARM64/Pixel и 10 попыток на рецепт для калибровки ещё нет.",
+      "approval_versions": {},
+      "decision_records": {}
+    },
+    {
+      "id": "TASK-023",
+      "title": "Собрать и проверить технический Android APK",
+      "role": "INTEGRATOR",
+      "status": "DONE",
+      "priority": 14,
+      "dependencies": [
+        "TASK-008",
+        "TASK-014"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/export_presets.cfg",
+        "tools/",
+        "docs/BUILD.md",
+        "reports/native/",
+        "state/",
+        "tasks/TASKS.json",
+        "BACKLOG.md",
+        "game/project.godot",
+        "reports/releases/"
+      ],
+      "acceptance": [
+        "Лицензия Android SDK принята по явному сообщению Артура «Принимаю»",
+        "APK реально существует; подпись, пакет, версия, архитектура и SHA-256 проверены",
+        "Повторяемые команды и ограничения записаны; APK не выдаётся за окончательную игру",
+        "Исходники/результаты опубликованы в GitHub; файл APK сохранён для скачивания"
+      ],
+      "verification": "Godot tests, Android export, apksigner verify, aapt badging; Android runtime отдельно",
+      "owner": "coordinator",
+      "session_id": "android-20261029",
+      "lease_until": null,
+      "branch": "task/TASK-023-android-preview",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/26",
+      "commit": "3ef3c8a400bb663899895b93533f2a45b12a4dfe",
+      "evidence": [
+        "reports/releases/ANDROID_TECH_0_1_0.md",
+        "tools/build_android.sh",
+        "tools/check_apk.py",
+        "ChatGPT Library libfile_2bac8fac01f0819189f9f431da290f39"
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS",
+        "scope": "Actual APK export, signature/ZIP/alignment/manifest/ABI, 15 GDScript tests; emulator boot timed out, runtime NOT_RUN"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-024",
+      "title": "Перенести утверждённую кофейню 09 в нативную сцену",
+      "role": "DEVELOPER",
+      "status": "DONE",
+      "priority": 15,
+      "dependencies": [
+        "TASK-014",
+        "TASK-023"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/ui/",
+        "game/content/art/",
+        "game/tests/",
+        "tools/art/",
+        "docs/",
+        "reports/native/",
+        "design/screens/",
+        "state/",
+        "tasks/TASKS.json",
+        "BACKLOG.md",
+        "approvals/",
+        "game/project.godot",
+        "game/export_presets.cfg",
+        "tools/build_android.sh",
+        "tools/check_apk.py",
+        "reports/releases/"
+      ],
+      "acceptance": [
+        "Фон и временные герои из точного эталона 09; происхождение и хеши записаны",
+        "Приборы, стакан, монеты, эмоции работают с существующим доменом",
+        "Уходящие гости поворачиваются; последовательные посетители не пересекаются",
+        "Проверены игровой цикл, пауза и слои; новые экраны остаются черновиками"
+      ],
+      "verification": "Godot tests, raster screenshot review, independent code review",
+      "owner": "coordinator",
+      "session_id": "native-cafe-20261029",
+      "lease_until": null,
+      "branch": "task/TASK-024-native-cafe",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": "42a2465a0dab58409f083ba12792102db39e65cf",
+      "evidence": [
+        "game/ui/main.gd",
+        "reports/native/SINGLE_CAFE_20261030.md",
+        "CI run 41014050829: 21 Godot tests + 7 native rendered PNGs",
+        "reports/releases/ANDROID_CAFE_0_3_0.md"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "PASS after training/recovery fixes; Linux renders inspected; final art/audio approval remains separate",
+        "scope": "Technical native port and single-scene implementation only; no physical Android claim"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-025",
+      "title": "Обучение и настройки в единой кофейне (старые экраны заменены R23–R25)",
+      "role": "DEVELOPER",
+      "status": "DONE",
+      "priority": 15,
+      "dependencies": [
+        "TASK-014",
+        "TASK-023"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/ui/",
+        "game/orders/session.gd",
+        "game/persistence/",
+        "game/tests/",
+        "design/screens/",
+        "docs/",
+        "reports/native/",
+        "state/",
+        "tasks/TASKS.json",
+        "BACKLOG.md",
+        "approvals/"
+      ],
+      "acceptance": [
+        "Изолированная тренировка не меняет карьеру",
+        "Настройка mute сохраняется и откатывается при отказе записи",
+        "Отдельные прежние home/settings экраны не показываются"
+      ],
+      "verification": "Godot tests, actual screen renders, review",
+      "owner": "coordinator",
+      "session_id": "native-cafe-20261029",
+      "lease_until": null,
+      "branch": "task/TASK-024-native-cafe",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": "42a2465a0dab58409f083ba12792102db39e65cf",
+      "evidence": [
+        "game/ui/main.gd",
+        "reports/native/SINGLE_CAFE_20261030.md",
+        "CI run 41014050829: 21 Godot tests + 7 native rendered PNGs",
+        "reports/releases/ANDROID_CAFE_0_3_0.md"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "PASS after training/recovery fixes; Linux renders inspected; final art/audio approval remains separate",
+        "scope": "Technical native port and single-scene implementation only; no physical Android claim"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-026",
+      "title": "Единая нативная кофейня по указанию Артура 30.10",
+      "role": "DEVELOPER",
+      "status": "DONE",
+      "priority": 15,
+      "dependencies": [
+        "TASK-014",
+        "TASK-023"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/ui/",
+        "game/content/art/",
+        "game/tests/",
+        "tools/art/",
+        "docs/",
+        "reports/native/",
+        "design/screens/",
+        "state/",
+        "tasks/TASKS.json",
+        "BACKLOG.md",
+        "approvals/",
+        "game/project.godot",
+        "game/export_presets.cfg",
+        "tools/build_android.sh",
+        "tools/check_apk.py",
+        "reports/releases/"
+      ],
+      "acceptance": [
+        "Оригинальная стойка и rigs 09 сохранены",
+        "Intro 3 секунды/тап, меню и прогресс замораживают ввод/часы/звук",
+        "Прогресс показывает ту же стойку без людей; mute переживает перезапуск",
+        "Старые сохранения совместимы; тренировка и явное восстановление доступны"
+      ],
+      "verification": "21 Godot script, native render in CI, review; Android separately",
+      "owner": "coordinator",
+      "session_id": "native-single-cafe-20261030",
+      "lease_until": null,
+      "branch": "task/TASK-026-single-cafe-native",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": "42a2465a0dab58409f083ba12792102db39e65cf",
+      "evidence": [
+        "game/tests/cafe_shell_test.gd",
+        "game/tests/recovery_ui_test.gd",
+        "reports/native/SINGLE_CAFE_20261030.md",
+        "CI run 41014050829: 21 Godot tests + 7 native rendered PNGs",
+        "reports/releases/ANDROID_CAFE_0_3_0.md"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "PASS after training/recovery fixes; Linux renders inspected; final art/audio approval remains separate",
+        "scope": "Technical native port and single-scene implementation only; no physical Android claim"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-027",
+      "title": "Собрать новую кофейню Android через CI и подписать прежним ключом",
+      "role": "INTEGRATOR",
+      "status": "DONE",
+      "priority": 14,
+      "dependencies": [
+        "TASK-008",
+        "TASK-014"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        ".github/workflows/android-preview.yml",
+        "game/export_presets.cfg",
+        "tools/",
+        "docs/",
+        "reports/releases/",
+        "tasks/",
+        "state/",
+        "BACKLOG.md"
+      ],
+      "acceptance": [
+        "Есть APK 0.3.0 code 3 с новым shell и точным source SHA",
+        "Подпись совпадает с прежним preview; ключ не передан в Git/CI",
+        "Пройдены manifest/ABI/ZIP/16KB alignment/signature checks; runtime не выдан за проверенный",
+        "Новый файл сохранён для скачивания и handoff обновлён"
+      ],
+      "verification": "Actual CI export + official Android SDK apksigner/zipalign/aapt + source/hash verification",
+      "owner": "coordinator",
+      "session_id": "android-ci-20261030",
+      "lease_until": null,
+      "branch": "task/TASK-026-single-cafe-native",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/29",
+      "commit": "32ffa2231d66aef49b26a712d84256472e86f83c",
+      "evidence": [
+        "reports/releases/ANDROID_CAFE_0_3_0.md",
+        "CI build run 41024619007 / artifact 12963425517",
+        "Library libfile_593b35c6f59081918ddbee576b8f5cf9",
+        "artifacts/android-ci-0.3.0/final-verification.log",
+        "Actual Android15 x86_64 full smoke run41028363869 SUCCESS; artifact12964722431"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW_PLUS_SELF_VERIFICATION",
+        "result": "PASS: actual unsigned export, original-key signature, official SDK checks, Android15 x86_64 end-to-end smoke. Physical Pixel separately.",
+        "scope": "review_android_build and signer/cert/ZIP/alignment/manifest/ABI checks"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-028",
+      "title": "Разобрать вылеты Android preview при нажатиях и помоле",
+      "role": "DEVELOPER",
+      "status": "TODO",
+      "priority": 90,
+      "dependencies": [
+        "TASK-027"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/",
+        "tools/",
+        ".github/workflows/",
+        "reports/",
+        "tasks/",
+        "state/",
+        "BACKLOG.md",
+        "docs/"
+      ],
+      "acceptance": [
+        "Воспроизвести сбой или собрать точные границы воспроизведения",
+        "Проверить приготовление с включёнными эффектами и частые нажатия",
+        "Исправление подтверждено регрессией; не выдавать эмулятор за телефон"
+      ],
+      "verification": "Original APK Android runtime with audio enabled, crash logs, regression checks",
+      "owner": "coordinator",
+      "session_id": "android-crash-20261030",
+      "lease_until": null,
+      "branch": "task/TASK-026-single-cafe-native",
+      "issue_number": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/29",
+      "commit": "b09bf205d29f80545b754000a521480808f81ba9",
+      "evidence": [
+        "Owner report: latest APK exits on buttons/grinder; isolation answer: Без звука работает",
+        "Original0.3.0 audio-enabled Android run41072984713 SUCCESS, artifact12985387669",
+        "22 local Godot scripts PASS; diagnostic regression observed RED then GREEN",
+        "Signed0.3.1 Library libfile_33dba36456f081918b04cbdaae0929ea",
+        "reports/releases/ANDROID_AUDIO_0_3_1.md",
+        "Diagnostic Android15 x86_64 run41074761425 SUCCESS artifact12986123767;20 extra grinder taps with effects, clipboard report visually confirmed",
+        "04.11.2026 Артур: «Вылетоб больше нет». Снять с текущего приоритета; точная аудиопричина не подтверждена."
+      ],
+      "review": {
+        "type": "SELF_REVIEW",
+        "result": "PASS for bounded diagnostic logging, no log permissions or external telemetry, unchanged career data and original signing key. Native crash fix NOT_CONFIRMED.",
+        "scope": "Mitigation/instrumentation SELF_REVIEW; actual Android smoke PASS. Root cause and physical repair not established."
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-029",
+      "title": "Реакции по дефектам кофе и проверка исчезновения оплаты",
+      "role": "DEVELOPER",
+      "status": "DONE",
+      "priority": 1,
+      "dependencies": [
+        "TASK-026"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/orders/",
+        "game/tests/",
+        "docs/",
+        "tasks/",
+        "state/",
+        "BACKLOG.md",
+        "reports/native/"
+      ],
+      "acceptance": [
+        "Реплика отражает наиболее выраженный вкусовой дефект, даже при хорошем среднем качестве",
+        "Просроченная оплата не начисляется и не возвращается после перезапуска; пауза замораживает срок",
+        "Актуальный план и слова владельца о прекращении вылетов записаны без заявления об исправленной первопричине звука"
+      ],
+      "verification": "Godot domain/integration suite, documentation validator, SELF_REVIEW",
+      "owner": "coordinator",
+      "session_id": "resume-20261104",
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": "5848918fad37d5b1674f3e11bab78d1503c99ad6",
+      "evidence": [
+        "docs/plans/2026-11-04-resume-development.md",
+        "game/tests/taste_reaction_test.gd: observed RED then GREEN",
+        "game/tests/payment_expiry_test.gd: PASS",
+        "24/24 Godot4.5.1 scripts PASS, Linux/headless 04.11.2026"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "No critical or important findings; both new tests independently PASS",
+        "scope": "stage-defect reaction, preserved late priority and payment expiry/pause/restart"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-030",
+      "title": "Исправить перетаскивание стакана и соответствие сцены",
+      "role": "DEVELOPER",
+      "status": "DONE",
+      "priority": 1,
+      "dependencies": [
+        "TASK-029"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/ui/",
+        "game/tests/",
+        "docs/",
+        "reports/native/",
+        "state/",
+        "tasks/",
+        "BACKLOG.md",
+        "game/content/art/cafe/",
+        "tools/art/"
+      ],
+      "acceptance": [
+        "Стакан сохраняет смещение захвата и выдаётся только перетаскиванием его центра в зону клиента",
+        "Тап клиента, второй палец и отменённый touch не выдают оставшийся на стойке стакан",
+        "После промаха, паузы и возврата можно снова взять стакан без скачка",
+        "Сцена сверена с эталоном09; найдённые расхождения описаны",
+        "Выданный стакан из исходной графики09 остаётся в руке гостя после сбора/исчезновения оплаты и во время ухода"
+      ],
+      "verification": "RED→GREEN touch regression, full Godot suite, rendered comparison and review",
+      "owner": "coordinator",
+      "session_id": "cafe-polish-20261104",
+      "lease_until": null,
+      "branch": "task/TASK-029-gameplay-polish",
+      "issue_number": null,
+      "pr_url": null,
+      "commit": "4bfe9de93144130df5b73e1b143d3e21698a058c",
+      "evidence": [
+        "game/tests/cup_drag_test.gd: two observed RED→GREEN regressions",
+        "25/25 Godot tests PASS",
+        "9 actual Linux/Mesa rendered states; cup/drag/payment/progress viewed"
+      ],
+      "review": {
+        "type": "INDEPENDENT_CODE_REVIEW",
+        "result": "No critical or important regressions; independently rerun 25/25 Godot tests PASS",
+        "scope": "drag/pointer cancellation, preserved offset, held cups, approved graphics exporter"
+      },
+      "blocker": null,
+      "approval_versions": {
+        "SPEC-001": 3
+      },
+      "decision_records": {
+        "D01": "D01"
+      }
+    },
+    {
+      "id": "TASK-031",
+      "title": "Показать результат покупки улучшения и подготовить сборку",
+      "role": "DEVELOPER",
+      "status": "DONE",
+      "priority": 1,
+      "dependencies": [
+        "TASK-029"
+      ],
+      "approval_gates": [
+        "SPEC-001"
+      ],
+      "decision_gates": [
+        "D01"
+      ],
+      "allowed_paths": [
+        "game/",
+        "tools/",
+        ".github/workflows/",
+        "docs/",
+        "reports/",
+        "state/",
+        "tasks/",
+        "BACKLOG.md"
+      ],
+      "acceptance": [
+        "Отказ покупки явно объяснён; успешная покупка показывает новое улучшение и сохраняется",
         "Подготовлена новая версия preview с прежним пакетом и подписью либо записан точный блок сборки"
       ],
       "verification": "Purchase feedback RED→GREEN, complete Godot suite, actual Android export/signing checks",
