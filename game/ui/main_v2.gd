@@ -404,8 +404,9 @@ func draw_cafe():
  if repository==null:return
  if repository.legacy:super.draw_cafe();return
  barista.reaching=screen in ["","lesson"] and (game.data.clock<facepalm_until or not game.cup.is_empty() and (dragging or cup_position.distance_to(CUP_HOME)>1))
- draw_texture_rect(room,Rect2(0,0,1600,900),false);barista.draw_on(self)
+ draw_texture_rect(room,Rect2(0,0,1600,900),false)
  if screen!="progress":
+  barista.draw_on(self)
   for rig in rigs.values():
    if not rig.phase in ["wait_enter","gone"]:rig.draw_on(self)
  draw_counter()

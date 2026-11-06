@@ -1,4 +1,7 @@
 name: android-v2
+concurrency:
+  group: android-v2-${{ github.ref }}
+  cancel-in-progress: true
 on:
   push:
     branches: [task/TASK-043-free-service-ui]
@@ -124,7 +127,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p /tmp/android-cli "$ANDROID_HOME/cmdline-tools" artifacts/android-runtime
+          mkdir -p /tmp/android-cli "$ANDROID_HOME/cmdline-tools" artifacts/android-runtime-v2
           curl --fail --location --retry 2 'https://dl.google.com/android/repository/commandlinetools-linux-15859902_latest.zip' -o /tmp/android-cli.zip
           echo '4e4c464f145a7512b57d088ac6c278c03c9eea610886b35a5e0804e74eedf583  /tmp/android-cli.zip' | sha256sum --check
           unzip -q /tmp/android-cli.zip -d /tmp/android-cli
