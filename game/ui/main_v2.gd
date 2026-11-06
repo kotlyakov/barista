@@ -297,7 +297,10 @@ func draw_bubble(rect: Rect2,line: String,mouth: Vector2,size=18):
  draw_style_box(panel(Color("eadbc0")),rect)
  var edge=Vector2(clampf(mouth.x,rect.position.x+12,rect.end.x-12),rect.end.y)
  draw_colored_polygon(PackedVector2Array([edge-Vector2(7,0),edge+Vector2(7,0),mouth]),Color("eadbc0"))
- var words=line.split(" ");var current="";var y=rect.position.y+size+9
+ var words=line.split(" ")
+ for word in words:
+  while size>12 and font.get_string_size(word,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x>rect.size.x-16:size-=1
+ var current="";var y=rect.position.y+size+9
  for word in words:
   if font.get_string_size(current+word,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x>rect.size.x-16:
    text_at(Vector2(rect.position.x+8,y),current,size,Color("302628"));current="";y+=size+5
@@ -320,7 +323,8 @@ func draw_play():
   else:text_at(bubble.position+Vector2(4,22),NAMES[visit.customer_id],20)
  for payment in game.data.payments:
   if payment.state!="PENDING" or not slots.has(payment.visit_id):continue
-  var rect=visit_coin_rect(payment.visit_id);draw_circle(rect.get_center(),26,Color("dba74a"));text_at(rect.position+Vector2(12,44),str(payment.amount),23,Color("302628"))
+  var rect=visit_coin_rect(payment.visit_id);var label=str(payment.amount);var label_width=font.get_string_size(label,HORIZONTAL_ALIGNMENT_LEFT,-1,23).x
+  draw_circle(rect.get_center(),26,Color("dba74a"));text_at(rect.get_center()+Vector2(-label_width/2,8),label,23,Color("302628"))
  if not game.cup.is_empty():
   if barista.reaching:draw_arm(cup_position)
   draw_cup(cup_position)
@@ -343,14 +347,14 @@ func draw_between():
  if shop_tab==0:
   for i in range(3):
    var id=e.offers[i];var item=C.PERKS[id];var rect=offer_rect(i);draw_style_box(panel(Color("20323d")),rect)
-   text_at(rect.position+Vector2(20,42),item.name,26);wrapped(rect.position+Vector2(20,90),item.description,405,22)
+   wrapped(rect.position+Vector2(20,42),item.name,405,24);wrapped(rect.position+Vector2(20,90),item.description,405,22)
    text_at(rect.position+Vector2(20,205),str(item.price)+" монет"+(" · Куплено" if e.choice==id else ""),25,Color("ebbc76"))
   draw_button(LESSON_BUTTON,"Пропустить покупку",e.choice=="")
  elif shop_tab==1:
   for i in range(4):
    var id=["grind","brew","milk","ads"][i];var level=int(game.data.upgrades[id]);var rect=gear_rect(i);draw_style_box(panel(Color("20323d")),rect)
    text_at(rect.position+Vector2(20,40),["Жернова","Кофемашина","Молоко","Реклама"][i]+" · "+str(level)+"/3",26)
-   text_at(rect.position+Vector2(20,82),"Гости чаще" if id=="ads" else "На1 тап меньше за уровень",22)
+   text_at(rect.position+Vector2(20,82),"Гости чаще" if id=="ads" else "На 1 тап меньше за уровень",22)
    text_at(rect.position+Vector2(20,125),"Максимум" if level==3 else str(C.equipment_price(game.data,level))+" монет",25,Color("ebbc76"))
  elif shop_tab==2:
   for i in range(3):
@@ -365,7 +369,7 @@ func draw_between():
    var id=NAMES.keys()[i];var rect=regular_rect(i);draw_style_box(panel(Color("20323d")),rect)
    text_at(rect.position+Vector2(12,28),NAMES[id]+" · "+RECIPE_NAMES[game.data.profiles[id].favorite],19)
    text_at(rect.position+Vector2(12,58),"Цель "+str(e.goals[id])+"/"+str(3 if e.claimed[id]==0 else 6)+" → "+str(C.GOAL_REWARDS[mini(1,int(e.claimed[id]))])+" монет",18)
-   text_at(rect.position+Vector2(12,86),"Скидка на приборы5/10%" if i==0 else "Друзья приходят чаще" if i==1 else "Награда за любимый кофе",18)
+   text_at(rect.position+Vector2(12,86),"Скидка на приборы 5/10%" if i==0 else "Друзья приходят чаще" if i==1 else "Награда за любимый кофе",18)
    draw_button(Rect2(rect.position+Vector2(12,100),Vector2(270,40)),"Угощение оплачено" if e.gifts[id] else "След. визит · "+str(game.PRICES[game.data.profiles[id].favorite]))
    draw_button(Rect2(rect.position+Vector2(12,145),Vector2(270,40)),"Забрать награду" if e.claimed[id]<2 else "Цели выполнены",e.claimed[id]<2)
   text_at(Vector2(70,740),"Угощение оплачивает следующий визит. Доверие меняется только от напитка.",21)
