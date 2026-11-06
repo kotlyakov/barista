@@ -2201,7 +2201,7 @@
       "id": "TASK-044",
       "title": "Закрыть политику и активировать перенос старых профилей",
       "role": "TECH_LEAD",
-      "status": "WAITING_USER",
+      "status": "IN_REVIEW",
       "priority": 2,
       "dependencies": [
         "TASK-040",
@@ -2238,29 +2238,28 @@
         "Проверочный импорт не включён в рабочий профиль вслепую; итоговая конвертация проверена на фикстурах и повторном процессе без дублей"
       ],
       "verification": "docs/plans/2026-11-06-v2-save-policy.md; полные миграционные/транзакционные/процессные регрессии и исходное решение о новых эффектах",
-      "owner": null,
-      "session_id": null,
-      "lease_until": null,
-      "branch": "task/TASK-044-legacy-candidate",
+      "owner": "Codex",
+      "session_id": "task044-live-20261106",
+      "lease_until": "2026-11-07T00:00:00+03:00",
+      "branch": "task/TASK-044-legacy-activation",
       "issue_number": null,
       "pr_url": "https://github.com/kotlyakov/barista/pull/38",
       "commit": "7982045729c8486e12374308d7afe409c3b9ae48",
       "evidence": [
-        "Godot4.5.1 local domain35/35 PASS",
-        "13 v1 phase fixtures and12 refund combinations",
-        "4 separate candidate processes",
-        "5 Important independent-review findings RED-to-GREEN; no re-review",
-        "https://github.com/kotlyakov/barista/actions/runs/42220415974",
-        "https://github.com/kotlyakov/barista/actions/runs/42220416195",
-        "46 Godot scripts,docs,9 legacy render states PASS; candidate only, live policy D16 pending"
+        "Godot4.5.1:38 local scripts PASS",
+        "3 new activation scripts RED-to-GREEN",
+        "4 activation/restart OS processes",
+        "symlink/hardlink corruption regressions RED-to-GREEN",
+        "D16 accepted via direct user reply to exact compensation question",
+        "Remote native/docs CI pending"
       ],
       "review": {
-        "type": "INDEPENDENT_REVIEW_WITH_REGRESSION_FIXES",
-        "reviewer": "review_task044",
-        "status": "FIXES_VERIFIED_FULL_CI",
-        "deferred_minor": "Explicit short-read/error check in backup_v1 before live activation"
+        "type": "PARTIAL_INDEPENDENT_REVIEW_AND_SELF_REVIEW",
+        "reviewer": "review_task044_live",
+        "status": "FIXES_VERIFIED_LOCALLY",
+        "notes": "4 finding groups reproduced RED and fixed; reviewer usage limit prevented final assessment; final author self-review; no re-review."
       },
-      "blocker": "D16 PROPOSED: требуется явный выбор компенсации tuning/grace. Полностью проверяется кандидат; рабочая активация закрыта.",
+      "blocker": null,
       "approval_versions": {
         "SPEC-001": 5,
         "MECH-001": 1
@@ -2268,7 +2267,8 @@
       "decision_records": {
         "D12": "D12",
         "D14": "D14",
-        "D15": "D15"
+        "D15": "D15",
+        "D16": "D16"
       }
     }
   ]

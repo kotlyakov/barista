@@ -32,7 +32,7 @@ func _init():
   s.advance(400);s.finish_summary(s.data.shift.summary_id)
   check(s.data.money==old.money+3800+reward and Repo.Service.Schema.valid(s.snapshot()),"candidate day transition never repeats migration credits")
   var bad=s.snapshot();bad.migration.refund+=1;check(not Repo.Service.Schema.valid(bad),"reject changed refund receipt")
-  bad=s.snapshot();bad.migration.candidate_only=false;check(not Repo.Service.Schema.valid(bad),"candidate cannot self-approve")
+  bad=s.snapshot();bad.migration.candidate_only="false";check(not Repo.Service.Schema.valid(bad),"candidate lifecycle flag must be boolean after accepted D16")
  check(count==13,"all13 original phase fixtures checked")
  var base=JSON.parse_string(FileAccess.get_file_as_string("res://tests/fixtures/v1/shop.json"))
  for tuning in range(4):

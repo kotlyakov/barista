@@ -1,5 +1,5 @@
 extends RefCounted
-# PROPOSED policy. Produces a reviewable candidate, never a working migration.
+# D16 accepted by owner. Preparation still produces a separate candidate.
 const LegacyStore=preload("res://persistence/store.gd")
 const POLICY="safe-boundary-refund-v1"
 const PRICES=[400,800,1400]
@@ -42,7 +42,7 @@ static func reward(old: Dictionary) -> int:
  var shift=old.get("shift",{})
  return 200 if shift.get("mode")=="SUMMARY" and shift.get("success",false) and not shift.get("reward_collected",false) else 0
 static func valid_receipt(m) -> bool:
- if not m is Dictionary or m.size()!=7 or m.get("policy")!=POLICY or m.get("candidate_only")!=true or not LegacyStore.integer(m.get("source_sequence"),1):return false
+ if not m is Dictionary or m.size()!=7 or m.get("policy")!=POLICY or not m.get("candidate_only") is bool or not LegacyStore.integer(m.get("source_sequence"),1):return false
  var old=m.get("source_snapshot")
  if not eligibility(old).ok:return false
  if not m.get("source_hash") is String or m.source_hash!=JSON.stringify(old).sha256_text():return false
@@ -68,4 +68,4 @@ static func convert(old,source_sequence=1) -> Dictionary:
  if not s.enable_career() or not s.enable_development():return {"ok":false,"error":"CANDIDATE_INITIALIZATION"}
  var snapshot_data=s.snapshot()
  if not s.Schema.valid(snapshot_data):return {"ok":false,"error":"CANDIDATE_INVALID"}
- return {"ok":true,"snapshot":snapshot_data,"warnings":["CANDIDATE_ONLY_OWNER_POLICY_REQUIRED","LEGACY_FINISHED_BEFORE_NEW_CAREER","FULL_REFUND_PROPOSED"]}
+ return {"ok":true,"snapshot":snapshot_data,"warnings":["CANDIDATE_ONLY_REQUIRES_ACTIVATION","LEGACY_FINISHED_BEFORE_NEW_CAREER","FULL_REFUND_D16_ACCEPTED"]}

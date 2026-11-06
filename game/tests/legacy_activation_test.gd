@@ -1,0 +1,40 @@
+extends SceneTree
+const R=preload("res://persistence/repository_v2.gd")
+var failures=0
+func check(ok: bool,message: String):
+ if not ok:failures+=1;push_error(message)
+func fixture(name="summary.json"):return JSON.parse_string(FileAccess.get_file_as_string("res://tests/fixtures/v1/"+name))
+func _init():
+ if not R.new("user://activation-missing-"+str(Time.get_ticks_usec())).has_method("activate_legacy_candidate"):print("FAIL: live migration activation absent");quit(1);return
+ var path="user://activation-"+str(OS.get_process_id())+"-"+str(Time.get_ticks_usec())
+ R.LegacyStore.new(path).save(fixture());var r=R.new(path);var prepared=r.prepare_legacy_candidate();check(prepared.ok,"canonical candidate prepared")
+ var hash=prepared.snapshot.migration.source_hash;var before=r.session.snapshot()
+ check(not r.activate_legacy_candidate("0".repeat(64)) and not r.ready and r.session.snapshot()==before,"wrong displayed source does not activate or mutate")
+ check(r.activate_legacy_candidate(hash) and r.ready,"explicit activation publishes and loads working v2")
+ check(r.session.data.money==4777 and not r.session.data.migration.candidate_only,"exact approved refund/premium once")
+ check(r.session.data.profiles["guest-01"].legacy_history==fixture().profiles["guest-01"].history,"history preserved")
+ check(R.Store.new(path+"/v2").read_slot(0).state=="VALID" and R.Store.new(path+"/v2").read_slot(1).state=="VALID","two valid slots published")
+ check(not r.apply("claim_legacy_reward"),"old reward cannot be claimed after activation")
+ check(r.apply("buy_equipment",["grind",1]) and r.session.data.money==3977,"real subsequent purchase committed")
+ check(r.activate_legacy_candidate(hash) and r.session.data.money==3977,"activation retry never restores original funded snapshot")
+ var loaded=R.new(path);check(loaded.ready and loaded.session.data.money==3977 and loaded.session.data.upgrades.grind==2,"ordinary process startup uses progressed v2")
+ check(not R.new(path,true).activate_legacy_candidate(hash),"review mode cannot activate")
+ check(not loaded.activate_legacy_candidate("f".repeat(64)) and loaded.session.data.money==3977,"different source cannot claim existing migration")
+ DirAccess.remove_absolute(ProjectSettings.globalize_path(path+"/slot0.json"))
+ check(loaded.activate_legacy_candidate(hash) and loaded.session.data.money==3977,"completed receipt remains authoritative after original loss")
+ var active=path+"-active";R.LegacyStore.new(active).save(fixture("running.json"))
+ check(not R.new(active).activate_legacy_candidate(hash) and not R.new(active).ready,"unfinished old shift remains original")
+ var fresh_path=path+"-wrong-first";R.LegacyStore.new(fresh_path).save(fixture());var fresh=R.new(fresh_path)
+ check(not fresh.activate_legacy_candidate("0".repeat(64)),"wrong first hash rejected")
+ check(not DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(fresh_path+"/v2-candidate")) and not DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(fresh_path+"/v1-before-v2")),"wrong request pins no candidate or backup")
+ var updated=fixture();updated.money+=10;R.LegacyStore.new(fresh_path).save(updated)
+ var current=R.Candidate.read_source(fresh_path)
+ check(fresh.activate_legacy_candidate(JSON.stringify(current.snapshot).sha256_text()) and fresh.session.data.money==4787,"correct later source can activate after failed wrong request")
+ check(loaded.apply("start_shift",[1]) and loaded.apply("tap",[0]) and loaded.apply("take_cup"),"working carried cup")
+ loaded.advance(0.25)
+ var active_snapshot=loaded.session.snapshot();var since=loaded.since_save
+ check(loaded.activate_legacy_candidate(hash) and loaded.session.snapshot()==active_snapshot and loaded.session.cup.carrying and loaded.since_save==since,"same-generation retry preserves fractional clock and gesture")
+ var corrupt=loaded.session.snapshot();corrupt.migration.candidate_only="false"
+ check(not R.Store.Schema.valid(corrupt),"external approval flag must be a bool")
+ if failures==0:print("PASS: approved exact activation, two slots, spent-state idempotence, live startup, review/stale gates and source loss")
+ quit(0 if failures==0 else 1)
