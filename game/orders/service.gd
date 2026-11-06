@@ -4,6 +4,7 @@ const Cup=preload("res://brewing/cup.gd")
 const Evaluation=preload("res://brewing/evaluation.gd")
 const Roster=preload("res://customers/roster.gd")
 const Schema=preload("res://persistence/service_schema.gd")
+const Career=preload("res://economy/career.gd")
 const CareerShift=preload("res://shift/career_shift.gd")
 const PRICES={"espresso":50,"cappuccino":80,"latte":90}
 const BALANCE_VERSION="service-v2-start-1"
@@ -38,9 +39,75 @@ func enable_career() -> bool:
  data.shift=CareerShift.make(1,draw_forecast(1))
  return true
 
+func enable_development() -> bool:
+ if not data.has("shift") or data.shift.phase!="PREPARING" or data.has("economy") or data.has("legacy") or data.has("career"):return false
+ if not data.has("upgrades"):data.upgrades={"grind":0,"brew":0,"milk":0,"ads":0,"tuning":0,"grace":0}
+ if data.upgrades.tuning!=0 or data.upgrades.grace!=0:return false
+ data.economy=Career.make();data.shift.stats.gifted=0;Career.offers(self);configure_cup()
+ return true
+
+func shop_open() -> bool:
+ return data.has("economy") and data.shift.phase=="PREPARING"
+
+func configure_cup() -> void:
+ if not data.has("economy"):return
+ cup.select_recipe(cup.recipe,Career.targets(data,cup.recipe))
+ cup.cooling_seconds=Career.effects(data).heat
+
+func buy_perk(perk: String,day: int) -> bool:
+ if not shop_open() or day!=data.shift.day_number or data.economy.choice!="" or not perk in data.economy.offers:return false
+ var price=int(Career.PERKS[perk].price)
+ if data.money<price:return false
+ data.money-=price;data.economy.choice=perk;configure_cup();return true
+
+func skip_perk(day: int) -> bool:
+ if not shop_open() or day!=data.shift.day_number or data.economy.choice!="":return false
+ data.economy.choice="skip";return true
+
+func buy_equipment(station: String,level: int) -> bool:
+ if not shop_open() or not station in ["grind","brew","milk","ads"] or level<0 or level>=3 or data.upgrades[station]!=level:return false
+ var price=Career.equipment_price(data,level)
+ if data.money<price:return false
+ data.money-=price;data.upgrades[station]=level+1;configure_cup();return true
+
+func buy_module(module: String) -> bool:
+ if not shop_open() or not module in Career.MODULES or module in data.economy.owned_modules:return false
+ var price=int(Career.MODULES[module].price)
+ if data.money<price:return false
+ data.money-=price;data.economy.owned_modules.append(module);return true
+
+func equip_module(module: String,slot: int) -> bool:
+ if not shop_open() or slot<0 or slot>1 or not module in data.economy.owned_modules or module in data.economy.equipped_modules:return false
+ data.economy.equipped_modules[slot]=module;configure_cup();return true
+
+func remove_module(slot: int) -> bool:
+ if not shop_open() or slot<0 or slot>1 or data.economy.equipped_modules[slot]=="":return false
+ data.economy.equipped_modules[slot]="";configure_cup();return true
+
+func reserve_gift(customer: String) -> bool:
+ if not shop_open() or not data.profiles.has(customer) or data.economy.gifts[customer]:return false
+ var price=int(PRICES[data.profiles[customer].favorite])
+ if data.money<price:return false
+ data.money-=price;data.economy.gifts[customer]=true;return true
+
+func claim_goal(customer: String,tier: int) -> bool:
+ if not shop_open() or not data.profiles.has(customer) or tier<0 or tier>=2 or data.economy.claimed[customer]!=tier or data.economy.goals[customer]<Career.GOAL_TARGETS[tier]:return false
+ data.money+=Career.GOAL_REWARDS[tier];data.economy.claimed[customer]=tier+1;return true
+
+func promote_league(level: int) -> bool:
+ if not shop_open() or level<0 or level>=2 or data.economy.league!=level or data.economy.fame<Career.LEAGUE_FAME[level+1]:return false
+ data.economy.league=level+1;return true
+
 func start_shift(expected_day: int) -> bool:
  if not data.has("shift") or data.shift.phase!="PREPARING" or data.shift.day_number!=expected_day:return false
+ if data.has("economy"):
+  var cost=int(Career.effects(data).maintenance)
+  if data.money<cost:return false
+  data.money-=cost
+  if data.economy.choice=="":data.economy.choice="skip"
+  data.economy.active_perk="" if data.economy.choice=="skip" else data.economy.choice
  data.shift.phase="RUNNING";data.shift.started_at=data.clock;data.shift.next_arrival_at=data.clock
+ configure_cup()
  spawn_visit();schedule_arrival()
  return true
 
@@ -49,6 +116,10 @@ func finish_summary(summary_id: int) -> bool:
  var day=int(data.shift.day_number)+1
  data.shift=CareerShift.make(day,draw_forecast(day),summary_id)
  cup=Cup.new(cup.recipe,cup.targets);data.cup_id=allocate_id()
+ if data.has("economy"):
+  data.shift.stats.gifted=0
+  data.economy.choice="";data.economy.active_perk="";data.economy.critic_spawned=false
+  Career.offers(self);configure_cup()
  return true
 
 func clock_minutes() -> int:
@@ -65,6 +136,7 @@ func can_prepare() -> bool:
 func schedule_arrival() -> void:
  var rng=RandomNumberGenerator.new();rng.state=int(data.rng_state)
  var base=CareerShift.arrival_base(int(data.shift.day_number))
+ if data.has("economy"):base=clampf(base*Career.effects(data).flow,6,20)
  data.shift.next_arrival_at=data.clock+rng.randf_range(0.75*base,1.25*base)
  data.rng_state=str(rng.state)
 
@@ -79,10 +151,15 @@ func spawn_visit(customer_id="",wish_recipe="") -> bool:
  roster.set_rng_state(data.rng_state)
  if customer_id=="": customer_id=roster.pick_available(present)
  if customer_id=="": return false
- if wish_recipe=="": wish_recipe=roster.pick_recipe(customer_id)
+ if wish_recipe=="": wish_recipe=roster.pick_recipe(customer_id,2.0 if data.has("economy") and data.shift.event_id=="milk" else 1.0,4.0 if data.has("economy") and data.shift.event_id=="regulars" else 2.0)
  data.rng_state=roster.rng_state()
  var budget=30+90*float(data.profiles[customer_id].trust_l)
  data.visits.append({"id":allocate_id(),"customer_id":customer_id,"wish_recipe":wish_recipe,"state":"WAITING","patience_budget":budget,"arrived_at":data.clock,"bubble_until":data.clock+3,"reaction_applied":false,"payment_id":0})
+ if data.has("economy"):
+  var visit=data.visits.back()
+  visit.gift=data.economy.gifts[customer_id];data.economy.gifts[customer_id]=false
+  visit.critic=data.shift.event_id=="critic" and not data.economy.critic_spawned
+  if visit.critic:data.economy.critic_spawned=true
  return true
 
 func remind_wish(visit_id: int) -> bool:
@@ -93,6 +170,10 @@ func remind_wish(visit_id: int) -> bool:
 
 func select_recipe(recipe: String) -> bool:
  if data.has("shift") and data.shift.phase!="PREPARING" and not can_prepare():return false
+ if data.has("economy"):
+  var selected=cup.select_recipe(recipe,Career.targets(data,recipe)) if Cup.TARGETS.has(recipe) else false
+  if selected:cup.cooling_seconds=Career.effects(data).heat
+  return selected
  return cup.select_recipe(recipe)
 
 func tap(station: int) -> bool:
@@ -157,18 +238,26 @@ func deliver(cup_id: int,visit_id: int) -> bool:
   data.shift.stats.served+=1
   if good:data.shift.stats.good+=1
  data.streak=int(data.streak)+1 if good else 0
- var base=int(PRICES[visit.wish_recipe])
+ if data.has("economy") and good:
+  data.economy.fame+=1+(5 if visit.get("critic",false) and result.J>=90 else 0)
+  if visit.wish_recipe==profile.favorite and result.R==1:data.economy.goals[visit.customer_id]=mini(6,int(data.economy.goals[visit.customer_id])+1)
+ var gift=visit.get("gift",false)
+ var base=0 if gift else Career.base_price(data,visit.wish_recipe,visit.get("critic",false))
  var tip=0
- if good and (data.streak>=3 or profile.relationship>=30):
+ if not gift and good and (data.streak>=3 or profile.relationship>=30):
   tip=int(floor(base*(0.10+0.10*maxi(0,int(profile.relationship))/100.0)))
  var payment_id=allocate_id()
- data.payments.append({"id":payment_id,"visit_id":visit.id,"cup_id":cup_id,"base":base,"tip":tip,"combo":1,"amount":base+tip,"deadline":data.clock+12,"state":"PENDING"})
- visit.state="PAYMENT"
+ data.payments.append({"id":payment_id,"visit_id":visit.id,"cup_id":cup_id,"base":base,"tip":tip,"combo":1,"amount":base+tip,"deadline":data.clock+Career.effects(data).coins,"state":"COLLECTED" if gift else "PENDING"})
+ visit.state="DEPARTING" if gift else "PAYMENT"
+ if gift and data.has("shift"):
+  data.shift.stats.collected+=1;data.shift.stats.gifted+=1
  visit.reaction_applied=true
  visit.evaluation=result
  visit.payment_id=payment_id
  cup=Cup.new(cup.recipe)
+ configure_cup()
  data.cup_id=allocate_id()
+ process_shift_due()
  return true
 
 func collect(payment_id: int) -> bool:
@@ -281,7 +370,11 @@ static func restore(snapshot_data: Dictionary):
  for key in ["money","next_id","cup_id","streak"]: s.data[key]=int(s.data[key])
  if s.data.has("shift"):
   for key in ["day_number","summary_id","last_summary_id"]:s.data.shift[key]=int(s.data.shift[key])
-  for key in CareerShift.STATS:s.data.shift.stats[key]=int(s.data.shift.stats[key])
+  for key in s.data.shift.stats:s.data.shift.stats[key]=int(s.data.shift.stats[key])
+ if s.data.has("economy"):
+  for key in ["version","fame","league"]:s.data.economy[key]=int(s.data.economy[key])
+  for field in ["goals","claimed"]:
+   for key in s.data.economy[field]:s.data.economy[field][key]=int(s.data.economy[field][key])
  if s.data.has("upgrades"):
   for key in s.data.upgrades:s.data.upgrades[key]=int(s.data.upgrades[key])
  for profile in s.data.profiles.values():

@@ -2076,7 +2076,7 @@
       "id": "TASK-042",
       "title": "Баланс и экономика межсменного развития",
       "role": "GAME_DESIGNER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 2,
       "dependencies": [
         "TASK-041"
@@ -2094,7 +2094,20 @@
         "game/economy/",
         "game/orders/",
         "game/tests/",
-        "reports/"
+        "reports/",
+        "game/persistence/",
+        "game/brewing/",
+        "game/shift/",
+        "state/",
+        "tasks/",
+        "PROJECT_CURRENT.md",
+        "START_HERE.md",
+        "ARCHIVE_SCOPE.md",
+        "README.md",
+        "CHANGELOG.md",
+        "BACKLOG.md",
+        "docs/",
+        "game/customers/"
       ],
       "acceptance": [
         "Один платный выбор из3 или пропуск; события известны до покупки",
@@ -2105,15 +2118,33 @@
       "owner": null,
       "session_id": null,
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-042-career-economy",
       "issue_number": null,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/37",
+      "commit": "1b9bf4a7e44cb6c59de831fb6c3c911e2b78e4ca",
+      "evidence": [
+        "Godot4.5.1:32 local domain/process scripts PASS",
+        "216 event/league/perk/module combinations PASS",
+        "4 separate economy OS processes PASS",
+        "7 independent-review Important groups RED-to-GREEN; no re-review",
+        "https://github.com/kotlyakov/barista/actions/runs/42216208319",
+        "https://github.com/kotlyakov/barista/actions/runs/42216208292",
+        "43 Godot scripts and9 legacy render states PASS"
+      ],
+      "review": {
+        "type": "INDEPENDENT_REVIEW_WITH_REGRESSION_FIXES",
+        "reviewer": "review_task042",
+        "status": "FIXES_VERIFIED_FULL_CI",
+        "notes": "7 Important groups fixed in one pass; no re-review.2 minor issues documented; scope omission corrected."
+      },
       "blocker": null,
-      "approval_versions": {},
-      "decision_records": {}
+      "approval_versions": {
+        "SPEC-001": 5,
+        "MECH-001": 1
+      },
+      "decision_records": {
+        "D15": "D15"
+      }
     },
     {
       "id": "TASK-043",

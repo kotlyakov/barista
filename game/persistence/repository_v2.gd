@@ -67,14 +67,14 @@ func checkpoint() -> bool:
  return true
 
 func apply(method: String,args: Array=[]) -> bool:
- var arities={"spawn_visit":[0,2],"select_recipe":[1,1],"tap":[1,1],"take_cup":[0,0],"return_cup":[0,0],"deliver":[2,2],"collect":[1,1],"remind_wish":[1,1],"finish_departure":[1,1],"claim_legacy_reward":[0,0],"enable_career":[0,0],"start_shift":[1,1],"finish_summary":[1,1]}
+ var arities={"spawn_visit":[0,2],"select_recipe":[1,1],"tap":[1,1],"take_cup":[0,0],"return_cup":[0,0],"deliver":[2,2],"collect":[1,1],"remind_wish":[1,1],"finish_departure":[1,1],"claim_legacy_reward":[0,0],"enable_career":[0,0],"start_shift":[1,1],"finish_summary":[1,1],"enable_development":[0,0],"buy_perk":[2,2],"skip_perk":[1,1],"buy_equipment":[2,2],"buy_module":[1,1],"equip_module":[2,2],"remove_module":[1,1],"reserve_gift":[1,1],"claim_goal":[2,2],"promote_league":[1,1]}
  if not ready or not arities.has(method) or args.size()<arities[method][0] or args.size()>arities[method][1]:return false
- if method in ["spawn_visit","select_recipe"]:
-  for arg in args:
-   if not arg is String:return false
- else:
-  for arg in args:
-   if not Store.Schema.integer(arg,-1):return false
+ if review_mode and method=="enable_development":return false
+ var string_args={"spawn_visit":2,"select_recipe":1,"buy_perk":1,"buy_equipment":1,"buy_module":1,"equip_module":1,"reserve_gift":1,"claim_goal":1}
+ for i in range(args.size()):
+  if i<int(string_args.get(method,0)):
+   if not args[i] is String:return false
+  elif not Store.Schema.integer(args[i],-1):return false
  var before=session.snapshot();var carrying=session.cup.carrying
  var result=session.callv(method,args)
  if not result:return false

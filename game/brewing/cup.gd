@@ -19,6 +19,7 @@ var last_tap=-1.0
 var heat_start_level: Array=[10,10]
 var heat_at: Array=[-1.0,-1.0]
 var carrying=false
+var cooling_seconds=1.0
 
 func _init(recipe_id="cappuccino",target_override: Array=[]) -> void:
  var configured=select_recipe(recipe_id,target_override)
@@ -98,7 +99,7 @@ func return_cup() -> bool:
 
 func component_level(component: int,now: float) -> int:
  if component<0 or component>1 or heat_at[component]<0: return 10
- return mini(10,int(heat_start_level[component])+int(floor(maxf(0,now-heat_at[component]))))
+ return mini(10,int(heat_start_level[component])+int(floor(maxf(0,now-heat_at[component])/cooling_seconds)))
 
 func temperature(now: float) -> float:
  if not finite_number(now,0): return 0
@@ -106,7 +107,7 @@ func temperature(now: float) -> float:
 
 func snapshot() -> Dictionary:
  # Carry is a transient gesture: load/cancel returns the same contents to the counter.
- return {"recipe":recipe,"targets":targets.duplicate(),"taps":taps.duplicate(),"first_tap":first_tap,"last_tap":last_tap,"heat_start_level":heat_start_level.duplicate(),"heat_at":heat_at.duplicate()}
+ return {"recipe":recipe,"targets":targets.duplicate(),"taps":taps.duplicate(),"first_tap":first_tap,"last_tap":last_tap,"heat_start_level":heat_start_level.duplicate(),"heat_at":heat_at.duplicate(),"cooling_seconds":cooling_seconds}
 
 static func finite_number(value,minimum=-1.0,maximum=1.0e12) -> bool:
  return (value is int or value is float) and is_finite(float(value)) and value>=minimum and value<=maximum
@@ -116,6 +117,7 @@ static func whole(value,minimum=0) -> bool:
 
 static func valid(data) -> bool:
  if not data is Dictionary or not TARGETS.has(data.get("recipe")): return false
+ if not finite_number(data.get("cooling_seconds",1.0),1,3):return false
  for field in ["targets","taps","heat_start_level","heat_at"]:
   if not data.get(field) is Array: return false
  if data.targets.size()!=3 or data.taps.size()!=3 or data.heat_start_level.size()!=2 or data.heat_at.size()!=2: return false
@@ -143,6 +145,7 @@ static func restore(data: Dictionary):
  if not valid(data): return null
  var b=load("res://brewing/cup.gd").new(data.recipe,data.targets)
  for i in range(3): b.taps[i]=int(data.taps[i])
+ b.cooling_seconds=float(data.get("cooling_seconds",1.0))
  b.first_tap=float(data.first_tap)
  b.last_tap=float(data.last_tap)
  for i in range(2):
