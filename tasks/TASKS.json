@@ -1808,7 +1808,7 @@
       "id": "TASK-038",
       "title": "Свободный рабочий стакан, температура и оценка Q/J/C",
       "role": "DEVELOPER",
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "priority": 2,
       "dependencies": [
         "TASK-035"
@@ -1833,23 +1833,25 @@
         "Ручной рецепт/фактический состав; формулы и примеры ТЗ"
       ],
       "verification": "Сценарии и границы: docs/plans/2026-11-05-v042-integration.md; реальный Godot FAIL→PASS и связанные регрессии; не засчитывать прошлую0.3.2.",
-      "owner": "Codex / DEVELOPER",
-      "session_id": "20261106-TASK038",
-      "lease_until": "2026-11-06T08:17:05.774715+00:00",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
       "branch": "task/TASK-038-free-cup",
       "issue_number": null,
-      "pr_url": null,
-      "commit": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/33",
+      "commit": "c6eec7fd4454e53988307109ff61f9b1eb520ed9",
       "evidence": [
         "game/brewing/cup.gd",
         "game/brewing/evaluation.gd",
         "game/tests/free_cup_test.gd",
         "game/tests/evaluation_test.gd",
-        "reports/native/TASK038_LEDGER.md"
+        "reports/native/TASK038_LEDGER.md",
+        "https://github.com/kotlyakov/barista/actions/runs/42162175312",
+        "https://github.com/kotlyakov/barista/actions/runs/42162175246"
       ],
       "review": {
         "type": "INDEPENDENT_REVIEW",
-        "result": "Two Important findings fixed; new-model/regression checks pass locally; full CI pending. Two minor hardening/test suggestions deferred."
+        "result": "Independent review: 2 Important fixed, regression RED→GREEN. Full native-check and docs-check success on c6eec7fd (runs42162175312/42162175246). Minor suggestions recorded in ledger."
       },
       "blocker": null,
       "approval_versions": {
@@ -1866,7 +1868,7 @@
       "id": "TASK-039",
       "title": "Независимые визиты, выдача и история терпения",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "IN_PROGRESS",
       "priority": 2,
       "dependencies": [
         "TASK-038"
@@ -1883,7 +1885,10 @@
         "game/orders/",
         "game/customers/",
         "game/tests/",
-        "reports/"
+        "reports/",
+        "docs/plans/",
+        "tasks/",
+        "state/"
       ],
       "acceptance": [
         "До5 уникальных гостей; свободный получатель без авто-рецепта",
@@ -1891,18 +1896,24 @@
         "P фиксируется при входе; напоминание не продлевает ожидание"
       ],
       "verification": "Сценарии и границы: docs/plans/2026-11-05-v042-integration.md; реальный Godot FAIL→PASS и связанные регрессии; не засчитывать прошлую0.3.2.",
-      "owner": null,
-      "session_id": null,
-      "lease_until": null,
-      "branch": null,
+      "owner": "Codex / DEVELOPER",
+      "session_id": "20261106-TASK039",
+      "lease_until": "2026-11-06T08:25:03.349981+00:00",
+      "branch": "task/TASK-038-free-cup",
       "issue_number": null,
       "pr_url": null,
       "commit": null,
       "evidence": [],
       "review": null,
       "blocker": null,
-      "approval_versions": {},
-      "decision_records": {}
+      "approval_versions": {
+        "SPEC-001": 5,
+        "MECH-001": 1
+      },
+      "decision_records": {
+        "D13": "D13",
+        "D14": "D14"
+      }
     },
     {
       "id": "TASK-040",

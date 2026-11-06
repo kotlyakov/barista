@@ -13,3 +13,8 @@ Final: minor (deferred): pin literal C history outputs beyond wait independence;
 Final: minor (deferred): reject impossible single-tap snapshots with unequal first/last/heat timestamps; ordinary snapshots are valid and unchanged.
 Final: Ruling: empty-cup evaluation can return a score but is never deliverable (can_take=false); delivery caller must guard it in039 — separates snapshot validity from delivery eligibility — cost: misuse of evaluate alone could display a meaningless empty-cup score.
 Final: Ruling: Android/UI/migration not reviewed in038 because unmodified v1 remains active; their gates remain040/043 — cost: domain PASS is not full feature acceptance.
+
+Task038 complete: commit c6eec7fd; full native-check42162175312 and docs-check42162175246 SUCCESS. New files do not replace old callers.
+Pre-flight039: service consumes Cup.snapshot/Evaluation.evaluate; Store/UI still v1.
+Ruling039: use orders/service.gd as the v2 Session model until040 handles actual profile migration; current Session/UI stay v1 — prevents mixed-schema writes — cost: temporary separate model.
+Ruling039: relationship start calibration is written before coding in v042-balance.md; neutral begins at J60 (spec reaction boundary), rather than earlier unapproved J40 proposal — author balance choice, not an owner approval — cost: balance may require recalibration.
