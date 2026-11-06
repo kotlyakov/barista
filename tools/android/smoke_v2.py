@@ -145,7 +145,7 @@ try:
  logs=adb('logcat','-d','-s','godot','AndroidRuntime');(OUT/'logcat.txt').write_text(logs)
  assert 'SCRIPT ERROR:' not in logs and 'FATAL EXCEPTION' not in logs and adb('shell','pidof',PACKAGE).strip()
  report={'source_commit':source['source_commit'],'build_run':int(os.environ['BARISTA_BUILD_RUN']),'package':PACKAGE,'android':adb('shell','getprop','ro.build.version.release').strip(),'abi':adb('shell','getprop','ro.product.cpu.abi').strip(),'resolution':[width,height],'performance_five_guests':performance,'checks':['real touch','milk-first','brew refusal','miss/rework','free delivery','pending/collected restart','money/history','menu/background pause','isolated training','five guests','full300s shift','summary/next day','one paid perk','summary migration refund once','active legacy closing+payment+activation']}
- (OUT/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2));print('PASS: actual Android v2 full-cycle/touch/restart/legacy migration',flush=True)
+ (OUT/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2));print('ANDROID_RESULT '+json.dumps(report,ensure_ascii=False),flush=True);print('PASS: actual Android v2 full-cycle/touch/restart/legacy migration',flush=True)
 except Exception:
  try:
   shot('failure');(OUT/'failure-state.json').write_text(json.dumps(read_state(),ensure_ascii=False,indent=2))
