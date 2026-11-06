@@ -45,6 +45,10 @@ func save(snapshot_data: Dictionary,expected_sequence=-1) -> Dictionary:
  if DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(directory))!=OK:return {"ok":false,"error":"DIRECTORY"}
  var target=directory+"/slot"+str((sequence-1)%2)+".json"
  var temp=target+".tmp"
+ var access=DirAccess.open(directory)
+ if access==null:return {"ok":false,"error":"DIRECTORY"}
+ if access.is_link(ProjectSettings.globalize_path(temp)):return {"ok":false,"error":"UNSAFE_TEMP_LINK"}
+ if FileAccess.file_exists(temp) and DirAccess.remove_absolute(ProjectSettings.globalize_path(temp))!=OK:return {"ok":false,"error":"TEMP_CLEANUP"}
  var f=FileAccess.open(temp,FileAccess.WRITE)
  if f==null:return {"ok":false,"error":"WRITE"}
  f.store_string(envelope);f.flush()
