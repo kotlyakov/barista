@@ -3,6 +3,7 @@ extends RefCounted
 const Cup=preload("res://brewing/cup.gd")
 const Evaluation=preload("res://brewing/evaluation.gd")
 const Roster=preload("res://customers/roster.gd")
+const Schema=preload("res://persistence/service_schema.gd")
 const PRICES={"espresso":50,"cappuccino":80,"latte":90}
 const BALANCE_VERSION="service-v2-start-1"
 var data={"clock":0.0,"money":0,"next_id":2,"cup_id":1,"streak":0,"rng_state":"1","profiles":{},"visits":[],"payments":[]}
@@ -162,21 +163,26 @@ func finish_departure(visit_id: int) -> bool:
   if data.payments[i].visit_id==visit_id: data.payments.remove_at(i)
  return true
 
+func claim_legacy_reward() -> bool:
+ if not data.has("legacy") or data.legacy.reward_claimed or data.legacy.reward_pending<=0:return false
+ data.money=int(data.money)+int(data.legacy.reward_pending)
+ data.legacy.reward_claimed=true
+ return true
+
 func snapshot() -> Dictionary:
  var result=data.duplicate(true)
  result.cup=cup.snapshot()
  return result
 
 static func restore(snapshot_data: Dictionary):
- # Store v2 must validate all cross-references before accepting disk data (TASK-040).
- if not Cup.valid(snapshot_data.get("cup")): return null
- for field in ["clock","money","next_id","cup_id","streak","rng_state","profiles","visits","payments"]:
-  if not snapshot_data.has(field): return null
+ if not Schema.valid(snapshot_data): return null
  var s=load("res://orders/service.gd").new()
  s.data=snapshot_data.duplicate(true)
  s.cup=Cup.restore(s.data.cup)
  s.data.erase("cup")
  for key in ["money","next_id","cup_id","streak"]: s.data[key]=int(s.data[key])
+ if s.data.has("upgrades"):
+  for key in s.data.upgrades:s.data.upgrades[key]=int(s.data.upgrades[key])
  for profile in s.data.profiles.values():
   profile.visits=int(profile.visits)
   profile.relationship=int(profile.relationship)

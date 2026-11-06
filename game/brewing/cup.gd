@@ -127,6 +127,7 @@ static func valid(data) -> bool:
  if empty:
   if data.first_tap!=-1 or data.last_tap!=-1: return false
  elif data.first_tap<0 or data.last_tap<data.first_tap: return false
+ if data.taps[0]+data.taps[1]+data.taps[2]==1 and data.first_tap!=data.last_tap: return false
  for i in range(2):
   var station=i+1
   if not whole(data.heat_start_level[i],1) or data.heat_start_level[i]>10 or not finite_number(data.heat_at[i]): return false
