@@ -1,10 +1,11 @@
 extends RefCounted
 const Cup=preload("res://brewing/cup.gd")
 const LegacyStore=preload("res://persistence/store.gd")
+const CareerShift=preload("res://shift/career_shift.gd")
 const PRICES={"espresso":50,"cappuccino":80,"latte":90}
 const MOODS=["neutral","happy","annoyed","delighted","disappointed","very_unhappy","disgusted"]
 const REQUIRED=["clock","money","next_id","cup_id","streak","rng_state","profiles","visits","payments","cup"]
-const OPTIONAL=["preferences","upgrades","legacy","career"]
+const OPTIONAL=["preferences","upgrades","legacy","career","shift"]
 static func number(v,lo=0.0,hi=1.0e12) -> bool:
  return Cup.finite_number(v,lo,hi)
 static func integer(v,lo=0,hi=2147483647) -> bool:
@@ -135,4 +136,29 @@ static func valid(s) -> bool:
   if identities.has(cup_id):return false
  for visit_id in histories:
   if visit_id==s.cup_id or payments.has(visit_id):return false
+ if s.has("shift"):
+  if not CareerShift.valid(s.shift,float(s.clock),int(s.next_id)):return false
+  for key in ["summary_id","last_summary_id"]:
+   var sid=int(s.shift[key])
+   if sid>0 and (identities.has(sid) or histories.has(sid) or history_cups.has(sid) or cups.has(sid)):return false
+  if s.shift.phase in ["PREPARING","SUMMARY"] and (not s.visits.is_empty() or not s.payments.is_empty()):return false
+  if s.shift.phase=="PREPARING" and (s.cup.taps[0]+s.cup.taps[1]+s.cup.taps[2]>0):return false
+  var pending=0;var waiting=0;var collected=0;var expired=0;var known_earnings=0
+  for v in s.visits:
+   if v.arrived_at<s.shift.started_at or v.arrived_at>=s.shift.started_at+300:return false
+   if v.state=="WAITING":waiting+=1
+  for p in s.payments:
+   if p.state=="PENDING":pending+=1
+   elif p.state=="COLLECTED":collected+=1;known_earnings+=int(p.amount)
+   elif p.state=="EXPIRED":expired+=1
+   if p.deadline>s.shift.started_at+327:return false
+  if pending!=s.shift.stats.served-s.shift.stats.collected-s.shift.stats.expired:return false
+  if collected>s.shift.stats.collected or expired>s.shift.stats.expired:return false
+  var unrecorded=s.shift.stats.collected-collected
+  var remainder=s.shift.stats.earned-known_earnings
+  if remainder<50*unrecorded or remainder>108*unrecorded:return false
+  if s.shift.phase=="CLOSING" and pending==0 and waiting==0:return false
+  if s.shift.phase=="CLOSING" and s.clock>=s.shift.started_at+315:
+   for v in s.visits:
+    if v.state=="WAITING":return false
  return true

@@ -2006,7 +2006,7 @@
       "id": "TASK-041",
       "title": "Бесконечные игровые дни и ограниченное закрытие смены",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "IN_REVIEW",
       "priority": 2,
       "dependencies": [
         "TASK-040"
@@ -2023,7 +2023,17 @@
         "game/shift/",
         "game/orders/",
         "game/tests/",
-        "reports/"
+        "reports/",
+        "game/persistence/",
+        "tasks/",
+        "state/",
+        "docs/",
+        "PROJECT_CURRENT.md",
+        "START_HERE.md",
+        "README.md",
+        "BACKLOG.md",
+        "CHANGELOG.md",
+        "ARCHIVE_SCOPE.md"
       ],
       "acceptance": [
         "300 активных секунд, 08–17; без реальной даты",
@@ -2031,18 +2041,34 @@
         "Следующий день ровно один раз; деньги/история не сбрасываются"
       ],
       "verification": "Сценарии и границы: docs/plans/2026-11-05-v042-integration.md; реальный Godot FAIL→PASS и связанные регрессии; не засчитывать прошлую0.3.2.",
-      "owner": null,
-      "session_id": null,
-      "lease_until": null,
-      "branch": null,
+      "owner": "Codex / DEVELOPER",
+      "session_id": "20261106-TASK041",
+      "lease_until": "2026-11-06T15:39:40.309806+00:00",
+      "branch": "task/TASK-041-endless-shifts",
       "issue_number": null,
       "pr_url": null,
       "commit": null,
-      "evidence": [],
-      "review": null,
+      "evidence": [
+        "game/shift/career_shift.gd",
+        "game/tests/career_days_test.gd",
+        "game/tests/career_closing_test.gd",
+        "game/tests/career_persistence_test.gd",
+        "reports/native/TASK041.md",
+        "reports/native/TASK041_LEDGER.md"
+      ],
+      "review": {
+        "type": "INDEPENDENT_REVIEW_WITH_REGRESSION_FIXES",
+        "result": "3 Important groups and1 Minor fixed with6 regression failures→GREEN.28 local scripts PASS. No reviewer reapproval after fixes claimed; full CI pending."
+      },
       "blocker": null,
-      "approval_versions": {},
-      "decision_records": {}
+      "approval_versions": {
+        "SPEC-001": 5,
+        "MECH-001": 1
+      },
+      "decision_records": {
+        "D10": "D10",
+        "D15": "D15"
+      }
     },
     {
       "id": "TASK-042",

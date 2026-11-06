@@ -4,6 +4,7 @@ const Cup=preload("res://brewing/cup.gd")
 const Evaluation=preload("res://brewing/evaluation.gd")
 const Roster=preload("res://customers/roster.gd")
 const Schema=preload("res://persistence/service_schema.gd")
+const CareerShift=preload("res://shift/career_shift.gd")
 const PRICES={"espresso":50,"cappuccino":80,"latte":90}
 const BALANCE_VERSION="service-v2-start-1"
 var data={"clock":0.0,"money":0,"next_id":2,"cup_id":1,"streak":0,"rng_state":"1","profiles":{},"visits":[],"payments":[]}
@@ -25,7 +26,50 @@ func find_visit(visit_id: int) -> Dictionary:
   if visit.id==visit_id: return visit
  return {}
 
+func draw_forecast(day: int) -> String:
+ var rng=RandomNumberGenerator.new();rng.state=int(data.rng_state)
+ var choices=["calm","rain","regulars"] if day%2==1 else ["festival","milk","critic"]
+ var event=choices[rng.randi_range(0,choices.size()-1)]
+ data.rng_state=str(rng.state)
+ return event
+
+func enable_career() -> bool:
+ if data.has("shift") or data.has("legacy") or not data.visits.is_empty() or not data.payments.is_empty() or not cup.is_empty():return false
+ data.shift=CareerShift.make(1,draw_forecast(1))
+ return true
+
+func start_shift(expected_day: int) -> bool:
+ if not data.has("shift") or data.shift.phase!="PREPARING" or data.shift.day_number!=expected_day:return false
+ data.shift.phase="RUNNING";data.shift.started_at=data.clock;data.shift.next_arrival_at=data.clock
+ spawn_visit();schedule_arrival()
+ return true
+
+func finish_summary(summary_id: int) -> bool:
+ if not data.has("shift") or data.shift.phase!="SUMMARY" or summary_id!=data.shift.summary_id:return false
+ var day=int(data.shift.day_number)+1
+ data.shift=CareerShift.make(day,draw_forecast(day),summary_id)
+ cup=Cup.new(cup.recipe,cup.targets);data.cup_id=allocate_id()
+ return true
+
+func clock_minutes() -> int:
+ return CareerShift.clock_minutes(data.shift,data.clock) if data.has("shift") else 480
+
+func can_prepare() -> bool:
+ if not data.has("shift"):return true
+ if data.shift.phase=="RUNNING":return true
+ if data.shift.phase=="CLOSING" and data.clock<data.shift.started_at+315:
+  for visit in data.visits:
+   if visit.state=="WAITING" and data.clock<visit.arrived_at+visit.patience_budget:return true
+ return false
+
+func schedule_arrival() -> void:
+ var rng=RandomNumberGenerator.new();rng.state=int(data.rng_state)
+ var base=CareerShift.arrival_base(int(data.shift.day_number))
+ data.shift.next_arrival_at=data.clock+rng.randf_range(0.75*base,1.25*base)
+ data.rng_state=str(rng.state)
+
 func spawn_visit(customer_id="",wish_recipe="") -> bool:
+ if data.has("shift") and data.shift.phase!="RUNNING":return false
  if data.visits.size()>=5 or (wish_recipe!="" and not PRICES.has(wish_recipe)): return false
  var present=[]
  for visit in data.visits: present.append(visit.customer_id)
@@ -48,12 +92,15 @@ func remind_wish(visit_id: int) -> bool:
  return true
 
 func select_recipe(recipe: String) -> bool:
+ if data.has("shift") and data.shift.phase!="PREPARING" and not can_prepare():return false
  return cup.select_recipe(recipe)
 
 func tap(station: int) -> bool:
+ if not can_prepare():return false
  return cup.tap(station,float(data.clock))
 
 func take_cup() -> bool:
+ if not can_prepare():return false
  return cup.take_cup()
 
 func return_cup() -> bool:
@@ -90,6 +137,7 @@ static func reaction(result: Dictionary) -> String:
  return {"delighted":"Прекрасный кофе!","happy":"Вкусно!","neutral":"Нормально","disappointed":"Разочарован","very_unhappy":"Невкусно","disgusted":"Ужасно"}[mood(result.J)]
 
 func deliver(cup_id: int,visit_id: int) -> bool:
+ if not can_prepare():return false
  var visit=find_visit(visit_id)
  if cup_id!=data.cup_id or not cup.carrying or cup.is_empty() or visit.is_empty() or visit.state!="WAITING" or visit.reaction_applied: return false
  var waited=float(data.clock)-float(visit.arrived_at)
@@ -105,6 +153,9 @@ func deliver(cup_id: int,visit_id: int) -> bool:
  profile.history.append({"schema":2,"visit_id":visit.id,"cup_id":cup_id,"Q":result.Q,"J":result.J,"C":result.C,"T":result.T,"R":result.R,"balance_version":BALANCE_VERSION})
  if profile.history.size()>20: profile.history.pop_front()
  var good=result.J>=75
+ if data.has("shift"):
+  data.shift.stats.served+=1
+  if good:data.shift.stats.good+=1
  data.streak=int(data.streak)+1 if good else 0
  var base=int(PRICES[visit.wish_recipe])
  var tip=0
@@ -126,8 +177,11 @@ func collect(payment_id: int) -> bool:
   if payment.state!="PENDING" or data.clock>=payment.deadline: return false
   payment.state="COLLECTED"
   data.money=int(data.money)+int(payment.amount)
+  if data.has("shift"):
+   data.shift.stats.collected+=1;data.shift.stats.earned+=int(payment.amount)
   var visit=find_visit(int(payment.visit_id))
   if not visit.is_empty(): visit.state="DEPARTING"
+  process_shift_due()
   return true
  return false
 
@@ -136,23 +190,66 @@ func advance(seconds: float,paused=false) -> void:
   cup.return_cup()
   return
  if not Cup.finite_number(seconds,0) or not Cup.finite_number(data.clock+seconds,0): return
- data.clock+=seconds
+ if not data.has("shift"):
+  advance_visits_to(data.clock+seconds)
+  return
+ if not data.shift.phase in ["RUNNING","CLOSING"]:return
+ var target=float(data.clock)+seconds
+ process_shift_due()
+ while data.clock<target and data.shift.phase in ["RUNNING","CLOSING"]:
+  var boundary=target
+  if data.shift.phase=="RUNNING":
+   boundary=minf(boundary,data.shift.started_at+300)
+   if data.visits.size()<5:boundary=minf(boundary,data.shift.next_arrival_at)
+  elif data.clock<data.shift.started_at+315:boundary=minf(boundary,data.shift.started_at+315)
+  for visit in data.visits:
+   if visit.state=="WAITING":boundary=minf(boundary,visit.arrived_at+visit.patience_budget)
+  for payment in data.payments:
+   if payment.state=="PENDING":boundary=minf(boundary,payment.deadline)
+  advance_visits_to(boundary)
+  process_shift_due()
+
+func leave_visit(visit: Dictionary) -> void:
+ visit.state="DEPARTING"
+ if visit.reaction_applied:return
+ var profile=data.profiles[visit.customer_id]
+ profile.relationship=maxi(-100,int(profile.relationship)-5)
+ profile.mood="annoyed";profile.last_reaction="Не дождался";profile.visits+=1
+ visit.reaction_applied=true;data.streak=0
+ if data.has("shift"):data.shift.stats.left+=1
+
+func advance_visits_to(now: float) -> void:
+ data.clock=now
  for visit in data.visits:
   if visit.state!="WAITING" or data.clock<visit.arrived_at+visit.patience_budget: continue
-  visit.state="DEPARTING"
-  if not visit.reaction_applied:
-   var profile=data.profiles[visit.customer_id]
-   profile.relationship=maxi(-100,int(profile.relationship)-5)
-   profile.mood="annoyed"
-   profile.last_reaction="Не дождался"
-   profile.visits+=1
-   visit.reaction_applied=true
-   data.streak=0
+  leave_visit(visit)
  for payment in data.payments:
   if payment.state!="PENDING" or data.clock<payment.deadline: continue
   payment.state="EXPIRED"
+  if data.has("shift"):data.shift.stats.expired+=1
   var visit=find_visit(int(payment.visit_id))
   if not visit.is_empty(): visit.state="DEPARTING"
+
+func process_shift_due() -> void:
+ if not data.has("shift"):return
+ var shift=data.shift
+ # Close the door before handling any arrival scheduled at exactly17:00.
+ if shift.phase=="RUNNING" and data.clock>=shift.started_at+300:shift.phase="CLOSING"
+ if shift.phase=="CLOSING":
+  if data.clock>=shift.started_at+315:
+   for visit in data.visits:
+    if visit.state=="WAITING":leave_visit(visit)
+  var waiting=false
+  for visit in data.visits:
+   if visit.state=="WAITING":waiting=true
+  if not waiting:cup.return_cup()
+  if waiting:return
+  for payment in data.payments:
+   if payment.state=="PENDING":return
+  shift.phase="SUMMARY";shift.summary_id=allocate_id()
+  cup.return_cup();data.visits.clear();data.payments.clear()
+ elif shift.phase=="RUNNING" and shift.next_arrival_at<=data.clock and data.visits.size()<5:
+  if spawn_visit():schedule_arrival()
 
 func finish_departure(visit_id: int) -> bool:
  var visit=find_visit(visit_id)
@@ -161,6 +258,7 @@ func finish_departure(visit_id: int) -> bool:
  # Monotonic IDs make old actions invalid without an unbounded tombstone list.
  for i in range(data.payments.size()-1,-1,-1):
   if data.payments[i].visit_id==visit_id: data.payments.remove_at(i)
+ process_shift_due()
  return true
 
 func claim_legacy_reward() -> bool:
@@ -181,6 +279,9 @@ static func restore(snapshot_data: Dictionary):
  s.cup=Cup.restore(s.data.cup)
  s.data.erase("cup")
  for key in ["money","next_id","cup_id","streak"]: s.data[key]=int(s.data[key])
+ if s.data.has("shift"):
+  for key in ["day_number","summary_id","last_summary_id"]:s.data.shift[key]=int(s.data.shift[key])
+  for key in CareerShift.STATS:s.data.shift.stats[key]=int(s.data.shift.stats[key])
  if s.data.has("upgrades"):
   for key in s.data.upgrades:s.data.upgrades[key]=int(s.data.upgrades[key])
  for profile in s.data.profiles.values():
