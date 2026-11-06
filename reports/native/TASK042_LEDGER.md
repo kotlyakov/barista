@@ -18,3 +18,5 @@ Final: fixed all7 Important groups — career_economy_regression_test RED→GREE
 Coverage extended after review to216 combinations across all3 module pairs, exact independent event prices, drive tap/maintenance pins, friend flow and discount numerical assertions; PASS.
 
 Task042 complete: source 1b9bf4a7e44cb6c59de831fb6c3c911e2b78e4ca, PR37; full native43/docs/render9 PASS. https://github.com/kotlyakov/barista/actions/runs/42216208319; https://github.com/kotlyakov/barista/actions/runs/42216208292.
+
+Final metadata CI40b890e6 FAIL:decision_records содержал статус ACCEPTED вместо ID D15. Исправлена ссылка D15→D15; игровых изменений нет, повторный docs/native CI обязателен.
