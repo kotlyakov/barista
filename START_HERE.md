@@ -1,21 +1,3 @@
-# Текущий этап: TASK043 UI готов, Android QA выполняется
+# TASK043 продолжается; workspace unavailable
 
-Начать с PROJECT_CURRENT.md, AGENTS.md и reports/native/TASK043.md. Ветка task/TASK-043-free-service-ui, PR40; сверить текущий tip. Не помечать DONE до actual Android runtime PASS и подписи APK. Финальный визуал TASK037 и физический плейтест TASK022 остаются отдельно.
-
-# Актуально06.11.2026: TASK044 DONE, далее043
-
-D16 ACCEPTED по прямому ответу Артура на конкретное предложение компенсации; рабочая операция переноса реализована и проверена. Ветка task/TASK-044-legacy-activation,PR39.49 Godot-сценариев/документы/9 прежних кадров PASS,локально38/38. Текущий UI/APK0.3.2 ещё прежний. Далее043 — UI/touch/legacy continuation/Android;037 новый визуал отдельно. Начать с PROJECT_CURRENT.md и AGENTS.md.
-
-# Актуально06.11.2026: TASK-044 кандидат проверен, WAITING_USER
-
-Читать PROJECT_CURRENT.md,AGENTS.md и D16 в docs/plans/2026-11-06-legacy-activation.md. Нужен ответ владельца по полному возврату стоимости tuning/grace; рабочий перенос закрыт. Ветка task/TASK-044-legacy-candidate,PR38.46 Godot-сценариев/документы/9 прежних кадров PASS;APK0.3.2 прежняя. После ответа завершить044,затем043;не перескакивать gate.
-
-# Актуально06.11.2026: TASK-042 DONE
-
-Начать с PROJECT_CURRENT.md и AGENTS.md. Рабочая ветка task/TASK-042-career-economy, PR37. Следующий044 — окончательная миграционная политика/активация; затем043 UI/Android.43 Godot-сценария/документы/9 прежних UI-кадров PASS, APK0.3.2 прежняя. Старые указания ниже сохраняются как история; приоритет у PROJECT_CURRENT и TASKS.json.
-
-# Продолжение проекта
-
-Начать с PROJECT_CURRENT.md и AGENTS.md, затем читать план интеграции. TASK038–041 реализованы в отдельном домене:38 сценариев Godot и9 кадров прежнего UI PASS. Последняя APK0.3.2 ещё не переключена.
-
-Следующий TASK-042: межсменная экономика, каталог и баланс. Рабочая ветка task/TASK-041-endless-shifts, PR36. Затем044 включает окончательный перенос старого профиля,043 интегрирует интерфейс/Android. Механики SPEC001/v5 и MECH001/v1 уже приняты; новый визуал требует отдельного решения.
+Актуальный контекст — PROJECT_CURRENT.md в ветке task/TASK-043-free-service-ui,PR40. Native56/рендер20 PASS,Android частично проверен;полный runtime/выдача APK/обновление ZIP не завершены. Library ZIP пока предыдущего этапа. Не повторять038–044 и не объявлять043 DONE.

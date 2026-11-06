@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "0.4.2",
   "updated_at": "2026-11-06",
-  "phase": "V042_LEGACY_ACTIVATION_VERIFIED",
+  "phase": "V042_UI_ANDROID_VALIDATION",
   "game_code_exists": true,
-  "current_task": null,
+  "current_task": "TASK-043",
   "next_task": "TASK-043",
-  "next_action": "Завершить Android touch/runtime, визуальную проверку новых кадров, подпись APK0.4.2 и запись точных доказательств. Механики/UI реализованы; не помечать DONE до Android PASS.",
+  "next_action": "Завершить Android runtime на актуальном SHA; восстановить workspace для подписи/выдачи ARM64 и обновления контекстZIP. TASK037/022 после043.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -17,8 +17,8 @@
     "pending_sync": false,
     "head_note": "Содержательныйкоммит принятиямеханик;далее может следоватькоммитметаданных. Проверятьtip вGit.",
     "working_branch": "task/TASK-043-free-service-ui",
-    "working_head": "af017da1d69367533c3de6b0f84a929169e7c53d",
-    "working_head_note": "Последний проверенный содержательный коммит; после него следуют только метаданные. Tip сверять вGit."
+    "working_head": "48797b53b0556b839bf077a09acd36d8567dd8de",
+    "working_head_note": "Current game/QA source; subsequent commits may be metadata only. Check tip inGit."
   },
   "blockers": [
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
@@ -30,7 +30,7 @@
     "MECH-001/v1"
   ],
   "last_verified_commit": "af017da1d69367533c3de6b0f84a929169e7c53d",
-  "ci_status": "PASS native55/docs/render20 on af017da1; signed ARM64 structural checks PASS; Android runtime PENDING",
+  "ci_status": "PASS local56/native/docs/render20; Android partial (audio18s/two loops+touch/payment/restarts); full300s/bg/migrations pending; workspace unavailable.",
   "spec_version": "0.4.2",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
@@ -78,7 +78,7 @@
     },
     "debug_signing_key_library_file_id": "libfile_76674d45c1b8819198ccdc529424af21",
     "shell": "intro 3 s / play / menu / progress; mute migration and pause tested",
-    "audio": "Владелец 04.11: вылетов больше нет; включённый звук не уточнён. Предыдущая диагностика сохранена, точная причина неизвестна.",
+    "audio": "Confirmed PCM music loop off-by-one:count→count-1; native contract RED→GREEN,Android18s/two complete loops PASS;physical retest pending.",
     "render": "9 actual Linux/Mesa states, cup/arm/guest/payment/progress viewed; immediate Android capture may show prior frame",
     "previous_android_previews": [
       {
@@ -166,6 +166,16 @@
       "career_shift": "Explicit enable_career;300s08–17,closing15s+finite payments,100-day and4-process checks",
       "career_economy": "Explicit enable_development; deterministic offers, purchases/modules/gifts/goals/fame/leagues/events, atomic persistence; calibration042-1",
       "legacy_candidate": "Verified preparation and explicit activate_legacy_candidate; D16 ACCEPTED, candidate/live receipts separated"
+    },
+    "android_candidate": {
+      "version": "0.4.2",
+      "version_code": 6,
+      "source_commit": "48797b53b0556b839bf077a09acd36d8567dd8de",
+      "game_tree": "511688c0577a19080e77bf145123ebfdf259e763",
+      "status": "BUILT_RUNTIME_PARTIAL_NOT_DELIVERED",
+      "signed_local_source": "bc574419cf4ffee15cd0c90d5f843cbc06e0e4f4",
+      "workspace": "unavailable",
+      "physical_arm64": "NOT_RUN"
     }
   },
   "android_sdk_license": {
@@ -229,7 +239,7 @@
   "legacy_activation": {
     "decision": "D16 ACCEPTED",
     "source_message": "Продолжай",
-    "status": "CONNECTED_TO_UI_NATIVE_VERIFIED_ANDROID_PENDING",
+    "status": "UI_CONNECTED_DOMAIN_VERIFIED_ANDROID_PENDING",
     "method": "activate_legacy_candidate(expected_source_hash)",
     "publication": "two canonical slots1/2 in v2-activate,then atomic rename to missingv2",
     "repeat": "same-generation current state unchanged,stale writer reloads progressed live",
@@ -238,10 +248,11 @@
   },
   "implementation_v042": {
     "status": "TASK043 IN_PROGRESS",
+    "source_commit": "48797b53b0556b839bf077a09acd36d8567dd8de",
     "report": "reports/native/TASK043.md",
     "pr_url": "https://github.com/kotlyakov/barista/pull/40",
-    "ui": "main_v2.tscn is default; v1 continuation bridge",
-    "android": "PENDING exact source runtime",
-    "visual": "technical; TASK037 not approved"
+    "android": "PARTIAL; current pipeline pending",
+    "visual": "technical;037 approval pending",
+    "delivery": "local workspace unavailable; signed APK/context ZIP not saved"
   }
 }
