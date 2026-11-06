@@ -122,7 +122,6 @@ jobs:
         with:
           name: android-unsigned-0.4.2
           path: artifacts/android-input
-          github-token: ${{ github.token }}
       - name: Install pinned SDK commands and temporary emulator signature
         shell: bash
         run: |
