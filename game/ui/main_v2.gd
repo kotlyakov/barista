@@ -18,8 +18,12 @@ var speech_text=""
 var speech_until=-1.0
 var facepalm_until=-1.0
 var speech_last={}
+var main_rigs={}
+var main_slots={}
+var main_bars=[]
 func _exit_tree():
  for rig in rigs.values():rig.free()
+ for rig in main_rigs.values():rig.free()
  super._exit_tree()
 func _ready():
  repository=Bridge.new(save_directory);game=repository.session
@@ -379,9 +383,17 @@ func draw_progress():
  wrapped(Vector2(420,440),"Приборы, модули и угощения доступны между сменами. Обучение не меняет деньги, историю гостей и поток основной игры.",900,26)
  draw_button(LESSON_BUTTON,"Потренироваться")
 func start_lesson():
- if repository.begin_lesson():game=repository.session;screen="lesson";paused=false;lesson_completed=false;clear_rigs();sync_guest(true);bar_progress=[0.0,0.0,0.0];update_audio()
+ if repository.begin_lesson():
+  main_rigs=rigs;main_slots=slots;main_bars=bar_progress.duplicate()
+  rigs={};slots={};game=repository.session;screen="lesson";paused=false;lesson_completed=false
+  speech_until=-1;facepalm_until=-1;speech_last.clear()
+  sync_guest(true);bar_progress=[0.0,0.0,0.0];update_audio()
 func finish_lesson():
- repository.end_training();game=repository.session;clear_rigs();sync_guest(true);screen="menu";paused=true;cancel_drag(true);update_audio()
+ clear_rigs();repository.end_training();game=repository.session
+ rigs=main_rigs;slots=main_slots;bar_progress=main_bars
+ main_rigs={};main_slots={};main_bars=[]
+ speech_until=-1;facepalm_until=-1;speech_last.clear()
+ screen="menu";paused=true;cancel_drag(true);update_audio()
 func clear_rigs():
  for rig in rigs.values():rig.free()
  rigs.clear();slots.clear()
