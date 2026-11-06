@@ -27,12 +27,12 @@ func pick_available(excluded: Array) -> String:
   value-=weight(id)
   if value<=0: return id
  return available.back()
-func pick_recipe(id: String,milk_modifier=1.0) -> String:
+func pick_recipe(id: String,milk_modifier=1.0,favorite_weight=2.0) -> String:
  var choices=["espresso","cappuccino","latte"]
  var weights=[]
  var total=0.0
  for recipe in choices:
-  var w=(2.0 if profiles[id].favorite==recipe else 1.0)*(milk_modifier if recipe!="espresso" else 1.0)
+  var w=(favorite_weight if profiles[id].favorite==recipe else 1.0)*(milk_modifier if recipe!="espresso" else 1.0)
   weights.append(w)
   total+=w
  var value=rng.randf()*total

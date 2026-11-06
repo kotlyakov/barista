@@ -2076,7 +2076,7 @@
       "id": "TASK-042",
       "title": "Баланс и экономика межсменного развития",
       "role": "GAME_DESIGNER",
-      "status": "TODO",
+      "status": "IN_REVIEW",
       "priority": 2,
       "dependencies": [
         "TASK-041"
@@ -2094,7 +2094,20 @@
         "game/economy/",
         "game/orders/",
         "game/tests/",
-        "reports/"
+        "reports/",
+        "game/persistence/",
+        "game/brewing/",
+        "game/shift/",
+        "state/",
+        "tasks/",
+        "PROJECT_CURRENT.md",
+        "START_HERE.md",
+        "ARCHIVE_SCOPE.md",
+        "README.md",
+        "CHANGELOG.md",
+        "BACKLOG.md",
+        "docs/",
+        "game/customers/"
       ],
       "acceptance": [
         "Один платный выбор из3 или пропуск; события известны до покупки",
@@ -2102,18 +2115,33 @@
         "Точные числа и legacy эффекты определены явно; нет долга-тупика и демоформулы дохода"
       ],
       "verification": "Сценарии и границы: docs/plans/2026-11-05-v042-integration.md; реальный Godot FAIL→PASS и связанные регрессии; не засчитывать прошлую0.3.2.",
-      "owner": null,
-      "session_id": null,
-      "lease_until": null,
-      "branch": null,
+      "owner": "Codex",
+      "session_id": "task042-20261106",
+      "lease_until": "2026-11-06T20:00:00Z",
+      "branch": "task/TASK-042-career-economy",
       "issue_number": null,
       "pr_url": null,
       "commit": null,
-      "evidence": [],
-      "review": null,
+      "evidence": [
+        "Godot4.5.1:32 local domain/process scripts PASS",
+        "216 event/league/perk/module combinations PASS",
+        "4 separate economy OS processes PASS",
+        "7 independent-review Important groups fixed via RED-to-GREEN regressions; full native/docs CI pending"
+      ],
+      "review": {
+        "type": "INDEPENDENT_REVIEW_WITH_REGRESSION_FIXES",
+        "reviewer": "review_task042",
+        "status": "FIXES_VERIFIED_LOCALLY",
+        "notes": "7 Important groups fixed in one pass; no re-review.2 minor issues documented; scope omission corrected."
+      },
       "blocker": null,
-      "approval_versions": {},
-      "decision_records": {}
+      "approval_versions": {
+        "SPEC-001": 5,
+        "MECH-001": 1
+      },
+      "decision_records": {
+        "D15": "ACCEPTED"
+      }
     },
     {
       "id": "TASK-043",

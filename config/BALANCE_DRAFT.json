@@ -95,5 +95,13 @@
     800,
     1400
   ],
-  "rules_status": "APPROVED"
+  "rules_status": "APPROVED",
+  "v042_runtime_catalog": {
+    "path": "game/economy/career.gd",
+    "version": "calibration042-1",
+    "status": "AUTHOR_STARTING_CALIBRATION",
+    "documentation": "docs/plans/2026-11-05-v042-balance.md",
+    "legacy_activation": "BLOCKED_UNTIL_TASK044_POLICY",
+    "v03_values": "historical_only"
+  }
 }

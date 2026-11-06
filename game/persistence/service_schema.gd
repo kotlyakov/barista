@@ -1,11 +1,12 @@
 extends RefCounted
 const Cup=preload("res://brewing/cup.gd")
 const LegacyStore=preload("res://persistence/store.gd")
+const Career=preload("res://economy/career.gd")
 const CareerShift=preload("res://shift/career_shift.gd")
 const PRICES={"espresso":50,"cappuccino":80,"latte":90}
 const MOODS=["neutral","happy","annoyed","delighted","disappointed","very_unhappy","disgusted"]
 const REQUIRED=["clock","money","next_id","cup_id","streak","rng_state","profiles","visits","payments","cup"]
-const OPTIONAL=["preferences","upgrades","legacy","career","shift"]
+const OPTIONAL=["preferences","upgrades","legacy","career","shift","economy"]
 static func number(v,lo=0.0,hi=1.0e12) -> bool:
  return Cup.finite_number(v,lo,hi)
 static func integer(v,lo=0,hi=2147483647) -> bool:
@@ -75,6 +76,16 @@ static func valid(s) -> bool:
   for module in c.equipped_modules:
    if not text(module,80) or not owned.has(module) or equipped.has(module):return false
    equipped[module]=true
+ if s.has("economy") and not Career.valid(s.economy,s):return false
+ var duration=Career.effects(s).coins
+ var maximum=Career.maximum_receipt(s) if s.has("economy") else 108
+ var minimum=Career.base_price(s,"espresso",false) if s.has("economy") else 50
+ if s.has("economy"):
+  var expected=Career.targets(s,s.cup.recipe)
+  for n in range(3):
+   if s.cup.targets[n]!=expected[n]:return false
+  if s.cup.get("cooling_seconds",1.0)!=Career.effects(s).heat:return false
+ elif s.cup.get("cooling_seconds",1.0)!=1.0:return false
  var histories={};var history_cups={}
  for n in range(6):
   var key="guest-%02d"%(n+1)
@@ -89,11 +100,22 @@ static func valid(s) -> bool:
     if not number(h.get(k),0,1):return false
    if not number(h.get("J"),0,100) or not text(h.get("balance_version"),80):return false
    histories[int(h.visit_id)]={"customer_id":key,"cup_id":int(h.cup_id),"entry":h};history_cups[int(h.cup_id)]=true
+ if s.has("economy"):
+  var total_visits=0
+  for customer in s.profiles:
+   total_visits+=int(s.profiles[customer].visits)
+   if s.economy.goals[customer]>s.profiles[customer].visits:return false
+  if s.economy.fame>6*total_visits:return false
  var identities={int(s.cup_id):true};var visits={};var people={};var payments={};var cups={}
  for v in s.visits:
   if not v is Dictionary or not id(v.get("id"),s) or identities.has(int(v.id)) or not s.profiles.has(v.get("customer_id")) or people.has(v.customer_id) or not PRICES.has(v.get("wish_recipe")):return false
   if not v.get("state") in ["WAITING","PAYMENT","DEPARTING"] or not v.get("reaction_applied") is bool or not integer(v.get("payment_id")):return false
   if not number(v.get("arrived_at"),0,s.clock) or not number(v.get("patience_budget"),30,120) or not number(v.get("bubble_until"),v.arrived_at,s.clock+3):return false
+  if s.has("economy"):
+   if not v.get("gift") is bool or not v.get("critic") is bool:return false
+   if s.economy.gifts[v.customer_id]:return false
+   if v.critic and (s.shift.event_id!="critic" or not s.economy.critic_spawned):return false
+  elif v.has("gift") or v.has("critic"):return false
   var historical=histories.get(int(v.id),{})
   if not historical.is_empty() and historical.customer_id!=v.customer_id:return false
   if v.state=="WAITING":
@@ -114,15 +136,18 @@ static func valid(s) -> bool:
   if not p is Dictionary or not id(p.get("id"),s) or identities.has(int(p.id)) or not id(p.get("visit_id"),s) or not visits.has(int(p.visit_id)) or payments.has(int(p.id)) or not id(p.get("cup_id"),s) or cups.has(int(p.cup_id)):return false
   var v=visits[int(p.visit_id)]
   if v.payment_id!=p.id or not v.reaction_applied:return false
-  if not p.get("state") in ["PENDING","COLLECTED","EXPIRED"] or not number(p.get("deadline"),0,s.clock+12):return false
+  if not p.get("state") in ["PENDING","COLLECTED","EXPIRED"] or not number(p.get("deadline"),0,s.clock+duration):return false
   if not integer(p.get("base"),0,1000) or not integer(p.get("combo"),1,2) or not integer(p.get("tip"),0,1000) or not integer(p.get("amount"),0,1000) or p.amount!=p.base*p.combo+p.tip:return false
   if v.get("legacy_delivery",false):
    if old.is_empty() or p.amount!=old.order.payment.amount:return false
   else:
-   if p.base!=PRICES[v.wish_recipe] or p.combo!=1 or histories[int(v.id)].cup_id!=p.cup_id:return false
+   if p.base!=(0 if v.get("gift",false) else Career.base_price(s,v.wish_recipe,v.get("critic",false))) or p.combo!=1 or histories[int(v.id)].cup_id!=p.cup_id:return false
+   var issued_at=float(v.arrived_at)+(1.0-float(v.evaluation.W))*float(v.patience_budget)
+   if absf(float(p.deadline)-issued_at-duration)>0.000001:return false
    var relationship=int(s.profiles[v.customer_id].relationship)
    var allowed_tip=int(floor(float(p.base)*(0.10+0.10*maxi(0,relationship)/100.0)))
    if p.tip>0 and (v.evaluation.J<75 or p.tip!=allowed_tip):return false
+   if v.get("gift",false) and (p.amount!=0 or p.state!="COLLECTED"):return false
   if p.state=="PENDING":
    if v.state!="PAYMENT" or p.deadline<=s.clock:return false
   elif v.state!="DEPARTING":return false
@@ -137,26 +162,35 @@ static func valid(s) -> bool:
  for visit_id in histories:
   if visit_id==s.cup_id or payments.has(visit_id):return false
  if s.has("shift"):
-  if not CareerShift.valid(s.shift,float(s.clock),int(s.next_id)):return false
+  if not CareerShift.valid(s.shift,float(s.clock),int(s.next_id),minimum,maximum,duration,s.has("economy")):return false
   for key in ["summary_id","last_summary_id"]:
    var sid=int(s.shift[key])
    if sid>0 and (identities.has(sid) or histories.has(sid) or history_cups.has(sid) or cups.has(sid)):return false
   if s.shift.phase in ["PREPARING","SUMMARY"] and (not s.visits.is_empty() or not s.payments.is_empty()):return false
   if s.shift.phase=="PREPARING" and (s.cup.taps[0]+s.cup.taps[1]+s.cup.taps[2]>0):return false
-  var pending=0;var waiting=0;var collected=0;var expired=0;var known_earnings=0
+  var pending=0;var waiting=0;var collected=0;var expired=0;var known_earnings=0;var known_gifts=0
   for v in s.visits:
    if v.arrived_at<s.shift.started_at or v.arrived_at>=s.shift.started_at+300:return false
    if v.state=="WAITING":waiting+=1
   for p in s.payments:
    if p.state=="PENDING":pending+=1
-   elif p.state=="COLLECTED":collected+=1;known_earnings+=int(p.amount)
+   elif p.state=="COLLECTED":
+    collected+=1;known_earnings+=int(p.amount)
+    if p.base==0:known_gifts+=1
    elif p.state=="EXPIRED":expired+=1
-   if p.deadline>s.shift.started_at+327:return false
+   if p.deadline>s.shift.started_at+315+duration:return false
   if pending!=s.shift.stats.served-s.shift.stats.collected-s.shift.stats.expired:return false
   if collected>s.shift.stats.collected or expired>s.shift.stats.expired:return false
-  var unrecorded=s.shift.stats.collected-collected
+  var gifted=int(s.shift.stats.get("gifted",0))
+  if known_gifts>gifted or collected-known_gifts>s.shift.stats.collected-gifted:return false
+  var unrecorded=(s.shift.stats.collected-gifted)-(collected-known_gifts)
   var remainder=s.shift.stats.earned-known_earnings
-  if remainder<50*unrecorded or remainder>108*unrecorded:return false
+  if remainder<minimum*unrecorded or remainder>maximum*unrecorded:return false
+  if s.has("economy"):
+   var critics=0
+   for v in s.visits:
+    if v.critic:critics+=1
+   if critics>1:return false
   if s.shift.phase=="CLOSING" and pending==0 and waiting==0:return false
   if s.shift.phase=="CLOSING" and s.clock>=s.shift.started_at+315:
    for v in s.visits:
