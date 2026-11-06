@@ -88,6 +88,7 @@ try:
   for _ in range(int(saved['cup']['targets'][station]-saved['cup']['taps'][station])):tap(x,y)
   wait(read_state,lambda s:s['cup']['taps'][station]==saved['cup']['targets'][station],20)
  saved=read_state();assert saved['cup']['taps']==saved['cup']['targets']
+ saved=wait(read_state,lambda s:s['visits'] and s['visits'][0].get('wish_shown_at',-1)>=0,20)
  first=saved['visits'][0];assert first['state']=='WAITING';drag(1009,470)
  payment=wait(read_state,lambda s:any(p['state']=='PENDING' for p in s['payments']));receipt=next(p for p in payment['payments'] if p['state']=='PENDING');balance=payment['money'];shot('04-payment')
  stop();launch();restored=read_state();assert any(p['id']==receipt['id'] and p['state']=='PENDING' for p in restored['payments']),'Pending payment restart'

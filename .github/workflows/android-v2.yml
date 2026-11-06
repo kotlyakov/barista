@@ -151,6 +151,9 @@ jobs:
           emulator-boot-timeout: 240
           emulator-options: -no-window -gpu swangle -no-snapshot -noaudio -no-boot-anim -camera-back none -no-metrics
           script: |
+            # Functional touch/lifecycle test on a software GPU; physical performance is TASK022.
+            adb shell wm size 360x640
+            adb shell wm density 160
             adb install -r /tmp/barista-emulator-test.apk
             python3 tools/android/smoke_v2.py
       - uses: actions/upload-artifact@v4
