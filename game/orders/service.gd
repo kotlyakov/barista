@@ -154,7 +154,7 @@ func spawn_visit(customer_id="",wish_recipe="") -> bool:
  if wish_recipe=="": wish_recipe=roster.pick_recipe(customer_id,2.0 if data.has("economy") and data.shift.event_id=="milk" else 1.0,4.0 if data.has("economy") and data.shift.event_id=="regulars" else 2.0)
  data.rng_state=roster.rng_state()
  var budget=30+90*float(data.profiles[customer_id].trust_l)
- data.visits.append({"id":allocate_id(),"customer_id":customer_id,"wish_recipe":wish_recipe,"state":"WAITING","patience_budget":budget,"arrived_at":data.clock,"bubble_until":data.clock+3,"reaction_applied":false,"payment_id":0})
+ data.visits.append({"id":allocate_id(),"customer_id":customer_id,"wish_recipe":wish_recipe,"state":"WAITING","patience_budget":budget,"arrived_at":data.clock,"bubble_until":data.clock+3,"wish_shown_at":-1.0,"reaction_applied":false,"payment_id":0})
  if data.has("economy"):
   var visit=data.visits.back()
   visit.gift=data.economy.gifts[customer_id];data.economy.gifts[customer_id]=false
@@ -165,8 +165,14 @@ func spawn_visit(customer_id="",wish_recipe="") -> bool:
 func remind_wish(visit_id: int) -> bool:
  var visit=find_visit(visit_id)
  if visit.is_empty() or visit.state!="WAITING" or data.clock>=visit.arrived_at+visit.patience_budget: return false
+ if visit.has("wish_shown_at") and visit.wish_shown_at<0:visit.wish_shown_at=data.clock
  visit.bubble_until=data.clock+3
  return true
+
+func show_arrival_wish(visit_id: int) -> bool:
+ var visit=find_visit(visit_id)
+ if visit.is_empty() or not visit.has("wish_shown_at") or visit.wish_shown_at>=0:return false
+ return remind_wish(visit_id)
 
 func select_recipe(recipe: String) -> bool:
  if data.has("shift") and data.shift.phase!="PREPARING" and not can_prepare():return false
@@ -253,6 +259,7 @@ func deliver(cup_id: int,visit_id: int) -> bool:
   data.shift.stats.collected+=1;data.shift.stats.gifted+=1
  visit.reaction_applied=true
  visit.evaluation=result
+ visit.reaction_until=data.clock+3
  visit.payment_id=payment_id
  cup=Cup.new(cup.recipe)
  configure_cup()

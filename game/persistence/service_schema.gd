@@ -124,6 +124,10 @@ static func valid(s) -> bool:
    if s.economy.gifts[v.customer_id]:return false
    if v.critic and (s.shift.event_id!="critic" or not s.economy.critic_spawned):return false
   elif v.has("gift") or v.has("critic"):return false
+  if v.has("wish_shown_at"):
+   if not number(v.wish_shown_at,-1,s.clock) or v.wish_shown_at!=-1 and v.wish_shown_at<v.arrived_at:return false
+   if v.wish_shown_at<0 and v.bubble_until!=v.arrived_at+3:return false
+  if v.has("reaction_until") and (not number(v.reaction_until,0,s.clock+3) or not v.has("evaluation")):return false
   var historical=histories.get(int(v.id),{})
   if not historical.is_empty() and historical.customer_id!=v.customer_id:return false
   if v.state=="WAITING":

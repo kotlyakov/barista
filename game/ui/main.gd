@@ -389,6 +389,8 @@ func draw_cafe() -> void:
  if screen!="progress":
   barista.draw_on(self)
   guest.draw_on(self)
+ draw_counter()
+func draw_counter() -> void:
  # Equipment, complete countertop AND front fascia stay in front of every rig.
  texture_polygon(PackedVector2Array([Vector2(32,493),Vector2(224,493),Vector2(224,685),Vector2(260,685),Vector2(260,750),Vector2(331,718),Vector2(331,794),Vector2(218,843),Vector2(65,843),Vector2(65,670)]))
  texture_polygon(PackedVector2Array([Vector2(375,452),Vector2(478,408),Vector2(490,385),Vector2(654,384),Vector2(706,406),Vector2(709,680),Vector2(415,680),Vector2(415,568),Vector2(375,568)]))
