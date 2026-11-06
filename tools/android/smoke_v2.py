@@ -76,7 +76,8 @@ try:
  tap(1490,60);time.sleep(.8);shot('01b-paused');paused=read_state();time.sleep(1.3);after_pause=read_state();assert after_pause['clock']==paused['clock'],f"Menu active pause: {paused['clock']} -> {after_pause['clock']}"
  print('PASS menu pause',flush=True)
  tap(800,525);wait(read_state,lambda s:s['preferences']['muted'] is False)
- tap(800,625);before=read_state();tap(240,815);tap(849,411);time.sleep(.5);shot('02-training')
+ tap(800,625);before=read_state();tap(240,815);tap(849,411);time.sleep(18);shot('02-training')
+ print('Audio enabled across two complete music loops',flush=True)
  assert read_state()==before,'Practice changes actual main save'
  tap(1330,830);tap(800,425)
  tap(849,411);milk=wait(read_state,lambda s:s['cup']['taps'][2]==1);assert milk['cup']['taps'][0]==0
