@@ -1,0 +1,123 @@
+{
+ "brew": {
+  "damage_scale": 1.0,
+  "grace": 0,
+  "locked": true,
+  "recipe": "cappuccino",
+  "stage": 2,
+  "taps": [
+   12,
+   16,
+   10
+  ],
+  "targets": [
+   12,
+   16,
+   10
+  ]
+ },
+ "clock": 0.0,
+ "money": 777,
+ "next_id": 2,
+ "order": {
+  "customer_id": "guest-01",
+  "defects": {
+
+  },
+  "first_tap": 0.0,
+  "id": 1,
+  "late": false,
+  "patience": 35.0,
+  "payment": {
+   "amount": 80,
+   "base": 80,
+   "collected": false,
+   "combo": 1,
+   "deadline": 12.0,
+   "id": 1,
+   "tip": 0
+  },
+  "quality": 1.0,
+  "quality_by_stage": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "reaction_applied": true,
+  "recipe": "cappuccino",
+  "state": "PAYMENT"
+ },
+ "preferences": {
+  "effects": 0.8,
+  "master": 0.8,
+  "music": 0.5,
+  "muted": false,
+  "tutorial_seen": false,
+  "vibration": true
+ },
+ "profiles": {
+  "guest-01": {
+   "favorite": "cappuccino",
+   "history": [
+    {
+     "late": false,
+     "quality": 1.0
+    }
+   ],
+   "last_reaction": "Вкусно!",
+   "mood": "happy",
+   "relationship": 8,
+   "visits": 1
+  },
+  "guest-02": {
+   "favorite": "espresso",
+   "history": [],
+   "last_reaction": "",
+   "mood": "neutral",
+   "relationship": 0,
+   "visits": 0
+  },
+  "guest-03": {
+   "favorite": "latte",
+   "history": [],
+   "last_reaction": "",
+   "mood": "neutral",
+   "relationship": 0,
+   "visits": 0
+  },
+  "guest-04": {
+   "favorite": "cappuccino",
+   "history": [],
+   "last_reaction": "",
+   "mood": "neutral",
+   "relationship": 0,
+   "visits": 0
+  },
+  "guest-05": {
+   "favorite": "espresso",
+   "history": [],
+   "last_reaction": "",
+   "mood": "neutral",
+   "relationship": 0,
+   "visits": 0
+  },
+  "guest-06": {
+   "favorite": "latte",
+   "history": [],
+   "last_reaction": "",
+   "mood": "neutral",
+   "relationship": 0,
+   "visits": 0
+  }
+ },
+ "rng_state": "-7751912382566491497",
+ "streak": 1,
+ "upgrades": {
+  "ads": 0,
+  "brew": 0,
+  "grace": 2,
+  "grind": 1,
+  "milk": 0,
+  "tuning": 3
+ }
+}

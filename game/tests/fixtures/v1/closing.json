@@ -1,0 +1,122 @@
+{
+ "brew": {
+  "damage_scale": 1.0,
+  "grace": 0,
+  "locked": false,
+  "recipe": "cappuccino",
+  "stage": 0,
+  "taps": [
+   1,
+   0,
+   0
+  ],
+  "targets": [
+   12,
+   14,
+   10
+  ]
+ },
+ "clock": 480.0,
+ "money": 777,
+ "next_id": 3,
+ "order": {
+  "customer_id": "guest-02",
+  "first_tap": 0.0,
+  "id": 2,
+  "late": true,
+  "patience": 0.0,
+  "payment": {
+
+  },
+  "reaction_applied": false,
+  "recipe": "cappuccino",
+  "state": "BREWING"
+ },
+ "preferences": {
+  "effects": 0.8,
+  "master": 0.8,
+  "music": 0.5,
+  "muted": false,
+  "tutorial_seen": false,
+  "vibration": true
+ },
+ "profiles": {
+  "guest-01": {
+   "favorite": "cappuccino",
+   "history": [],
+   "last_reaction": "",
+   "mood": "neutral",
+   "relationship": 0,
+   "visits": 0
+  },
+  "guest-02": {
+   "favorite": "espresso",
+   "history": [],
+   "last_reaction": "",
+   "mood": "neutral",
+   "relationship": 0,
+   "visits": 0
+  },
+  "guest-03": {
+   "favorite": "latte",
+   "history": [],
+   "last_reaction": "",
+   "mood": "neutral",
+   "relationship": 0,
+   "visits": 0
+  },
+  "guest-04": {
+   "favorite": "cappuccino",
+   "history": [],
+   "last_reaction": "",
+   "mood": "neutral",
+   "relationship": 0,
+   "visits": 0
+  },
+  "guest-05": {
+   "favorite": "espresso",
+   "history": [],
+   "last_reaction": "",
+   "mood": "neutral",
+   "relationship": 0,
+   "visits": 0
+  },
+  "guest-06": {
+   "favorite": "latte",
+   "history": [],
+   "last_reaction": "",
+   "mood": "neutral",
+   "relationship": 0,
+   "visits": 0
+  }
+ },
+ "rng_state": "4665899913361710971",
+ "shift": {
+  "day_key": "2026-11-05",
+  "event": "rush",
+  "mode": "CLOSING",
+  "offers": [
+   "brew",
+   "grind",
+   "patience"
+  ],
+  "perk": "brew",
+  "remaining": 0,
+  "reward_collected": false,
+  "success": false,
+  "zone_bias": 0
+ },
+ "stats": {
+  "delivered": 0,
+  "good": 0
+ },
+ "streak": 0,
+ "upgrades": {
+  "ads": 0,
+  "brew": 0,
+  "grace": 2,
+  "grind": 1,
+  "milk": 0,
+  "tuning": 3
+ }
+}
