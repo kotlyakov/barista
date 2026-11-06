@@ -70,7 +70,8 @@ try:
  assert initial['shift']['phase']=='PREPARING'
  tap(325,445);assert read_state()['money']==0 and read_state()['economy']['choice']=='','Unaffordable offer'
  shot('01-preparation');tap(1290,815);started=wait(read_state,lambda s:s['shift']['phase']=='RUNNING')
- tap(1490,60);paused=read_state();time.sleep(1.3);assert read_state()['clock']==paused['clock'],'Menu active pause'
+ tap(1490,60);time.sleep(.8);shot('01b-paused');paused=read_state();time.sleep(1.3);after_pause=read_state();assert after_pause['clock']==paused['clock'],f"Menu active pause: {paused['clock']} -> {after_pause['clock']}"
+ print('PASS menu pause',flush=True)
  tap(800,525);wait(read_state,lambda s:s['preferences']['muted'] is False)
  tap(800,625);before=read_state();tap(240,815);tap(849,411);time.sleep(.5);shot('02-training')
  assert read_state()==before,'Practice changes actual main save'
@@ -130,5 +131,10 @@ try:
  assert 'SCRIPT ERROR:' not in logs and 'FATAL EXCEPTION' not in logs and adb('shell','pidof',PACKAGE).strip()
  report={'source_commit':source['source_commit'],'build_run':int(os.environ['BARISTA_BUILD_RUN']),'package':PACKAGE,'android':adb('shell','getprop','ro.build.version.release').strip(),'abi':adb('shell','getprop','ro.product.cpu.abi').strip(),'resolution':[width,height],'performance_five_guests':performance,'checks':['real touch','milk-first','brew refusal','miss/rework','free delivery','pending/collected restart','money/history','menu/background pause','isolated training','five guests','full300s shift','summary/next day','one paid perk','summary migration refund once','active legacy closing+payment+activation']}
  (OUT/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2));print('PASS: actual Android v2 full-cycle/touch/restart/legacy migration',flush=True)
+except Exception:
+ try:
+  shot('failure');(OUT/'failure-state.json').write_text(json.dumps(read_state(),ensure_ascii=False,indent=2))
+ except Exception:pass
+ raise
 finally:
  with (OUT/'logcat-all.txt').open('w') as f:subprocess.run(['adb','logcat','-d'],stdout=f,stderr=subprocess.STDOUT,check=False,timeout=30)
