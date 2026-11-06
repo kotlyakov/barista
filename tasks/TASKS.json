@@ -1958,7 +1958,10 @@
         "docs/ARCHITECTURE.md",
         "BACKLOG.md",
         "CHANGELOG.md",
-        "ARCHIVE_SCOPE.md"
+        "ARCHIVE_SCOPE.md",
+        "README.md",
+        "docs/ROADMAP.md",
+        "docs/TEST_PLAN.md"
       ],
       "acceptance": [
         "v1 остаётся неизменной копией; v2 восстанавливает деньги/покупки/все сущности",
