@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "0.4.2",
   "updated_at": "2026-11-06",
-  "phase": "V042_CUP_VISITS_DOMAIN_VERIFIED",
+  "phase": "V042_SAVE_DOMAIN_VERIFIED",
   "game_code_exists": true,
   "current_task": null,
-  "next_task": "TASK-040",
-  "next_action": "TASK-040: внешний валидатор, Repository v2 и фикстуры миграции. APK/UI остаются0.3.2; новый домен038/039 проверен отдельно.",
+  "next_task": "TASK-041",
+  "next_action": "TASK-041: бесконечные игровые смены300с/08–17 и ограниченное закрытие; расширитьv2-схему/операции/сигнатуры переходов. Боевой переносv1 — TASK044 после042, перед043.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -16,8 +16,9 @@
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
     "head_note": "Содержательныйкоммит принятиямеханик;далее может следоватькоммитметаданных. Проверятьtip вGit.",
-    "working_branch": "task/TASK-039-independent-visits",
-    "working_head": "9c627a5e1baf03da5ec82a1ec7126be7eab74b9a"
+    "working_branch": "task/TASK-040-safe-saves",
+    "working_head": "2f3685c898a794a7f3e3d2361dde6641d4a8bac0",
+    "working_head_note": "Последний проверенный содержательный коммит; после него следуют только метаданные. Tip сверять вGit."
   },
   "blockers": [
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
@@ -28,8 +29,8 @@
     "VISUAL-002/v9",
     "MECH-001/v1"
   ],
-  "last_verified_commit": "4bfe9de93144130df5b73e1b143d3e21698a058c",
-  "ci_status": "PASS:26 local Godot scripts; build41806172799 and native/docs CI; actual Android runtime41806463440/source4bfe9de9. Metadata commits may follow.",
+  "last_verified_commit": "2f3685c898a794a7f3e3d2361dde6641d4a8bac0",
+  "ci_status": "PASS: native/domain35 scripts,docs,9 legacy render states on2f3685c8. Android current APK remains0.3.2; v2 Android NOT_RUN.",
   "spec_version": "0.4.2",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
@@ -145,18 +146,20 @@
     "v042_domain": {
       "tasks": [
         "TASK-038",
-        "TASK-039"
+        "TASK-039",
+        "TASK-040"
       ],
-      "commit": "9c627a5e1baf03da5ec82a1ec7126be7eab74b9a",
-      "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42163038976",
-      "docs_ci": "https://github.com/kotlyakov/barista/actions/runs/42163039022",
+      "commit": "2f3685c898a794a7f3e3d2361dde6641d4a8bac0",
+      "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42166465973",
+      "docs_ci": "https://github.com/kotlyakov/barista/actions/runs/42166465887",
       "status": "PASS",
-      "test_scripts": 30,
+      "test_scripts": 35,
       "rendered_states": 9,
-      "local_domain_scripts": 20,
+      "local_domain_scripts": 25,
       "apk_changed": false,
       "ui_connected": false,
-      "profile_migrated": false
+      "profile_migrated": false,
+      "legacy_import": "REVIEW_ONLY: v2-review + immutable backups, live activation TASK044"
     }
   },
   "android_sdk_license": {
@@ -181,14 +184,15 @@
     "balance_status": "DEMO_VALUES_NOT_FINAL"
   },
   "documentation_verification": {
-    "commit": "9c627a5e1baf03da5ec82a1ec7126be7eab74b9a",
+    "commit": "2f3685c898a794a7f3e3d2361dde6641d4a8bac0",
     "status": "PASS_REMOTE",
-    "run_url": "https://github.com/kotlyakov/barista/actions/runs/42163039022",
+    "run_url": "https://github.com/kotlyakov/barista/actions/runs/42166465887",
     "checks": [
       "docs-check",
-      "native-check:30 scripts",
+      "native-check:35 scripts",
       "9 legacy render states",
-      "independent review"
+      "regressions for independent review findings",
+      "separate-process restart smoke"
     ]
   },
   "owner_latest_decision": "Вроде хорошо. Графика совсем не нравится но механики устраивают. Вноси утверждение в проект. И начнем в новом чате.",
@@ -212,6 +216,7 @@
     ],
     "commit": "d5f21b5d2757241a33ba4f8788cd1b609248f41d",
     "pr_url": "https://github.com/kotlyakov/barista/pull/32",
-    "implementation_status": "TASK038/039 DONE,040–043 TODO"
+    "implementation_status": "TASK038/039/040 DONE;041/042/044/043 TODO",
+    "legacy_activation_task": "TASK-044"
   }
 }
