@@ -1,0 +1,33 @@
+extends SceneTree
+const Service=preload("res://orders/service.gd")
+const Repo=preload("res://persistence/repository_v2.gd")
+const Schema=preload("res://persistence/service_schema.gd")
+func touch(node,point: Vector2,pressed: bool):
+ var event=InputEventScreenTouch.new();event.index=0;event.position=point;event.pressed=pressed;node._input(event)
+func _init():call_deferred("run")
+func run():
+ var snapshot=JSON.parse_string(FileAccess.get_file_as_string("res://tests/fixtures/v2/android_drop.json"))
+ assert(Schema.valid(snapshot),"Android pre-delivery snapshot must be valid")
+ var direct=Service.restore(snapshot)
+ assert(direct.take_cup())
+ assert(direct.deliver(1,2),"Domain rejected valid actual Android delivery")
+ assert(Schema.valid(direct.snapshot()),"Delivery produced an invalid snapshot")
+ var directory="user://android-drop-regression-"+str(Time.get_ticks_usec())
+ var repo=Repo.new(directory);repo.session=Service.restore(snapshot)
+ assert(repo.checkpoint(),"Setup checkpoint failed: "+repo.error)
+ assert(repo.apply("take_cup"))
+ var accepted=repo.apply("deliver",[1,2])
+ print("REPOSITORY_DELIVERY accepted=",accepted," error=",repo.error)
+ assert(accepted,"Actual Android snapshot must survive transactional delivery")
+ var node=load("res://ui/main_v2.tscn").instantiate();node.save_directory=directory+"-ui";root.add_child(node);node.set_process(false)
+ node.repository.backend.session=Service.restore(snapshot);node.game=node.repository.session
+ assert(node.repository.checkpoint())
+ node.finish_intro();node.sync_guest(true)
+ touch(node,Vector2(650,760),true)
+ var move=InputEventScreenDrag.new();move.index=0;move.position=Vector2(1003.69866943359,475.073272705078);node._input(move)
+ touch(node,move.position,false)
+ print("UI_DELIVERY payments=",node.game.data.payments.size()," error=",node.repository.error)
+ assert(node.game.data.payments.size()==1,"Exact Android drag must create one payment")
+ node.queue_free();await process_frame
+ print("PASS: captured Android delivery through domain,transaction and exact UI drag")
+ quit()

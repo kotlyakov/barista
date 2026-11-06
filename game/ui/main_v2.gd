@@ -435,4 +435,4 @@ func record_drop_trace(cup_id: int,delivered: bool):
   targets.append({"id":visit.id,"state":visit.state,"slot":slots.get(visit.id,-1),"phase":actor.phase if actor!=null else "missing","rect":[rect.position.x,rect.position.y,rect.size.x,rect.size.y]})
  var file=FileAccess.open(save_directory+"/v2-last-drop.json",FileAccess.WRITE)
  if file!=null:
-  file.store_string(JSON.stringify({"cup_id":cup_id,"clock":game.data.clock,"at":[cup_position.x,cup_position.y],"screen":screen,"paused":paused,"carrying":game.cup.carrying,"delivered":delivered,"targets":targets}));file.close()
+  file.store_string(JSON.stringify({"cup_id":cup_id,"clock":game.data.clock,"at":[cup_position.x,cup_position.y],"screen":screen,"paused":paused,"ready":repository.ready,"error":repository.error,"current_cup_id":game.data.cup_id,"carrying":game.cup.carrying,"delivered":delivered,"targets":targets}));file.close()

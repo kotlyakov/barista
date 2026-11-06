@@ -1,0 +1,181 @@
+{
+  "clock": 3.87602133333333,
+  "cup": {
+    "cooling_seconds": 1,
+    "first_tap": 0.13333333333333336,
+    "heat_at": [
+      2.6767746666666667,
+      3.211603999999999
+    ],
+    "heat_start_level": [
+      1,
+      1
+    ],
+    "last_tap": 3.211603999999999,
+    "recipe": "cappuccino",
+    "taps": [
+      12,
+      16,
+      10
+    ],
+    "targets": [
+      12,
+      16,
+      10
+    ]
+  },
+  "cup_id": 1,
+  "economy": {
+    "active_perk": "",
+    "choice": "skip",
+    "claimed": {
+      "guest-01": 0,
+      "guest-02": 0,
+      "guest-03": 0,
+      "guest-04": 0,
+      "guest-05": 0,
+      "guest-06": 0
+    },
+    "critic_spawned": false,
+    "equipped_modules": [
+      "",
+      ""
+    ],
+    "fame": 0,
+    "gifts": {
+      "guest-01": false,
+      "guest-02": false,
+      "guest-03": false,
+      "guest-04": false,
+      "guest-05": false,
+      "guest-06": false
+    },
+    "goals": {
+      "guest-01": 0,
+      "guest-02": 0,
+      "guest-03": 0,
+      "guest-04": 0,
+      "guest-05": 0,
+      "guest-06": 0
+    },
+    "league": 0,
+    "offers": [
+      "focus",
+      "warmth",
+      "change"
+    ],
+    "owned_modules": [],
+    "version": 1
+  },
+  "money": 0,
+  "next_id": 3,
+  "payments": [],
+  "preferences": {
+    "effects": 0.8,
+    "master": 0.8,
+    "music": 0.5,
+    "muted": false,
+    "tutorial_seen": false,
+    "vibration": true
+  },
+  "profiles": {
+    "guest-01": {
+      "favorite": "cappuccino",
+      "history": [],
+      "last_reaction": "",
+      "mood": "neutral",
+      "relationship": 0,
+      "trust_l": 0.5,
+      "visits": 0
+    },
+    "guest-02": {
+      "favorite": "espresso",
+      "history": [],
+      "last_reaction": "",
+      "mood": "neutral",
+      "relationship": 0,
+      "trust_l": 0.5,
+      "visits": 0
+    },
+    "guest-03": {
+      "favorite": "latte",
+      "history": [],
+      "last_reaction": "",
+      "mood": "neutral",
+      "relationship": 0,
+      "trust_l": 0.5,
+      "visits": 0
+    },
+    "guest-04": {
+      "favorite": "cappuccino",
+      "history": [],
+      "last_reaction": "",
+      "mood": "neutral",
+      "relationship": 0,
+      "trust_l": 0.5,
+      "visits": 0
+    },
+    "guest-05": {
+      "favorite": "espresso",
+      "history": [],
+      "last_reaction": "",
+      "mood": "neutral",
+      "relationship": 0,
+      "trust_l": 0.5,
+      "visits": 0
+    },
+    "guest-06": {
+      "favorite": "latte",
+      "history": [],
+      "last_reaction": "",
+      "mood": "neutral",
+      "relationship": 0,
+      "trust_l": 0.5,
+      "visits": 0
+    }
+  },
+  "rng_state": "-6982687354869278903",
+  "shift": {
+    "day_number": 1,
+    "event_id": "regulars",
+    "last_summary_id": 0,
+    "next_arrival_at": 18.98609733581543,
+    "phase": "RUNNING",
+    "started_at": 0,
+    "stats": {
+      "collected": 0,
+      "earned": 0,
+      "expired": 0,
+      "gifted": 0,
+      "good": 0,
+      "left": 0,
+      "served": 0
+    },
+    "summary_id": 0
+  },
+  "streak": 0,
+  "upgrades": {
+    "ads": 0,
+    "brew": 0,
+    "grace": 0,
+    "grind": 0,
+    "milk": 0,
+    "tuning": 0
+  },
+  "visits": [
+    {
+      "arrived_at": 0,
+      "bubble_until": 5.529813333333333,
+      "critic": false,
+      "customer_id": "guest-01",
+      "gift": false,
+      "id": 2,
+      "patience_budget": 75,
+      "payment_id": 0,
+      "reaction_applied": false,
+      "state": "WAITING",
+      "wish_recipe": "cappuccino",
+      "wish_shown_at": 2.5298133333333332
+    }
+  ]
+}
