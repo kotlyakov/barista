@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "0.4.2",
   "updated_at": "2026-11-06",
-  "phase": "V042_SAVE_DOMAIN_VERIFIED",
+  "phase": "V042_ENDLESS_SHIFTS_VERIFIED",
   "game_code_exists": true,
   "current_task": null,
-  "next_task": "TASK-041",
-  "next_action": "TASK-041: бесконечные игровые смены300с/08–17 и ограниченное закрытие; расширитьv2-схему/операции/сигнатуры переходов. Боевой переносv1 — TASK044 после042, перед043.",
+  "next_task": "TASK-042",
+  "next_action": "TASK-042: межсменная экономика/каталог/баланс. Затем044 окончательная активация старых профилей,043 UI/Android.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -16,8 +16,8 @@
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
     "head_note": "Содержательныйкоммит принятиямеханик;далее может следоватькоммитметаданных. Проверятьtip вGit.",
-    "working_branch": "task/TASK-040-safe-saves",
-    "working_head": "2f3685c898a794a7f3e3d2361dde6641d4a8bac0",
+    "working_branch": "task/TASK-041-endless-shifts",
+    "working_head": "b1bd9e49a3429b710b3c602788d1fcfbd895ce68",
     "working_head_note": "Последний проверенный содержательный коммит; после него следуют только метаданные. Tip сверять вGit."
   },
   "blockers": [
@@ -29,8 +29,8 @@
     "VISUAL-002/v9",
     "MECH-001/v1"
   ],
-  "last_verified_commit": "2f3685c898a794a7f3e3d2361dde6641d4a8bac0",
-  "ci_status": "PASS: native/domain35 scripts,docs,9 legacy render states on2f3685c8. Android current APK remains0.3.2; v2 Android NOT_RUN.",
+  "last_verified_commit": "b1bd9e49a3429b710b3c602788d1fcfbd895ce68",
+  "ci_status": "PASS:38 Godot/domain scripts,docs,9 legacy render states on b1bd9e49. V2 UI/Android NOT_RUN; current APK0.3.2 unchanged.",
   "spec_version": "0.4.2",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
@@ -147,19 +147,21 @@
       "tasks": [
         "TASK-038",
         "TASK-039",
-        "TASK-040"
+        "TASK-040",
+        "TASK-041"
       ],
-      "commit": "2f3685c898a794a7f3e3d2361dde6641d4a8bac0",
-      "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42166465973",
-      "docs_ci": "https://github.com/kotlyakov/barista/actions/runs/42166465887",
+      "commit": "b1bd9e49a3429b710b3c602788d1fcfbd895ce68",
+      "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42213214816",
+      "docs_ci": "https://github.com/kotlyakov/barista/actions/runs/42213214840",
       "status": "PASS",
-      "test_scripts": 35,
+      "test_scripts": 38,
       "rendered_states": 9,
-      "local_domain_scripts": 25,
+      "local_domain_scripts": 28,
       "apk_changed": false,
       "ui_connected": false,
       "profile_migrated": false,
-      "legacy_import": "REVIEW_ONLY: v2-review + immutable backups, live activation TASK044"
+      "legacy_import": "REVIEW_ONLY: v2-review + immutable backups, live activation TASK044",
+      "career_shift": "Explicit enable_career;300s08–17,closing15s+finite payments,100-day and4-process checks"
     }
   },
   "android_sdk_license": {
@@ -184,15 +186,16 @@
     "balance_status": "DEMO_VALUES_NOT_FINAL"
   },
   "documentation_verification": {
-    "commit": "2f3685c898a794a7f3e3d2361dde6641d4a8bac0",
+    "commit": "b1bd9e49a3429b710b3c602788d1fcfbd895ce68",
     "status": "PASS_REMOTE",
-    "run_url": "https://github.com/kotlyakov/barista/actions/runs/42166465887",
+    "run_url": "https://github.com/kotlyakov/barista/actions/runs/42213214840",
     "checks": [
       "docs-check",
-      "native-check:35 scripts",
+      "native-check:38 scripts",
       "9 legacy render states",
-      "regressions for independent review findings",
-      "separate-process restart smoke"
+      "review regressions",
+      "100 consecutive days",
+      "four-process career restart"
     ]
   },
   "owner_latest_decision": "Вроде хорошо. Графика совсем не нравится но механики устраивают. Вноси утверждение в проект. И начнем в новом чате.",
@@ -216,7 +219,7 @@
     ],
     "commit": "d5f21b5d2757241a33ba4f8788cd1b609248f41d",
     "pr_url": "https://github.com/kotlyakov/barista/pull/32",
-    "implementation_status": "TASK038/039/040 DONE;041/042/044/043 TODO",
+    "implementation_status": "TASK038/039/040/041 DONE;042/044/043 TODO",
     "legacy_activation_task": "TASK-044"
   }
 }

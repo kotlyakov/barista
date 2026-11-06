@@ -8,3 +8,5 @@ Ruling: one immediate visitor at start, saved deterministic bounded arrival stre
 
 Review fix pass:3 Important findings covered by regressions: closing has no preparation without a waiting recipient; carry returns at315s/payment-only mode; persisted summary must be the latest allocated summary ID; after-hours arrivals and empty closing rejected. Minor impossible earnings fixed with zero/min/max receipt bounds and consistency with known terminal receipts (currently50..108, combo disabled). New regressions observed6 failures before fixes, then all3 new scripts PASS.
 Ruling: bounds for receipts and12s payment duration describe current approved base prices;042 must extend these schema constraints when adding gifts/effects/pricing.
+
+TASK041 complete:b1bd9e49, native42213214816/docs42213214840 SUCCESS;38 scripts/9 legacy renders,28 local scripts PASS. Next042.
