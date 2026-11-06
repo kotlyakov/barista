@@ -193,11 +193,13 @@ func _input(event: InputEvent):
   if pending_reminder>=0 and point.distance_to(press_at)>12:pending_reminder=-1
   if dragging and not paused:cup_position=point+cup_grab_offset
  elif action.action=="release" and dragging:
+  var attempted_cup=int(game.data.cup_id)
   dragging=false;cup_position=point+cup_grab_offset
   var delivered=false
   if not paused:
    for visit in game.data.visits:
     if visit_drop_rect(visit.id).has_point(cup_position):delivered=act("deliver",[game.data.cup_id,visit.id]);break
+  record_drop_trace(attempted_cup,delivered)
   repository.cancel_carry()
   if delivered:bar_progress=[0.0,0.0,0.0]
  elif action.action=="release" and pending_reminder>=0:
@@ -424,3 +426,13 @@ func draw_cup(at: Vector2):
    for j in range(14):points.append(Vector2((i-1)*12+sin(j*.4+visual_clock*2+i)*5,-55-j*3-fmod(visual_clock*22+i*17,60)*.35))
    draw_polyline(points,Color(.95,.91,.82,heat*.4),2,true)
  draw_set_transform(Vector2.ZERO)
+
+func record_drop_trace(cup_id: int,delivered: bool):
+ if not OS.is_debug_build():return
+ var targets=[]
+ for visit in game.data.visits:
+  var rect=visit_drop_rect(visit.id);var actor=rigs.get(visit.id)
+  targets.append({"id":visit.id,"state":visit.state,"slot":slots.get(visit.id,-1),"phase":actor.phase if actor!=null else "missing","rect":[rect.position.x,rect.position.y,rect.size.x,rect.size.y]})
+ var file=FileAccess.open(save_directory+"/v2-last-drop.json",FileAccess.WRITE)
+ if file!=null:
+  file.store_string(JSON.stringify({"cup_id":cup_id,"clock":game.data.clock,"at":[cup_position.x,cup_position.y],"screen":screen,"paused":paused,"carrying":game.cup.carrying,"delivered":delivered,"targets":targets}));file.close()

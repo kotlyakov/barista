@@ -102,10 +102,13 @@ try:
  payment=wait(read_state,lambda s:any(p['state']=='PENDING' for p in s['payments']));receipt=next(p for p in payment['payments'] if p['state']=='PENDING');balance=payment['money'];shot('04-payment')
  stop();launch();restored=read_state();assert any(p['id']==receipt['id'] and p['state']=='PENDING' for p in restored['payments']),'Pending payment restart'
  tap(1009,580);collected=wait(read_state,lambda s:s['money']==balance+receipt['amount']);assert len(collected['profiles'][first['customer_id']]['history'])==1
- stop();launch();wait(read_state,lambda s:any(v['state']=='WAITING' for v in s['visits']),35);stop();launch();tap(1490,60);saved=read_state();assert saved['money']==collected['money'] and saved['profiles']==collected['profiles'],'Collected money/history restart'
+ stop();launch();wait(read_state,lambda s:any(v['state']=='WAITING' for v in s['visits']),35);stop();launch();tap(1490,60);time.sleep(.8);saved=read_state();assert saved['money']==collected['money'] and saved['profiles']==collected['profiles'],'Collected money/history restart'
  # Relaunch assigns fixed slots in current visit-array order. Stay paused while choosing.
  waiting=next((i,v) for i,v in enumerate(saved['visits']) if v['state']=='WAITING')
- slot,visitor=waiting;tap(800,425);tap(180,650);drag(1009+126*slot,470)
+ slot,visitor=waiting;tap(800,425);tap(180,650)
+ raw=wait(read_state,lambda s:s['cup']['taps'][0]==1)
+ print('SECOND_DELIVERY '+json.dumps({'visit':visitor['id'],'slot':slot,'cup':raw['cup_id'],'clock':raw['clock']}),flush=True)
+ drag(1009+126*slot,470)
  second=wait(read_state,lambda s:any(p['visit_id']==visitor['id'] and p['state']=='PENDING' for p in s['payments']))
  receipt2=next(p for p in second['payments'] if p['visit_id']==visitor['id']);tap(1009+126*slot,580)
  wait(read_state,lambda s:s['money']==collected['money']+receipt2['amount'])
@@ -149,6 +152,9 @@ try:
 except Exception:
  try:
   shot('failure');(OUT/'failure-state.json').write_text(json.dumps(read_state(),ensure_ascii=False,indent=2))
+ except Exception:pass
+ try:
+  diagnostic=adb('shell','run-as',PACKAGE,'cat',legacy_root+'/v2-last-drop.json');(OUT/'drop-debug.json').write_text(diagnostic);print('DROP_DIAGNOSTIC '+diagnostic,flush=True)
  except Exception:pass
  raise
 finally:

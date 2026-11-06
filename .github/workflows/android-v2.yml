@@ -78,6 +78,7 @@ jobs:
         run: |
           set -euo pipefail
           "$GODOT" --headless --path game --editor --import > artifacts/ci/import.log 2>&1
+          python3 -m py_compile tools/android/smoke_v2.py
           python3 tools/check_native.py | tee artifacts/ci/tests.log
           "$GODOT" --headless --path game --export-debug Android "$PWD/artifacts/ci/Barista-0.4.2-unsigned.apk" > artifacts/ci/export.log 2>&1
           test -s artifacts/ci/Barista-0.4.2-unsigned.apk
