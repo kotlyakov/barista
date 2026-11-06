@@ -29,7 +29,7 @@
     "VISUAL-002/v9",
     "MECH-001/v1"
   ],
-  "last_verified_commit": "af017da1d69367533c3de6b0f84a929169e7c53d",
+  "last_verified_commit": "48797b53b0556b839bf077a09acd36d8567dd8de",
   "ci_status": "PASS local56/native/docs/render20; Android partial (audio18s/two loops+touch/payment/restarts); full300s/bg/migrations pending; workspace unavailable.",
   "spec_version": "0.4.2",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
@@ -47,16 +47,16 @@
   },
   "native": {
     "engine": "4.5.1.stable.official.f62fdbde1",
-    "tests": "26/26 Godot4.5.1 Linux/headless PASS,04.11.2026",
+    "tests": "56/56 Godot4.5.1 local/fullCI PASS",
     "linux_debug": "exported and headless launched",
-    "android_apk": "PREVIEW_0.3.2_BUILT_SIGNED_SAVED_RUNTIME_PASS",
+    "android_apk": "CANDIDATE_0.4.2_BUILT_RUNTIME_PARTIAL_NOT_DELIVERED",
     "art": "Original room + SVG rigs09; actual Linux and Android graphics rendered and inspected",
     "speed_combo": "production thresholds empty pending phone calibration",
     "zone_policy": "fixed UTC offset; DST backlog NAT-003",
-    "branch": "task/TASK-029-gameplay-polish",
-    "pr_url": "https://github.com/kotlyakov/barista/pull/30",
+    "branch": "task/TASK-043-free-service-ui",
+    "pr_url": "https://github.com/kotlyakov/barista/pull/40",
     "pr_status": "OPEN_DRAFT",
-    "ci": "PASS: native-check, docs-check",
+    "ci": "PASS native56/docs/render20;Android partial/pending",
     "android_preview": {
       "file": "Barista-0.3.2-cafe-preview.apk",
       "package": "org.kotlyakov.barista",
@@ -77,9 +77,9 @@
       "runtime_artifact": 13308749985
     },
     "debug_signing_key_library_file_id": "libfile_76674d45c1b8819198ccdc529424af21",
-    "shell": "intro 3 s / play / menu / progress; mute migration and pause tested",
+    "shell": "main_v2 default;intro/play/menu/progress/isolated practice/technical intermission;Android full-cycle pending",
     "audio": "Confirmed PCM music loop off-by-one:count→count-1; native contract RED→GREEN,Android18s/two complete loops PASS;physical retest pending.",
-    "render": "9 actual Linux/Mesa states, cup/arm/guest/payment/progress viewed; immediate Android capture may show prior frame",
+    "render": "9 legacy+11 v2 native states;new states inspected after text/coin fixes",
     "previous_android_previews": [
       {
         "file": "Barista-0.1.0-tech-preview.apk",
@@ -152,17 +152,17 @@
         "TASK-042",
         "TASK-044"
       ],
-      "commit": "cbacd34917ab02859ee8818a8c5c766ac0f257aa",
+      "commit": "48797b53b0556b839bf077a09acd36d8567dd8de",
       "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42243087040",
       "docs_ci": "https://github.com/kotlyakov/barista/actions/runs/42243087124",
-      "status": "PASS",
-      "test_scripts": 49,
-      "rendered_states": 9,
+      "status": "NATIVE_VERIFIED_ANDROID_PARTIAL",
+      "test_scripts": 56,
+      "rendered_states": 20,
       "local_domain_scripts": 38,
-      "apk_changed": false,
-      "ui_connected": false,
+      "apk_changed": true,
+      "ui_connected": true,
       "profile_migrated": false,
-      "legacy_import": "APPROVED_DOMAIN_ACTIVATION:atomic two-slot publication; existing UI not connected",
+      "legacy_import": "UI_CONNECTED_DOMAIN_VERIFIED;Android migration pending;owner phone untouched",
       "career_shift": "Explicit enable_career;300s08–17,closing15s+finite payments,100-day and4-process checks",
       "career_economy": "Explicit enable_development; deterministic offers, purchases/modules/gifts/goals/fame/leagues/events, atomic persistence; calibration042-1",
       "legacy_candidate": "Verified preparation and explicit activate_legacy_candidate; D16 ACCEPTED, candidate/live receipts separated"
@@ -233,7 +233,7 @@
     ],
     "commit": "d5f21b5d2757241a33ba4f8788cd1b609248f41d",
     "pr_url": "https://github.com/kotlyakov/barista/pull/32",
-    "implementation_status": "038/039/040/041/042/044 DONE;043 TODO",
+    "implementation_status": "038/039/040/041/042/044 DONE;043 IN_PROGRESS Android/delivery;037 visual separate",
     "legacy_activation_task": "TASK-044"
   },
   "legacy_activation": {
