@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "0.4.2",
   "updated_at": "2026-11-05",
-  "phase": "V042_INTEGRATION_PLANNED",
+  "phase": "V042_FREE_CUP_VERIFIED",
   "game_code_exists": true,
-  "current_task": null,
-  "next_task": "TASK-038",
-  "next_action": "TASK-038: свободный стакан/температура/оценка с Godot-проверками; затем039–043. TASK037 — новый визуал отдельно.",
+  "current_task": "TASK-039",
+  "next_task": "TASK-039",
+  "next_action": "TASK-039: независимые визиты/выдача/платежи/история; свободный стакан TASK038 реализован отдельно от v1 UI.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -16,8 +16,8 @@
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
     "head_note": "Содержательныйкоммит принятиямеханик;далее может следоватькоммитметаданных. Проверятьtip вGit.",
-    "working_branch": "task/TASK-035-v042-integration-plan",
-    "working_head": "d5f21b5d2757241a33ba4f8788cd1b609248f41d"
+    "working_branch": "task/TASK-038-free-cup",
+    "working_head": "c6eec7fd4454e53988307109ff61f9b1eb520ed9"
   },
   "blockers": [
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
@@ -141,7 +141,15 @@
       }
     ],
     "owner_feedback": "05.11:единственный отказ —варка без помола;стакан от любого аппарата;промах позволяет доделать;единая формула удовольствия;до5 клиентов/свободная выдача/история терпения.",
-    "art_acceptance": "CHANGES_REQUESTED:05.11,переработка графики позже. Исторический09 не изменён."
+    "art_acceptance": "CHANGES_REQUESTED:05.11,переработка графики позже. Исторический09 не изменён.",
+    "v042_domain": {
+      "task": "TASK-038",
+      "commit": "c6eec7fd4454e53988307109ff61f9b1eb520ed9",
+      "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42162175312",
+      "status": "PASS",
+      "apk_changed": false,
+      "ui_connected": false
+    }
   },
   "android_sdk_license": {
     "status": "ACCEPTED",
