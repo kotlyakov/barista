@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "0.4.2",
   "updated_at": "2026-11-06",
-  "phase": "V042_LEGACY_CANDIDATE_WAITING_OWNER",
+  "phase": "V042_LEGACY_ACTIVATION_VERIFIED",
   "game_code_exists": true,
-  "current_task": "TASK-044",
-  "next_task": "TASK-044",
-  "next_action": "Получить ответ Артура по D16:полный возврат стоимости tuning/grace. Затем закончить рабочую активацию044, после неё043 UI/Android.",
+  "current_task": null,
+  "next_task": "TASK-043",
+  "next_action": "TASK-043:подключить новый домен и межсменные покупки к интерфейсу,legacy continuation/activation,touch и Android. TASK037 новый визуал отдельно.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -16,8 +16,8 @@
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
     "head_note": "Содержательныйкоммит принятиямеханик;далее может следоватькоммитметаданных. Проверятьtip вGit.",
-    "working_branch": "task/TASK-044-legacy-candidate",
-    "working_head": "7982045729c8486e12374308d7afe409c3b9ae48",
+    "working_branch": "task/TASK-044-legacy-activation",
+    "working_head": "cbacd34917ab02859ee8818a8c5c766ac0f257aa",
     "working_head_note": "Последний проверенный содержательный коммит; после него следуют только метаданные. Tip сверять вGit."
   },
   "blockers": [
@@ -29,8 +29,8 @@
     "VISUAL-002/v9",
     "MECH-001/v1"
   ],
-  "last_verified_commit": "7982045729c8486e12374308d7afe409c3b9ae48",
-  "ci_status": "PASS:46 Godot scripts,docs,9 legacy render states. Candidate migration only; TASK044 WAITING_USER D16. APK0.3.2 unchanged.",
+  "last_verified_commit": "cbacd34917ab02859ee8818a8c5c766ac0f257aa",
+  "ci_status": "PASS:49 Godot scripts,docs,9 legacy render states. D16 accepted,activation implemented; UI/Android v2 NOT_RUN,APK0.3.2 unchanged.",
   "spec_version": "0.4.2",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
@@ -149,22 +149,23 @@
         "TASK-039",
         "TASK-040",
         "TASK-041",
-        "TASK-042"
+        "TASK-042",
+        "TASK-044"
       ],
-      "commit": "7982045729c8486e12374308d7afe409c3b9ae48",
-      "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42220415974",
-      "docs_ci": "https://github.com/kotlyakov/barista/actions/runs/42220416195",
+      "commit": "cbacd34917ab02859ee8818a8c5c766ac0f257aa",
+      "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42243087040",
+      "docs_ci": "https://github.com/kotlyakov/barista/actions/runs/42243087124",
       "status": "PASS",
-      "test_scripts": 46,
+      "test_scripts": 49,
       "rendered_states": 9,
-      "local_domain_scripts": 35,
+      "local_domain_scripts": 38,
       "apk_changed": false,
       "ui_connected": false,
       "profile_migrated": false,
-      "legacy_import": "REVIEW_ONLY: v2-review + immutable backups, live activation TASK044",
+      "legacy_import": "APPROVED_DOMAIN_ACTIVATION:atomic two-slot publication; existing UI not connected",
       "career_shift": "Explicit enable_career;300s08–17,closing15s+finite payments,100-day and4-process checks",
       "career_economy": "Explicit enable_development; deterministic offers, purchases/modules/gifts/goals/fame/leagues/events, atomic persistence; calibration042-1",
-      "legacy_candidate": "Verified separate v2-candidate; D16 PROPOSED; live activation disabled"
+      "legacy_candidate": "Verified preparation and explicit activate_legacy_candidate; D16 ACCEPTED, candidate/live receipts separated"
     }
   },
   "android_sdk_license": {
@@ -189,17 +190,16 @@
     "balance_status": "AUTHOR_STARTING_CALIBRATION042_1_IMPLEMENTED_PHONE_PLAYTEST_PENDING"
   },
   "documentation_verification": {
-    "commit": "7982045729c8486e12374308d7afe409c3b9ae48",
+    "commit": "cbacd34917ab02859ee8818a8c5c766ac0f257aa",
     "status": "PASS_REMOTE",
-    "run_url": "https://github.com/kotlyakov/barista/actions/runs/42220416195",
+    "run_url": "https://github.com/kotlyakov/barista/actions/runs/42243087124",
     "checks": [
       "docs-check",
-      "native-check:46 scripts",
+      "native-check:49 scripts",
       "9 legacy render states",
-      "5 review regression groups",
-      "13 legacy phase fixtures",
-      "12 refund combinations",
-      "four candidate processes"
+      "four review finding groups RED-to-GREEN",
+      "four activation OS processes",
+      "link/staging integrity regressions"
     ]
   },
   "owner_latest_decision": "Вроде хорошо. Графика совсем не нравится но механики устраивают. Вноси утверждение в проект. И начнем в новом чате.",
@@ -218,19 +218,22 @@
       "TASK-043"
     ],
     "open_policies": [
-      "D16 full-refund proposal for tuning/grace; owner reply pending",
-      "live activation and short-read check044",
-      "UI legacy continuation with saved calendar context043"
+      "physical-phone calibration",
+      "new intermission visual approval037"
     ],
     "commit": "d5f21b5d2757241a33ba4f8788cd1b609248f41d",
     "pr_url": "https://github.com/kotlyakov/barista/pull/32",
-    "implementation_status": "038/039/040/041/042 DONE;044 candidate verified WAITING_USER D16;043 TODO",
+    "implementation_status": "038/039/040/041/042/044 DONE;043 TODO",
     "legacy_activation_task": "TASK-044"
   },
-  "pending_owner_decision": {
-    "id": "D16",
-    "status": "PROPOSED",
-    "path": "docs/plans/2026-11-06-legacy-activation.md",
-    "question": "Утверждается ли полный возврат стоимости купленных уровней tuning/grace,до3800 вместе,с переносом на безопасной границе после старой сессии?"
+  "legacy_activation": {
+    "decision": "D16 ACCEPTED",
+    "source_message": "Продолжай",
+    "status": "DOMAIN_VERIFIED_NOT_CONNECTED_TO_UI",
+    "method": "activate_legacy_candidate(expected_source_hash)",
+    "publication": "two canonical slots1/2 in v2-activate,then atomic rename to missingv2",
+    "repeat": "same-generation current state unchanged,stale writer reloads progressed live",
+    "review": "partial independent findings fixed,final self-review; reviewer stopped before final assessment",
+    "profile_on_phone_migrated": false
   }
 }

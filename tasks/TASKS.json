@@ -2201,7 +2201,7 @@
       "id": "TASK-044",
       "title": "Закрыть политику и активировать перенос старых профилей",
       "role": "TECH_LEAD",
-      "status": "IN_REVIEW",
+      "status": "DONE",
       "priority": 2,
       "dependencies": [
         "TASK-040",
@@ -2238,25 +2238,28 @@
         "Проверочный импорт не включён в рабочий профиль вслепую; итоговая конвертация проверена на фикстурах и повторном процессе без дублей"
       ],
       "verification": "docs/plans/2026-11-06-v2-save-policy.md; полные миграционные/транзакционные/процессные регрессии и исходное решение о новых эффектах",
-      "owner": "Codex",
-      "session_id": "task044-live-20261106",
-      "lease_until": "2026-11-07T00:00:00+03:00",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
       "branch": "task/TASK-044-legacy-activation",
       "issue_number": null,
-      "pr_url": "https://github.com/kotlyakov/barista/pull/38",
-      "commit": "7982045729c8486e12374308d7afe409c3b9ae48",
+      "pr_url": "https://github.com/kotlyakov/barista/pull/39",
+      "commit": "cbacd34917ab02859ee8818a8c5c766ac0f257aa",
       "evidence": [
         "Godot4.5.1:38 local scripts PASS",
         "3 new activation scripts RED-to-GREEN",
         "4 activation/restart OS processes",
         "symlink/hardlink corruption regressions RED-to-GREEN",
         "D16 accepted via direct user reply to exact compensation question",
-        "Remote native/docs CI pending"
+        "https://github.com/kotlyakov/barista/actions/runs/42243087040",
+        "https://github.com/kotlyakov/barista/actions/runs/42243087124",
+        "49 Godot scripts,docs,9 legacy render states PASS",
+        "Backup short-read guard implemented; forced physical short-read/power loss not tested"
       ],
       "review": {
         "type": "PARTIAL_INDEPENDENT_REVIEW_AND_SELF_REVIEW",
         "reviewer": "review_task044_live",
-        "status": "FIXES_VERIFIED_LOCALLY",
+        "status": "FIXES_VERIFIED_FULL_CI_SELF_REVIEW",
         "notes": "4 finding groups reproduced RED and fixed; reviewer usage limit prevented final assessment; final author self-review; no re-review."
       },
       "blocker": null,
