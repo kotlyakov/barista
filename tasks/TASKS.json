@@ -2243,19 +2243,21 @@
       "lease_until": null,
       "branch": "task/TASK-044-legacy-candidate",
       "issue_number": null,
-      "pr_url": null,
-      "commit": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/38",
+      "commit": "7982045729c8486e12374308d7afe409c3b9ae48",
       "evidence": [
         "Godot4.5.1 local domain35/35 PASS",
         "13 v1 phase fixtures and12 refund combinations",
         "4 separate candidate processes",
         "5 Important independent-review findings RED-to-GREEN; no re-review",
-        "Full native/docs CI pending"
+        "https://github.com/kotlyakov/barista/actions/runs/42220415974",
+        "https://github.com/kotlyakov/barista/actions/runs/42220416195",
+        "46 Godot scripts,docs,9 legacy render states PASS; candidate only, live policy D16 pending"
       ],
       "review": {
         "type": "INDEPENDENT_REVIEW_WITH_REGRESSION_FIXES",
         "reviewer": "review_task044",
-        "status": "FIXES_VERIFIED_LOCALLY",
+        "status": "FIXES_VERIFIED_FULL_CI",
         "deferred_minor": "Explicit short-read/error check in backup_v1 before live activation"
       },
       "blocker": "D16 PROPOSED: требуется явный выбор компенсации tuning/grace. Полностью проверяется кандидат; рабочая активация закрыта.",

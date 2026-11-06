@@ -10,3 +10,5 @@ Final: minor (deferred):backup_v1 does not separately check get_buffer length/er
 Initial local runner used TASK042 log prefix in task044 report directory; corrected to TASK044. RED observed in actual tool outputs, not claimed as retained red logfile.
 
 Final: fixed5 Important groups — legacy_candidate_regression_test RED→GREEN; whole local suite35/35 PASS. Task044 candidate complete, actual activation WAITING_USER D16.
+
+Candidate verified:source7982045729c8486e12374308d7afe409c3b9ae48,PR38;full native46/docs/render9 PASS. https://github.com/kotlyakov/barista/actions/runs/42220415974;https://github.com/kotlyakov/barista/actions/runs/42220416195. Actual activation WAITING_USER D16.
