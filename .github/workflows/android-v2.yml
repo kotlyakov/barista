@@ -3,6 +3,7 @@ concurrency:
   group: android-v2-${{ github.ref }}
   cancel-in-progress: true
 on:
+  workflow_dispatch:
   push:
     branches: [task/TASK-043-free-service-ui]
     paths:
