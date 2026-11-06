@@ -1868,7 +1868,7 @@
       "id": "TASK-039",
       "title": "Независимые визиты, выдача и история терпения",
       "role": "DEVELOPER",
-      "status": "IN_PROGRESS",
+      "status": "IN_REVIEW",
       "priority": 2,
       "dependencies": [
         "TASK-038"
@@ -1899,12 +1899,21 @@
       "owner": "Codex / DEVELOPER",
       "session_id": "20261106-TASK039",
       "lease_until": "2026-11-06T08:25:03.349981+00:00",
-      "branch": "task/TASK-038-free-cup",
+      "branch": "task/TASK-039-independent-visits",
       "issue_number": null,
       "pr_url": null,
       "commit": null,
-      "evidence": [],
-      "review": null,
+      "evidence": [
+        "game/orders/service.gd",
+        "game/tests/visits_test.gd",
+        "game/tests/free_delivery_test.gd",
+        "docs/plans/2026-11-05-v042-balance.md",
+        "reports/native/TASK039.md"
+      ],
+      "review": {
+        "type": "INDEPENDENT_REVIEW",
+        "result": "Pause-carry Important fixed RED→GREEN; added stale-recipient and early duplicate-spawn coverage. Full CI pending."
+      },
       "blocker": null,
       "approval_versions": {
         "SPEC-001": 5,
