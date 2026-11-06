@@ -24,3 +24,5 @@ Task039 test ruling: a single dry-ground tap has small positive Q/C by accepted 
 TASK039 review: pause-carry bug fixed with3 assertions RED→GREEN; independently timed guest A/B stale-recipient and early duplicate rejection tests added.
 Ruling039: Service.restore is internal/trusted roundtrip; untrusted file validation and disk atomicity remain040 and must precede UI hookup — prevents a claim that saving support is complete — cost: v2 cannot yet accept arbitrary disk snapshots safely.
 Minor038 C-output suggestion is covered by039 literal C/L history tests. Single-tap timestamp hardening remains deferred to Store040.
+
+Task039 complete:9c627a5e, native42163038976/docs42163039022 SUCCESS (30 scripts/9 legacy-render states);20 local domain scripts PASS. Final independent review: no open039 findings. Next040: external validation/disk transactions/migration fixtures.
