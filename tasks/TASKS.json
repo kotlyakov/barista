@@ -2204,9 +2204,12 @@
       "lease_until": "2026-11-07T04:00:00+03:00",
       "branch": "task/TASK-043-free-service-ui",
       "issue_number": null,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
+      "pr_url": "https://github.com/kotlyakov/barista/pull/40",
+      "commit": "af017da1d69367533c3de6b0f84a929169e7c53d",
+      "evidence": [
+        "reports/native/TASK043.md",
+        "reports/native/TASK043_LEDGER.md"
+      ],
       "review": null,
       "blocker": null,
       "approval_versions": {

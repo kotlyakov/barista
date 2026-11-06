@@ -6,7 +6,7 @@
   "game_code_exists": true,
   "current_task": null,
   "next_task": "TASK-043",
-  "next_action": "TASK-043:подключить новый домен и межсменные покупки к интерфейсу,legacy continuation/activation,touch и Android. TASK037 новый визуал отдельно.",
+  "next_action": "Завершить Android touch/runtime, визуальную проверку новых кадров, подпись APK0.4.2 и запись точных доказательств. Механики/UI реализованы; не помечать DONE до Android PASS.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -16,8 +16,8 @@
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
     "head_note": "Содержательныйкоммит принятиямеханик;далее может следоватькоммитметаданных. Проверятьtip вGit.",
-    "working_branch": "task/TASK-044-legacy-activation",
-    "working_head": "cbacd34917ab02859ee8818a8c5c766ac0f257aa",
+    "working_branch": "task/TASK-043-free-service-ui",
+    "working_head": "af017da1d69367533c3de6b0f84a929169e7c53d",
     "working_head_note": "Последний проверенный содержательный коммит; после него следуют только метаданные. Tip сверять вGit."
   },
   "blockers": [
@@ -29,8 +29,8 @@
     "VISUAL-002/v9",
     "MECH-001/v1"
   ],
-  "last_verified_commit": "cbacd34917ab02859ee8818a8c5c766ac0f257aa",
-  "ci_status": "PASS:49 Godot scripts,docs,9 legacy render states. D16 accepted,activation implemented; UI/Android v2 NOT_RUN,APK0.3.2 unchanged.",
+  "last_verified_commit": "af017da1d69367533c3de6b0f84a929169e7c53d",
+  "ci_status": "PASS native55/docs/render20 on af017da1; signed ARM64 structural checks PASS; Android runtime PENDING",
   "spec_version": "0.4.2",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
@@ -229,11 +229,19 @@
   "legacy_activation": {
     "decision": "D16 ACCEPTED",
     "source_message": "Продолжай",
-    "status": "DOMAIN_VERIFIED_NOT_CONNECTED_TO_UI",
+    "status": "CONNECTED_TO_UI_NATIVE_VERIFIED_ANDROID_PENDING",
     "method": "activate_legacy_candidate(expected_source_hash)",
     "publication": "two canonical slots1/2 in v2-activate,then atomic rename to missingv2",
     "repeat": "same-generation current state unchanged,stale writer reloads progressed live",
     "review": "partial independent findings fixed,final self-review; reviewer stopped before final assessment",
     "profile_on_phone_migrated": false
+  },
+  "implementation_v042": {
+    "status": "TASK043 IN_PROGRESS",
+    "report": "reports/native/TASK043.md",
+    "pr_url": "https://github.com/kotlyakov/barista/pull/40",
+    "ui": "main_v2.tscn is default; v1 continuation bridge",
+    "android": "PENDING exact source runtime",
+    "visual": "technical; TASK037 not approved"
   }
 }

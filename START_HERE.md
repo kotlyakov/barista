@@ -1,3 +1,7 @@
+# Текущий этап: TASK043 UI готов, Android QA выполняется
+
+Начать с PROJECT_CURRENT.md, AGENTS.md и reports/native/TASK043.md. Ветка task/TASK-043-free-service-ui, PR40; сверить текущий tip. Не помечать DONE до actual Android runtime PASS и подписи APK. Финальный визуал TASK037 и физический плейтест TASK022 остаются отдельно.
+
 # Актуально06.11.2026: TASK044 DONE, далее043
 
 D16 ACCEPTED по прямому ответу Артура на конкретное предложение компенсации; рабочая операция переноса реализована и проверена. Ветка task/TASK-044-legacy-activation,PR39.49 Godot-сценариев/документы/9 прежних кадров PASS,локально38/38. Текущий UI/APK0.3.2 ещё прежний. Далее043 — UI/touch/legacy continuation/Android;037 новый визуал отдельно. Начать с PROJECT_CURRENT.md и AGENTS.md.
