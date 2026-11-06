@@ -15,6 +15,14 @@ def wait(read,predicate,seconds=12):
   if predicate(last):return last
   time.sleep(.3)
  raise AssertionError(f'Condition timeout: {last}')
+def wait_frozen(seconds=12):
+ deadline=time.monotonic()+seconds;previous=read_state();stable=0
+ while time.monotonic()<deadline:
+  time.sleep(1.5);current=read_state()
+  stable=stable+1 if current['clock']==previous['clock'] else 0
+  if stable>=2:return current
+  previous=current
+ raise AssertionError(f"Background did not freeze active clock: {previous['clock']}")
 def read_state(legacy=False):
  global legacy_root
  try:alive=adb('shell','pidof',PACKAGE).strip()
@@ -101,7 +109,8 @@ try:
  second=wait(read_state,lambda s:any(p['visit_id']==visitor['id'] and p['state']=='PENDING' for p in s['payments']))
  receipt2=next(p for p in second['payments'] if p['visit_id']==visitor['id']);tap(1009+126*slot,580)
  wait(read_state,lambda s:s['money']==collected['money']+receipt2['amount'])
- adb('shell','input','keyevent','KEYCODE_HOME');time.sleep(.6);background=read_state();time.sleep(1.2);assert read_state()['clock']==background['clock'],'Background must pause'
+ adb('shell','input','keyevent','KEYCODE_HOME');background=wait_frozen();time.sleep(1.2);assert read_state()['clock']==background['clock'],'Background must stay paused'
+ print('PASS background clock settled and stayed frozen',flush=True)
  launch();tap(800,425)
  five=wait(read_state,lambda s:len(s['visits'])==5,110);shot('05-five-guests')
  (OUT/'five-meminfo.txt').write_text(adb('shell','dumpsys','meminfo',PACKAGE))
