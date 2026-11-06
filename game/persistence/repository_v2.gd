@@ -2,6 +2,7 @@ extends RefCounted
 const Service=preload("res://orders/service.gd")
 const Store=preload("res://persistence/store_v2.gd")
 const LegacyStore=preload("res://persistence/store.gd")
+const Candidate=preload("res://persistence/legacy_candidate.gd")
 const Migrations=preload("res://persistence/migrations.gd")
 var session=Service.new()
 var store
@@ -17,12 +18,17 @@ func _init(directory="user://saves",review_legacy=false) -> void:
  store=Store.new(directory+("/v2-review" if review_mode else "/v2"))
  var loaded=store.read_latest()
  if loaded.ok:
+  if loaded.snapshot.has("migration"):error="MIGRATION_CANDIDATE_ONLY";return
   if not review_mode and loaded.snapshot.get("legacy",{}).get("review_only",false):error="LEGACY_POLICY_REQUIRED";return
   session=Service.restore(loaded.snapshot);ready=session!=null
   sequence=int(loaded.sequence)
   return
  if loaded.error!="EMPTY":error=loaded.error;return
- if DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(directory+"/v1-before-v2")) or (not review_mode and DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(directory+"/v2-review"))):
+ var prior_evidence=false
+ for name in ["v1-before-v2","v2-review","v2-candidate"]:
+  var evidence_path=ProjectSettings.globalize_path(directory+"/"+name)
+  if DirAccess.dir_exists_absolute(evidence_path) or FileAccess.file_exists(evidence_path):prior_evidence=true
+ if prior_evidence:
   error="MIGRATION_INCOMPLETE" if review_mode else "LEGACY_POLICY_REQUIRED";return
  var old=LegacyStore.new(directory).read_latest()
  if old.ok:
@@ -38,8 +44,41 @@ func _init(directory="user://saves",review_legacy=false) -> void:
  ready=true
  if not checkpoint():ready=false
 
+func prepare_legacy_candidate() -> Dictionary:
+ if review_mode:return {"ok":false,"error":"REVIEW_MODE"}
+ var root_directory=store.directory.get_base_dir()
+ var live=Store.new(root_directory+"/v2").read_latest()
+ if live.ok:return {"ok":false,"error":"V2_ALREADY_EXISTS"}
+ if live.error!="EMPTY":return live
+ var source=Candidate.read_source(root_directory)
+ if not source.ok:return source
+ var allowed=Candidate.eligibility(source.snapshot)
+ if not allowed.ok:return allowed
+ var converted=Candidate.convert(source.snapshot,int(source.sequence))
+ if not converted.ok:return converted
+ var canonical=JSON.parse_string(JSON.stringify(converted.snapshot,"",true,true))
+ var candidate_store=Store.new(root_directory+"/v2-candidate")
+ var existing=candidate_store.read_latest()
+ if existing.ok:
+  var receipt=existing.snapshot.get("migration",{})
+  if not Candidate.valid_receipt(receipt):return {"ok":false,"error":"INVALID_CANDIDATE_RECEIPT"}
+  if receipt.source_hash!=JSON.stringify(source.snapshot).sha256_text() or receipt.source_sequence!=source.sequence:return {"ok":false,"error":"STALE_LEGACY_SOURCE"}
+  if existing.snapshot!=canonical:return {"ok":false,"error":"CANDIDATE_MODIFIED"}
+  if not backup_v1(root_directory):return {"ok":false,"error":error}
+  return {"ok":true,"snapshot":existing.snapshot,"sequence":existing.sequence,"reused":true}
+ if existing.error!="EMPTY":return existing
+ if not backup_v1(root_directory):return {"ok":false,"error":error}
+ var fresh=Candidate.read_source(root_directory)
+ if not fresh.ok or fresh.sequence!=source.sequence or JSON.stringify(fresh.snapshot).sha256_text()!=converted.snapshot.migration.source_hash:return {"ok":false,"error":"STALE_LEGACY_SOURCE"}
+ var saved=candidate_store.save(converted.snapshot,0)
+ if not saved.ok:return saved
+ return {"ok":true,"snapshot":converted.snapshot,"sequence":saved.sequence,"reused":false}
+
 func backup_v1(directory: String) -> bool:
  var destination=directory+"/v1-before-v2"
+ for index in range(2):
+  var name="/slot"+str(index)+".json"
+  if not FileAccess.file_exists(directory+name) and FileAccess.file_exists(destination+name):error="BACKUP_PRESENCE_MISMATCH";return false
  if DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(destination))!=OK:error="BACKUP_DIRECTORY";return false
  for index in range(2):
   var name="/slot"+str(index)+".json"
@@ -90,6 +129,7 @@ func rollback(before: Dictionary,carrying: bool) -> void:
 func reload() -> bool:
  var loaded=store.read_latest()
  if not loaded.ok:error=loaded.error;ready=false;return false
+ if loaded.snapshot.has("migration"):error="MIGRATION_CANDIDATE_ONLY";ready=false;return false
  if not review_mode and loaded.snapshot.get("legacy",{}).get("review_only",false):error="LEGACY_POLICY_REQUIRED";ready=false;return false
  session=Service.restore(loaded.snapshot);sequence=int(loaded.sequence);since_save=0;error="";ready=session!=null
  return ready

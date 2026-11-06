@@ -1,12 +1,13 @@
 extends RefCounted
 const Cup=preload("res://brewing/cup.gd")
+const Candidate=preload("res://persistence/legacy_candidate.gd")
 const LegacyStore=preload("res://persistence/store.gd")
 const Career=preload("res://economy/career.gd")
 const CareerShift=preload("res://shift/career_shift.gd")
 const PRICES={"espresso":50,"cappuccino":80,"latte":90}
 const MOODS=["neutral","happy","annoyed","delighted","disappointed","very_unhappy","disgusted"]
 const REQUIRED=["clock","money","next_id","cup_id","streak","rng_state","profiles","visits","payments","cup"]
-const OPTIONAL=["preferences","upgrades","legacy","career","shift","economy"]
+const OPTIONAL=["preferences","upgrades","legacy","career","shift","economy","migration"]
 static func number(v,lo=0.0,hi=1.0e12) -> bool:
  return Cup.finite_number(v,lo,hi)
 static func integer(v,lo=0,hi=2147483647) -> bool:
@@ -43,6 +44,9 @@ static func valid(s) -> bool:
  if not Cup.valid(s.cup) or s.cup.last_tap>s.clock:return false
  if not s.profiles is Dictionary or s.profiles.size()!=6 or not s.visits is Array or s.visits.size()>5 or not s.payments is Array or s.payments.size()>5:return false
  var old={}
+ if s.has("migration"):
+  if s.has("legacy") or not Candidate.valid_receipt(s.migration) or not s.has("economy") or not s.has("preferences"):return false
+  old=s.migration.source_snapshot
  if s.has("legacy"):
   if not s.legacy is Dictionary or s.legacy.get("review_only")!=true or not LegacyStore.valid(s.legacy.get("source_snapshot")):return false
   old=s.legacy.source_snapshot
@@ -86,12 +90,16 @@ static func valid(s) -> bool:
    if s.cup.targets[n]!=expected[n]:return false
   if s.cup.get("cooling_seconds",1.0)!=Career.effects(s).heat:return false
  elif s.cup.get("cooling_seconds",1.0)!=1.0:return false
+ if s.has("migration"):
+  for key in ["grind","brew","milk","ads"]:
+   if s.upgrades[key]<old.upgrades[key]:return false
  var histories={};var history_cups={}
  for n in range(6):
   var key="guest-%02d"%(n+1)
   var p=s.profiles.get(key)
   if not p is Dictionary or not p.get("mood") in MOODS or not text(p.get("last_reaction")) or not integer(p.get("relationship"),-100,100) or not integer(p.get("visits")) or not number(p.get("trust_l"),0,1) or not PRICES.has(p.get("favorite")):return false
   if not p.get("history") is Array or p.history.size()>20:return false
+  if s.has("migration") and (not p.has("legacy_history") or p.visits<old.profiles[key].visits or p.favorite!=old.profiles[key].favorite):return false
   if p.has("legacy_history"):
    if old.is_empty() or p.legacy_history!=old.profiles[key].history:return false
   for h in p.history:
