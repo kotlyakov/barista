@@ -1,7 +1,7 @@
 extends Node
 # Synthesized preview candidate; no imported music or final audio approval implied.
 var music=AudioStreamPlayer.new()
-var voice=AudioStreamPlayer.new()
+var voices={}
 var active=false
 var muted=false
 var last_effect=-1000
@@ -29,9 +29,8 @@ func report() -> String:
 func _exit_tree() -> void:
  trace("audio exit before stop")
  music.stop()
- voice.stop()
+ for player in voices.values():player.stop();player.stream=null
  music.stream=null
- voice.stream=null
  if trace_file: trace_file.close()
 func tone(seconds: float,frequency: float,noise=false) -> AudioStreamWAV:
  var stream=AudioStreamWAV.new()
@@ -51,7 +50,6 @@ func tone(seconds: float,frequency: float,noise=false) -> AudioStreamWAV:
 func _ready() -> void:
  trace("audio ready begin")
  add_child(music)
- add_child(voice)
  var loop=AudioStreamWAV.new()
  loop.mix_rate=22050
  loop.format=AudioStreamWAV.FORMAT_16_BITS
@@ -71,27 +69,27 @@ func _ready() -> void:
  music.stream=loop
  for id in ["grind","brew","steam"]: sounds[id]=tone(.13,80 if id=="grind" else 150,id!="brew")
  sounds.coins=tone(.22,1200)
+ for id in sounds:
+  var player=AudioStreamPlayer.new();player.stream=sounds[id];voices[id]=player;add_child(player)
  trace("audio ready complete")
 func set_active(value: bool,prefs: Dictionary) -> void:
  trace("set_active begin active="+str(value)+" muted="+str(prefs.get("muted",false)))
  active=value
  muted=prefs.get("muted",false)
  music.volume_db=linear_to_db(maxf(.0001,prefs.master*prefs.music))
- voice.volume_db=linear_to_db(maxf(.0001,prefs.master*prefs.effects))
+ for player in voices.values():player.volume_db=linear_to_db(maxf(.0001,prefs.master*prefs.effects))
  if DisplayServer.get_name()=="headless": return
  if active and not muted:
   if not music.playing: music.play()
   music.stream_paused=false
  else:
   music.stream_paused=true
-  voice.stop()
+  for player in voices.values():player.stop()
  trace("set_active returned")
 func effect(id: String) -> void:
  if not active or muted or Time.get_ticks_msec()-last_effect<90 or not sounds.has(id): return
  if DisplayServer.get_name()=="headless": return
  last_effect=Time.get_ticks_msec()
- trace("effect "+id+" before stream")
- voice.stream=sounds[id]
  trace("effect "+id+" before play")
- voice.play()
+ voices[id].play()
  trace("effect "+id+" play returned")

@@ -17,6 +17,9 @@ def wait(read,predicate,seconds=12):
  raise AssertionError(f'Condition timeout: {last}')
 def read_state(legacy=False):
  global legacy_root
+ try:alive=adb('shell','pidof',PACKAGE).strip()
+ except subprocess.CalledProcessError:raise AssertionError('Application process stopped; inspect native crash log')
+ assert alive,'Application process stopped'
  try:paths=adb('shell','run-as',PACKAGE,'find','files','-name','slot*.json').splitlines()
  except subprocess.CalledProcessError:return None
  candidates=[]
@@ -83,6 +86,7 @@ try:
  for station,(x,y) in enumerate([(180,650),(540,520),(849,411)]):
   saved=read_state()
   for _ in range(int(saved['cup']['targets'][station]-saved['cup']['taps'][station])):tap(x,y)
+  wait(read_state,lambda s:s['cup']['taps'][station]==saved['cup']['targets'][station],20)
  saved=read_state();assert saved['cup']['taps']==saved['cup']['targets']
  first=saved['visits'][0];assert first['state']=='WAITING';drag(1009,470)
  payment=wait(read_state,lambda s:any(p['state']=='PENDING' for p in s['payments']));receipt=next(p for p in payment['payments'] if p['state']=='PENDING');balance=payment['money'];shot('04-payment')
