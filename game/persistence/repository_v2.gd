@@ -67,7 +67,7 @@ func checkpoint() -> bool:
  return true
 
 func apply(method: String,args: Array=[]) -> bool:
- var arities={"spawn_visit":[0,2],"select_recipe":[1,1],"tap":[1,1],"take_cup":[0,0],"return_cup":[0,0],"deliver":[2,2],"collect":[1,1],"remind_wish":[1,1],"finish_departure":[1,1],"claim_legacy_reward":[0,0]}
+ var arities={"spawn_visit":[0,2],"select_recipe":[1,1],"tap":[1,1],"take_cup":[0,0],"return_cup":[0,0],"deliver":[2,2],"collect":[1,1],"remind_wish":[1,1],"finish_departure":[1,1],"claim_legacy_reward":[0,0],"enable_career":[0,0],"start_shift":[1,1],"finish_summary":[1,1]}
  if not ready or not arities.has(method) or args.size()<arities[method][0] or args.size()>arities[method][1]:return false
  if method in ["spawn_visit","select_recipe"]:
   for arg in args:
@@ -101,6 +101,9 @@ func suspend() -> bool:
 
 static func transition_signature(snapshot_data: Dictionary) -> Array:
  var result=[]
+ if snapshot_data.has("shift"):
+  var s=snapshot_data.shift
+  result.append([s.day_number,s.phase,s.summary_id,s.last_summary_id])
  for v in snapshot_data.visits:result.append([v.id,v.state,v.reaction_applied])
  for p in snapshot_data.payments:result.append([p.id,p.state])
  return result
@@ -111,7 +114,7 @@ func advance(seconds: float,paused=false) -> void:
  if not Store.Schema.number(seconds) or not Store.Schema.number(session.data.clock+seconds):return
  var before=session.snapshot();var previous=since_save;var carrying=session.cup.carrying
  session.advance(seconds)
- since_save+=seconds
+ since_save+=session.data.clock-float(before.clock)
  if since_save>=1 or transition_signature(before)!=transition_signature(session.snapshot()):
   if not checkpoint():rollback(before,carrying);since_save=previous
 

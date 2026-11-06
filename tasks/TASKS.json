@@ -2006,7 +2006,7 @@
       "id": "TASK-041",
       "title": "Бесконечные игровые дни и ограниченное закрытие смены",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 2,
       "dependencies": [
         "TASK-040"
@@ -2023,7 +2023,17 @@
         "game/shift/",
         "game/orders/",
         "game/tests/",
-        "reports/"
+        "reports/",
+        "game/persistence/",
+        "tasks/",
+        "state/",
+        "docs/",
+        "PROJECT_CURRENT.md",
+        "START_HERE.md",
+        "README.md",
+        "BACKLOG.md",
+        "CHANGELOG.md",
+        "ARCHIVE_SCOPE.md"
       ],
       "acceptance": [
         "300 активных секунд, 08–17; без реальной даты",
@@ -2034,15 +2044,33 @@
       "owner": null,
       "session_id": null,
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-041-endless-shifts",
       "issue_number": null,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/36",
+      "commit": "b1bd9e49a3429b710b3c602788d1fcfbd895ce68",
+      "evidence": [
+        "game/shift/career_shift.gd",
+        "game/tests/career_days_test.gd",
+        "game/tests/career_closing_test.gd",
+        "game/tests/career_persistence_test.gd",
+        "reports/native/TASK041.md",
+        "reports/native/TASK041_LEDGER.md",
+        "https://github.com/kotlyakov/barista/actions/runs/42213214816",
+        "https://github.com/kotlyakov/barista/actions/runs/42213214840"
+      ],
+      "review": {
+        "type": "INDEPENDENT_REVIEW_WITH_REGRESSION_FIXES",
+        "result": "Independent review findings fixed with6 regressions RED→GREEN;28 local scripts and38 full Godot scripts PASS,9 legacy render states PASS. Native42213214816/docs42213214840 SUCCESS. No post-fix reviewer reapproval claimed."
+      },
       "blocker": null,
-      "approval_versions": {},
-      "decision_records": {}
+      "approval_versions": {
+        "SPEC-001": 5,
+        "MECH-001": 1
+      },
+      "decision_records": {
+        "D10": "D10",
+        "D15": "D15"
+      }
     },
     {
       "id": "TASK-042",
