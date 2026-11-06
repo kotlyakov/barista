@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "package_version": "0.4.2",
-  "updated_at": "2026-11-05",
-  "phase": "V042_FREE_CUP_VERIFIED",
+  "updated_at": "2026-11-06",
+  "phase": "V042_CUP_VISITS_DOMAIN_VERIFIED",
   "game_code_exists": true,
-  "current_task": "TASK-039",
-  "next_task": "TASK-039",
-  "next_action": "TASK-039: независимые визиты/выдача/платежи/история; свободный стакан TASK038 реализован отдельно от v1 UI.",
+  "current_task": null,
+  "next_task": "TASK-040",
+  "next_action": "TASK-040: внешний валидатор, Repository v2 и фикстуры миграции. APK/UI остаются0.3.2; новый домен038/039 проверен отдельно.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -16,8 +16,8 @@
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
     "head_note": "Содержательныйкоммит принятиямеханик;далее может следоватькоммитметаданных. Проверятьtip вGit.",
-    "working_branch": "task/TASK-038-free-cup",
-    "working_head": "c6eec7fd4454e53988307109ff61f9b1eb520ed9"
+    "working_branch": "task/TASK-039-independent-visits",
+    "working_head": "9c627a5e1baf03da5ec82a1ec7126be7eab74b9a"
   },
   "blockers": [
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
@@ -143,12 +143,20 @@
     "owner_feedback": "05.11:единственный отказ —варка без помола;стакан от любого аппарата;промах позволяет доделать;единая формула удовольствия;до5 клиентов/свободная выдача/история терпения.",
     "art_acceptance": "CHANGES_REQUESTED:05.11,переработка графики позже. Исторический09 не изменён.",
     "v042_domain": {
-      "task": "TASK-038",
-      "commit": "c6eec7fd4454e53988307109ff61f9b1eb520ed9",
-      "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42162175312",
+      "tasks": [
+        "TASK-038",
+        "TASK-039"
+      ],
+      "commit": "9c627a5e1baf03da5ec82a1ec7126be7eab74b9a",
+      "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42163038976",
+      "docs_ci": "https://github.com/kotlyakov/barista/actions/runs/42163039022",
       "status": "PASS",
+      "test_scripts": 30,
+      "rendered_states": 9,
+      "local_domain_scripts": 20,
       "apk_changed": false,
-      "ui_connected": false
+      "ui_connected": false,
+      "profile_migrated": false
     }
   },
   "android_sdk_license": {
@@ -160,9 +168,10 @@
   },
   "pending_spec": {
     "version": "0.4.2",
-    "status": "APPROVED_NOT_IMPLEMENTED",
+    "status": "APPROVED_PARTIALLY_IMPLEMENTED_DOMAIN",
     "path": "docs/GAME_SPEC.md",
-    "runtime_changed": false
+    "runtime_changed": false,
+    "domain_code_changed": true
   },
   "roguelike_proposals": {
     "status": "ACCEPTED",
@@ -172,15 +181,14 @@
     "balance_status": "DEMO_VALUES_NOT_FINAL"
   },
   "documentation_verification": {
-    "commit": "d5f21b5d2757241a33ba4f8788cd1b609248f41d",
+    "commit": "9c627a5e1baf03da5ec82a1ec7126be7eab74b9a",
     "status": "PASS_REMOTE",
-    "run_url": "https://github.com/kotlyakov/barista/actions/runs/42100767362",
+    "run_url": "https://github.com/kotlyakov/barista/actions/runs/42163039022",
     "checks": [
       "docs-check",
-      "JSON",
-      "canonical snapshot",
-      "SELF_REVIEW plan coverage",
-      "numerical examples"
+      "native-check:30 scripts",
+      "9 legacy render states",
+      "independent review"
     ]
   },
   "owner_latest_decision": "Вроде хорошо. Графика совсем не нравится но механики устраивают. Вноси утверждение в проект. И начнем в новом чате.",
@@ -199,11 +207,11 @@
     ],
     "open_policies": [
       "legacy tuning/grace effects",
-      "relationship categories",
       "legacy heat/perk/reward/shift mapping",
       "career balance values"
     ],
     "commit": "d5f21b5d2757241a33ba4f8788cd1b609248f41d",
-    "pr_url": "https://github.com/kotlyakov/barista/pull/32"
+    "pr_url": "https://github.com/kotlyakov/barista/pull/32",
+    "implementation_status": "TASK038/039 DONE,040–043 TODO"
   }
 }

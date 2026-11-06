@@ -13,13 +13,20 @@ func _init(seed_value=1) -> void:
 func weight(id: String) -> float:
  return clampf(1+float(profiles[id].relationship)/100.0,0.25,2.0)
 func pick() -> String:
+ return pick_available([])
+func pick_available(excluded: Array) -> String:
+ var available=[]
  var total=0.0
- for id in profiles: total+=weight(id)
- var value=rng.randf()*total
  for id in profiles:
+  if id in excluded: continue
+  available.append(id)
+  total+=weight(id)
+ if available.is_empty(): return ""
+ var value=rng.randf()*total
+ for id in available:
   value-=weight(id)
   if value<=0: return id
- return profiles.keys().back()
+ return available.back()
 func pick_recipe(id: String,milk_modifier=1.0) -> String:
  var choices=["espresso","cappuccino","latte"]
  var weights=[]
