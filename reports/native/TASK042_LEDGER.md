@@ -16,3 +16,5 @@ Final: minor (deferred):aroma description says minimum6s, refers to base interva
 
 Final: fixed all7 Important groups — career_economy_regression_test RED→GREEN, suite32/32 PASS. Gift count separate from paid receipts restores lower-bound check. No re-review.
 Coverage extended after review to216 combinations across all3 module pairs, exact independent event prices, drive tap/maintenance pins, friend flow and discount numerical assertions; PASS.
+
+Task042 complete: source 1b9bf4a7e44cb6c59de831fb6c3c911e2b78e4ca, PR37; full native43/docs/render9 PASS. https://github.com/kotlyakov/barista/actions/runs/42216208319; https://github.com/kotlyakov/barista/actions/runs/42216208292.

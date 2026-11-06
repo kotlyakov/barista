@@ -2,11 +2,11 @@
   "schema_version": 1,
   "package_version": "0.4.2",
   "updated_at": "2026-11-06",
-  "phase": "V042_ENDLESS_SHIFTS_VERIFIED",
+  "phase": "V042_CAREER_ECONOMY_VERIFIED",
   "game_code_exists": true,
   "current_task": null,
-  "next_task": "TASK-042",
-  "next_action": "TASK-042: межсменная экономика/каталог/баланс. Затем044 окончательная активация старых профилей,043 UI/Android.",
+  "next_task": "TASK-044",
+  "next_action": "TASK-044: окончательная политика и активация старых профилей. Затем043 UI/Android; новый визуал037 отдельно.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -16,8 +16,8 @@
     "head": "4c66e9456fdb669b28b207e231de4ff6e0ac7aaa",
     "pending_sync": false,
     "head_note": "Содержательныйкоммит принятиямеханик;далее может следоватькоммитметаданных. Проверятьtip вGit.",
-    "working_branch": "task/TASK-041-endless-shifts",
-    "working_head": "b1bd9e49a3429b710b3c602788d1fcfbd895ce68",
+    "working_branch": "task/TASK-042-career-economy",
+    "working_head": "1b9bf4a7e44cb6c59de831fb6c3c911e2b78e4ca",
     "working_head_note": "Последний проверенный содержательный коммит; после него следуют только метаданные. Tip сверять вGit."
   },
   "blockers": [
@@ -29,8 +29,8 @@
     "VISUAL-002/v9",
     "MECH-001/v1"
   ],
-  "last_verified_commit": "b1bd9e49a3429b710b3c602788d1fcfbd895ce68",
-  "ci_status": "PASS:38 Godot/domain scripts,docs,9 legacy render states on b1bd9e49. V2 UI/Android NOT_RUN; current APK0.3.2 unchanged.",
+  "last_verified_commit": "1b9bf4a7e44cb6c59de831fb6c3c911e2b78e4ca",
+  "ci_status": "PASS:43 Godot scripts,docs,9 legacy render states. V2 UI/Android NOT_RUN; APK0.3.2 unchanged.",
   "spec_version": "0.4.2",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
@@ -148,20 +148,22 @@
         "TASK-038",
         "TASK-039",
         "TASK-040",
-        "TASK-041"
+        "TASK-041",
+        "TASK-042"
       ],
-      "commit": "b1bd9e49a3429b710b3c602788d1fcfbd895ce68",
-      "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42213214816",
-      "docs_ci": "https://github.com/kotlyakov/barista/actions/runs/42213214840",
+      "commit": "1b9bf4a7e44cb6c59de831fb6c3c911e2b78e4ca",
+      "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42216208319",
+      "docs_ci": "https://github.com/kotlyakov/barista/actions/runs/42216208292",
       "status": "PASS",
-      "test_scripts": 38,
+      "test_scripts": 43,
       "rendered_states": 9,
-      "local_domain_scripts": 28,
+      "local_domain_scripts": 32,
       "apk_changed": false,
       "ui_connected": false,
       "profile_migrated": false,
       "legacy_import": "REVIEW_ONLY: v2-review + immutable backups, live activation TASK044",
-      "career_shift": "Explicit enable_career;300s08–17,closing15s+finite payments,100-day and4-process checks"
+      "career_shift": "Explicit enable_career;300s08–17,closing15s+finite payments,100-day and4-process checks",
+      "career_economy": "Explicit enable_development; deterministic offers, purchases/modules/gifts/goals/fame/leagues/events, atomic persistence; calibration042-1"
     }
   },
   "android_sdk_license": {
@@ -183,19 +185,19 @@
     "decision": "D15",
     "path": "docs/ROGUELIKE_SPEC.md",
     "visual_status": "CHANGES_REQUESTED",
-    "balance_status": "DEMO_VALUES_NOT_FINAL"
+    "balance_status": "AUTHOR_STARTING_CALIBRATION042_1_IMPLEMENTED_PHONE_PLAYTEST_PENDING"
   },
   "documentation_verification": {
-    "commit": "b1bd9e49a3429b710b3c602788d1fcfbd895ce68",
+    "commit": "1b9bf4a7e44cb6c59de831fb6c3c911e2b78e4ca",
     "status": "PASS_REMOTE",
-    "run_url": "https://github.com/kotlyakov/barista/actions/runs/42213214840",
+    "run_url": "https://github.com/kotlyakov/barista/actions/runs/42216208292",
     "checks": [
       "docs-check",
-      "native-check:38 scripts",
+      "native-check:43 scripts",
       "9 legacy render states",
-      "review regressions",
-      "100 consecutive days",
-      "four-process career restart"
+      "7 review regression groups",
+      "216 combinations",
+      "four economy processes"
     ]
   },
   "owner_latest_decision": "Вроде хорошо. Графика совсем не нравится но механики устраивают. Вноси утверждение в проект. И начнем в новом чате.",
@@ -210,16 +212,16 @@
       "TASK-040",
       "TASK-041",
       "TASK-042",
+      "TASK-044",
       "TASK-043"
     ],
     "open_policies": [
-      "legacy tuning/grace effects",
-      "legacy heat/perk/reward/shift mapping",
-      "career balance values"
+      "legacy tuning/grace compensation approval and final activation044",
+      "physical phone balance calibration"
     ],
     "commit": "d5f21b5d2757241a33ba4f8788cd1b609248f41d",
     "pr_url": "https://github.com/kotlyakov/barista/pull/32",
-    "implementation_status": "TASK038/039/040/041 DONE;042/044/043 TODO",
+    "implementation_status": "TASK038/039/040/041/042 DONE;044/043 TODO",
     "legacy_activation_task": "TASK-044"
   }
 }
