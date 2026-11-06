@@ -1,3 +1,7 @@
+# Актуально06.11.2026: TASK-044 кандидат проверен, WAITING_USER
+
+Читать PROJECT_CURRENT.md,AGENTS.md и D16 в docs/plans/2026-11-06-legacy-activation.md. Нужен ответ владельца по полному возврату стоимости tuning/grace; рабочий перенос закрыт. Ветка task/TASK-044-legacy-candidate,PR38.46 Godot-сценариев/документы/9 прежних кадров PASS;APK0.3.2 прежняя. После ответа завершить044,затем043;не перескакивать gate.
+
 # Актуально06.11.2026: TASK-042 DONE
 
 Начать с PROJECT_CURRENT.md и AGENTS.md. Рабочая ветка task/TASK-042-career-economy, PR37. Следующий044 — окончательная миграционная политика/активация; затем043 UI/Android.43 Godot-сценария/документы/9 прежних UI-кадров PASS, APK0.3.2 прежняя. Старые указания ниже сохраняются как история; приоритет у PROJECT_CURRENT и TASKS.json.

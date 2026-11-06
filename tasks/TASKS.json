@@ -2201,7 +2201,7 @@
       "id": "TASK-044",
       "title": "Закрыть политику и активировать перенос старых профилей",
       "role": "TECH_LEAD",
-      "status": "TODO",
+      "status": "WAITING_USER",
       "priority": 2,
       "dependencies": [
         "TASK-040",
@@ -2214,7 +2214,8 @@
       "decision_gates": [
         "D12",
         "D14",
-        "D15"
+        "D15",
+        "D16"
       ],
       "allowed_paths": [
         "game/persistence/",
@@ -2222,7 +2223,14 @@
         "docs/plans/",
         "reports/",
         "state/",
-        "tasks/"
+        "tasks/",
+        "PROJECT_CURRENT.md",
+        "START_HERE.md",
+        "ARCHIVE_SCOPE.md",
+        "README.md",
+        "CHANGELOG.md",
+        "BACKLOG.md",
+        "docs/"
       ],
       "acceptance": [
         "Зафиксирована окончательная политика неизвестной температуры/фаз/старой премии",
@@ -2233,15 +2241,35 @@
       "owner": null,
       "session_id": null,
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-044-legacy-candidate",
       "issue_number": null,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
-      "blocker": null,
-      "approval_versions": {},
-      "decision_records": {}
+      "pr_url": "https://github.com/kotlyakov/barista/pull/38",
+      "commit": "7982045729c8486e12374308d7afe409c3b9ae48",
+      "evidence": [
+        "Godot4.5.1 local domain35/35 PASS",
+        "13 v1 phase fixtures and12 refund combinations",
+        "4 separate candidate processes",
+        "5 Important independent-review findings RED-to-GREEN; no re-review",
+        "https://github.com/kotlyakov/barista/actions/runs/42220415974",
+        "https://github.com/kotlyakov/barista/actions/runs/42220416195",
+        "46 Godot scripts,docs,9 legacy render states PASS; candidate only, live policy D16 pending"
+      ],
+      "review": {
+        "type": "INDEPENDENT_REVIEW_WITH_REGRESSION_FIXES",
+        "reviewer": "review_task044",
+        "status": "FIXES_VERIFIED_FULL_CI",
+        "deferred_minor": "Explicit short-read/error check in backup_v1 before live activation"
+      },
+      "blocker": "D16 PROPOSED: требуется явный выбор компенсации tuning/grace. Полностью проверяется кандидат; рабочая активация закрыта.",
+      "approval_versions": {
+        "SPEC-001": 5,
+        "MECH-001": 1
+      },
+      "decision_records": {
+        "D12": "D12",
+        "D14": "D14",
+        "D15": "D15"
+      }
     }
   ]
 }
