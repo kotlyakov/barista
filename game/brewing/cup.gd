@@ -117,7 +117,7 @@ static func whole(value,minimum=0) -> bool:
 
 static func valid(data) -> bool:
  if not data is Dictionary or not TARGETS.has(data.get("recipe")): return false
- if not finite_number(data.get("cooling_seconds",1.0),1,3):return false
+ if not finite_number(data.get("cooling_seconds",1.0),1,4.5):return false
  for field in ["targets","taps","heat_start_level","heat_at"]:
   if not data.get(field) is Array: return false
  if data.targets.size()!=3 or data.taps.size()!=3 or data.heat_start_level.size()!=2 or data.heat_at.size()!=2: return false

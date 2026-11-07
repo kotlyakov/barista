@@ -404,6 +404,12 @@ func draw_charcoal_header() -> void:
  text_at(Vector2(577,34),"День "+str(day),27)
  var minutes: int = game.clock_minutes()
  text_at(Vector2(731,34),"%02d:%02d"%[minutes/60,minutes%60],26)
+ if day>=6 and screen in ["between","fold"] and game.data.shift.phase=="PREPARING":
+  var rush_minute: int=480+roundi(game.CareerShift.rush_start(day)*1.8)
+  var market_text="Пик в %02d:%02d   ·   Покупки +%d%%   ·   Кофе +%d%%"%[rush_minute/60,rush_minute%60,5*game.Career.market_step(day),game.Career.sale_percent(day)]
+  text_at(Vector2(870,32),market_text,20,Color("f6bc8c"))
+ elif game.data.shift.get("market_rules",0)==1 and game.data.shift.phase=="RUNNING" and game.Career.in_rush(day,game.data.clock-game.data.shift.started_at):
+  text_at(Vector2(897,34),"ЧАС ПИК",23,Color("f6bc8c"))
  for i in range(3):
   draw_line(Vector2(1535,11+i*11),Vector2(1570,11+i*11),Color("eddfc8"),3,true)
 
@@ -484,7 +490,7 @@ func draw_between():
   for i in range(3):
    var id=C.MODULES.keys()[i];var item=C.MODULES[id];var rect=offer_rect(i);draw_style_box(panel(Color("20323d")),rect)
    text_at(rect.position+Vector2(20,40),item.name,26);wrapped(rect.position+Vector2(20,85),item.description,405,22)
-   text_at(rect.position+Vector2(20,205),"Выбрать" if id in e.owned_modules else str(item.price)+" монет",24,Color("ebbc76"))
+   text_at(rect.position+Vector2(20,205),"Выбрать" if id in e.owned_modules else str(C.purchase_price(game.data,int(item.price)))+" монет",24,Color("ebbc76"))
   for slot in range(2):
    var id=e.equipped_modules[slot];draw_button(Rect2(370+slot*450,630,410,65),"Слот "+str(slot+1)+": "+("Пусто" if id=="" else C.MODULES[id].name))
    draw_button(Rect2(370+slot*450,710,410,50),"Снять бесплатно",id!="")
@@ -494,7 +500,7 @@ func draw_between():
    text_at(rect.position+Vector2(12,28),NAMES[id]+" · "+RECIPE_NAMES[game.data.profiles[id].favorite],19)
    text_at(rect.position+Vector2(12,58),"Цель "+str(e.goals[id])+"/"+str(3 if e.claimed[id]==0 else 6)+" → "+str(C.GOAL_REWARDS[mini(1,int(e.claimed[id]))])+" монет",18)
    text_at(rect.position+Vector2(12,86),"Скидка на приборы 5/10%" if i==0 else "Друзья приходят чаще" if i==1 else "Награда за любимый кофе",18)
-   draw_button(Rect2(rect.position+Vector2(12,100),Vector2(270,40)),"Угощение оплачено" if e.gifts[id] else "След. визит · "+str(game.PRICES[game.data.profiles[id].favorite]))
+   draw_button(Rect2(rect.position+Vector2(12,100),Vector2(270,40)),"Угощение оплачено" if e.gifts[id] else "След. визит · "+str(C.purchase_price(game.data,int(game.PRICES[game.data.profiles[id].favorite]))))
    draw_button(Rect2(rect.position+Vector2(12,145),Vector2(270,40)),"Забрать награду" if e.claimed[id]<2 else "Цели выполнены",e.claimed[id]<2)
   text_at(Vector2(70,740),"Угощение оплачивает следующий визит. Доверие меняется только от напитка.",21)
  else:

@@ -6,12 +6,16 @@ static func make(day: int,event: String,last_summary=0) -> Dictionary:
  return {"day_number":day,"phase":"PREPARING","started_at":-1.0,"next_arrival_at":-1.0,"summary_id":0,"last_summary_id":last_summary,"event_id":event,"stats":{"served":0,"good":0,"left":0,"collected":0,"expired":0,"earned":0}}
 static func arrival_base(day: int) -> float:
  return clampf(16/(1+0.12*(day-1)),6,16)
+static func rush_start(day: int) -> float:
+ return 50.0+50.0*((day-6)%3)
+
 static func clock_minutes(shift: Dictionary,now: float) -> int:
  if shift.phase=="PREPARING":return 480
  if shift.phase in ["CLOSING","SUMMARY"]:return 1020
  return 480+int(floor(clampf((now-shift.started_at)/300,0,1)*540))
 static func valid(s,clock: float,next_id: int,minimum=50,maximum=108,duration=12.0,allow_gifts=false) -> bool:
- if not s is Dictionary or s.size()!=8:return false
+ if not s is Dictionary or s.size()!=8+int(s.has("market_rules")):return false
+ if s.has("market_rules") and (not allow_gifts or not Cup.whole(s.market_rules,1) or s.market_rules!=1 or s.get("phase")=="PREPARING" or not Cup.whole(s.get("day_number"),6)):return false
  if not Cup.whole(s.get("day_number"),1) or not s.get("phase") in ["PREPARING","RUNNING","CLOSING","SUMMARY"] or not s.get("event_id") in EVENTS:return false
  for key in ["summary_id","last_summary_id"]:
   if not Cup.whole(s.get(key)) or s[key]>=next_id:return false

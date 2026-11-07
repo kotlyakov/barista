@@ -73,9 +73,10 @@ static func draw_rituals(view,state: Dictionary) -> void:
   view.draw_texture_rect(RITUALS[item.art],Rect2(rect.position+Vector2(12,12),Vector2(rect.size.x-24,218)),false)
   centered(view,rect,rect.position.y+272,item.name,29)
   centered(view,rect,rect.position.y+313,item.description,22)
+  var price: int=view.game.Career.purchase_price(state,int(item.price))
   var picked: bool = state.economy.choice==id
-  var available: bool = state.economy.choice=="" and state.money>=item.price
-  paper_button(view,Rect2(rect.get_center().x-95,rect.end.y-85,190,57),"✓" if picked else str(item.price),available,not picked)
+  var available: bool = state.economy.choice=="" and state.money>=price
+  paper_button(view,Rect2(rect.get_center().x-95,rect.end.y-85,190,57),"✓" if picked else str(price),available,not picked)
 
 static func draw_equipment(view,state: Dictionary) -> void:
  var tiers: int = view.game.Career.EQUIPMENT_PRICES.size()
@@ -122,7 +123,7 @@ static func draw_passives(view) -> void:
   var level: int=career.passive_level(view.game.data,career.PASSIVE_IDS[i])
   var tiers: int=career.PASSIVE_PRICES.size()
   var progress=float(level)/tiers
-  var price: int=career.PASSIVE_PRICES[level] if level<tiers else 0
+  var price: int=career.purchase_price(view.game.data,int(career.PASSIVE_PRICES[level])) if level<tiers else 0
   card(view,rect)
   var fill=progress
   if view.purchase_animation.get("row",-1)==i:
