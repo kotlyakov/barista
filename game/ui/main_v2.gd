@@ -25,6 +25,12 @@ const EXTRA_TABS = ["Модули", "Постоянники", "Лига"]
 var rigs={}
 var slots={}
 var shop_tab=0
+var pending_shift_day=0
+var fold_elapsed=0.0
+var stroke_progress=1.0
+var purchase_animation: Dictionary={}
+const FOLD_SECONDS=0.32
+const PURCHASE_SECONDS=0.48
 var selected_module=""
 var perf_elapsed=0.0
 var pending_reminder=-1
@@ -54,7 +60,41 @@ func use_charcoal_layout() -> void:
  cup_position = V2_CUP_HOME
 
 func finish_intro():
+ if pending_shift_day>0:
+  var day=pending_shift_day
+  pending_shift_day=0
+  if not act("start_shift",[day]):
+   screen="between"
+   shop_message="Не удалось начать смену. Проверь баланс и сохранение."
+   update_audio()
+   queue_redraw()
+   return
+  shop_tab=0
+  shop_message=""
+  purchase_animation.clear()
+  sync_guest()
  intro_elapsed=3;screen="";paused=false;route_phase();update_audio();queue_redraw()
+
+func open_shop_tab(index: int) -> void:
+ if shop_tab==index:return
+ shop_tab=index
+ selected_module=""
+ shop_message=""
+ stroke_progress=0.0
+ if audio:audio.effect("pencil",true)
+
+func buy_on_sheet(method: String,args: Array,passive_row=-1) -> bool:
+ var old_balance: int=game.data.money
+ var shown_balance: int=display_balance()
+ if not act(method,args):return false
+ purchase_animation={"elapsed":0.0,"from":shown_balance,"amount":old_balance-int(game.data.money),"row":passive_row}
+ return true
+
+func purchase_progress() -> float:
+ return smoothstep(0.0,PURCHASE_SECONDS,float(purchase_animation.get("elapsed",PURCHASE_SECONDS)))
+
+func display_balance() -> int:
+ return roundi(lerpf(float(purchase_animation.get("from",game.data.money)),float(game.data.money),purchase_progress()))
 func route_phase():
  if repository.legacy or repository.training or not repository.ready:return
  if game.data.shift.phase in ["PREPARING","SUMMARY"]:screen="between"
@@ -104,6 +144,20 @@ func _process(delta: float):
    game=repository.session;guest.phase="gone";use_charcoal_layout();sync_guest(true);route_phase();update_audio()
   return
  if paused:return
+ if screen=="fold":
+  fold_elapsed=minf(FOLD_SECONDS,fold_elapsed+delta)
+  if fold_elapsed>=FOLD_SECONDS:
+   screen="intro"
+   intro_elapsed=0
+  queue_redraw();return
+ if screen=="between":
+  if stroke_progress<1.0 or not purchase_animation.is_empty():
+   stroke_progress=minf(1.0,stroke_progress+delta/.26)
+   if not purchase_animation.is_empty():
+    purchase_animation.elapsed+=delta
+    if purchase_animation.elapsed>=PURCHASE_SECONDS:purchase_animation.clear()
+   queue_redraw()
+  return
  if screen=="intro":
   intro_elapsed=minf(3,intro_elapsed+delta)
   if intro_elapsed>=3:finish_intro()
@@ -139,6 +193,7 @@ func act(method: String,args: Array=[]) -> bool:
  return result
 func open_menu():
  pending_reminder=-1
+ pending_shift_day=0
  if not repository.ready:screen="error";paused=true;dragging=false;update_audio();queue_redraw();return
  if repository.legacy:super.open_menu();return
  repository.suspend();dragging=false;cup_position=V2_CUP_HOME;screen="menu";paused=true;update_audio();queue_redraw()
@@ -172,6 +227,7 @@ func _input(event: InputEvent):
  if action.is_empty():return
  var point=action.position
  if action.action=="cancel":cancel_drag();queue_redraw();return
+ if screen=="fold":return
  if screen=="intro":
   if action.action=="press":finish_intro()
   return
@@ -235,29 +291,33 @@ func shop_input(point: Vector2):
   if NEXT_BUTTON.has_point(point):act("finish_summary",[shift.summary_id]);shop_message="";sync_guest(true)
   return
  if START_BUTTON.has_point(point):
-  if act("start_shift",[shift.day_number]):intro_elapsed=0;screen="intro";shop_tab=0;sync_guest();update_audio()
-  else:shop_message="Не хватает монет на обслуживание. Сними быстрый привод."
+  if game.data.money<game.Career.effects(game.data).maintenance:
+   shop_message="Не хватает монет на обслуживание. Сними быстрый привод."
+  else:
+   pending_shift_day=shift.day_number
+   fold_elapsed=0
+   screen="fold"
+   update_audio()
   return
  if EXTRA_BUTTON.has_point(point):
-  shop_tab=0 if shop_tab>=3 else 3
-  selected_module="";shop_message="";return
+  open_shop_tab(0 if shop_tab>=3 else 3);return
  var first_tab=3 if shop_tab>=3 else 0
  for i in range(first_tab,first_tab+3):
-  if tab_rect(i).has_point(point):shop_tab=i;selected_module="";shop_message="";return
+  if tab_rect(i).has_point(point):open_shop_tab(i);return
  var e=game.data.economy;var C=game.Career
  if shop_tab==0:
   for i in range(3):
-   if offer_rect(i).has_point(point):shop_message="Усиление куплено" if act("buy_perk",[e.offers[i],shift.day_number]) else "Выбор уже сделан или не хватает монет"
+   if offer_rect(i).has_point(point):shop_message="Усиление куплено" if buy_on_sheet("buy_perk",[e.offers[i],shift.day_number]) else "Выбор уже сделан или не хватает монет"
  elif shop_tab==1:
   for i in range(4):
    if gear_rect(i).has_point(point):
     var id=EQUIPMENT_IDS[i]
-    shop_message="Улучшение куплено" if act("buy_equipment",[id,int(game.data.upgrades[id])]) else "Максимум или не хватает монет"
+    shop_message="Улучшение куплено" if buy_on_sheet("buy_equipment",[id,int(game.data.upgrades[id])]) else "Максимум или не хватает монет"
  elif shop_tab==2:
   for i in range(Charcoal.PASSIVES.size()):
    if Charcoal.passive_button_rect(i).has_point(point):
     var id: String=game.Career.PASSIVE_IDS[i]
-    shop_message="Пассивка улучшена" if act("buy_passive",[id,game.Career.passive_level(game.data,id)]) else "Максимум или не хватает монет"
+    shop_message="Пассивка улучшена" if buy_on_sheet("buy_passive",[id,game.Career.passive_level(game.data,id)],i) else "Максимум или не хватает монет"
     return
  elif shop_tab==3:
   for i in range(3):
@@ -301,12 +361,17 @@ func _draw():
   wrapped(Vector2(350,300),"Не удалось загрузить или перенести прогресс. Он не сброшен. Перезапусти игру для повторной попытки.",900,30)
   draw_button(MENU_REPORT,"Скопировать отчёт");return
  if repository.legacy:super._draw();return
- draw_cafe()
  if screen=="intro":
-  draw_rect(Rect2(0,0,1600,900),Color(.01,.01,.015,1-smoothstep(.3,1,intro_elapsed/3)))
-  text_at(Vector2(586,824),"Коснись, чтобы войти",26)
+  draw_entry()
   return
+ draw_cafe()
  draw_charcoal_header()
+ if screen=="fold":
+  var distance=1600.0*smoothstep(0,FOLD_SECONDS,fold_elapsed)
+  draw_set_transform(Vector2(-distance,0))
+  draw_between()
+  draw_set_transform(Vector2.ZERO)
+  return
  if screen=="between":draw_between()
  elif screen=="progress":draw_progress()
  elif screen=="menu":
@@ -315,12 +380,26 @@ func _draw():
   if not repository.ready:wrapped(Vector2(350,220),"Не удалось загрузить прогресс. Он не перезаписан. Перезапусти игру для повторной попытки.",900,26)
  else:draw_play()
  if repository.error!="":text_at(Vector2(35,882),"Не удалось сохранить действие. Прогресс не перезаписан.",20,Color("ee9a86"))
+func draw_entry() -> void:
+ var progress=smoothstep(0.35,2.6,intro_elapsed)
+ var opening=smoothstep(0.0,1.0,intro_elapsed)
+ var zoom=lerpf(1.48,1.0,progress)
+ var offset=Vector2(-640, -210)*(1.0-progress)
+ draw_texture_rect(CAFE,Rect2(offset,Vector2(1600,900)*zoom),false)
+ draw_rect(Rect2(0,0,1600,900),Color(.015,.014,.02,lerpf(.95,.0,progress)))
+ draw_colored_polygon(PackedVector2Array([Vector2.ZERO,Vector2(1600*(1-opening),0),
+  Vector2(1430*(1-opening),900),Vector2(0,900)]),Color("17151b"))
+ text_at(Vector2(586,824),"Коснись, чтобы войти",26)
+
 func draw_charcoal_header() -> void:
  draw_circle(Vector2(46,20),10,Color("d9c8ac"),false,2,true)
  draw_arc(Vector2(50,20),10,0,PI*.5,8,Color("d9c8ac"),2,true)
  text_at(Vector2(75,34),"Путь баристы",29)
  draw_circle(Vector2(414,24),10,Color("d9c8ac"),false,2,true)
- text_at(Vector2(437,34),str(game.data.money),29)
+ var shown=display_balance() if screen in ["between","fold"] else int(game.data.money)
+ text_at(Vector2(437,34),str(shown),29)
+ if screen in ["between","fold"] and not purchase_animation.is_empty():
+  text_at(Vector2(516,34-6*purchase_progress()),"−"+str(purchase_animation.amount),19,Color(Color("f6bc8c"),1.0-purchase_progress()))
  var day: int = game.data.get("shift",{}).get("day_number",1)
  text_at(Vector2(577,34),"День "+str(day),27)
  var minutes: int = game.clock_minutes()
@@ -454,7 +533,7 @@ func draw_cafe():
  if repository==null:return
  if repository.legacy:super.draw_cafe();return
  draw_texture_rect(CAFE,Rect2(0,0,1600,900),false)
- if screen in ["progress","between","intro"]:
+ if screen in ["progress","between","intro","fold"]:
   return
  for slot in range(Layout.COUNT-1,-1,-1):
   for id in rigs:

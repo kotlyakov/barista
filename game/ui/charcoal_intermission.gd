@@ -51,8 +51,9 @@ static func draw_sheet(view) -> void:
   if view.shop_tab==i:
    var y: float = rect.end.y-20
    var x: float = rect.get_center().x
-   view.draw_polyline(PackedVector2Array([Vector2(x-153,y+3),Vector2(x-82,y-4),Vector2(x+83,y-6),Vector2(x+154,y-1)]),INK,5,true)
-   view.draw_line(Vector2(x-130,y+8),Vector2(x+113,y+2),INK,2,true)
+   var stroke: float=view.stroke_progress
+   view.draw_line(Vector2(x-153,y+3),Vector2(x-153+307*stroke,y+3-4*stroke),INK,5,true)
+   view.draw_line(Vector2(x-130,y+8),Vector2(x-130+243*stroke,y+8-6*stroke),INK,2,true)
  match int(view.shop_tab):
   0: draw_rituals(view,state)
   1: draw_equipment(view,state)
@@ -123,8 +124,11 @@ static func draw_passives(view) -> void:
   var progress=float(level)/tiers
   var price: int=career.PASSIVE_PRICES[level] if level<tiers else 0
   card(view,rect)
-  if progress>0:
-   view.draw_rect(Rect2(rect.position+Vector2.ONE,Vector2((rect.size.x-2)*progress,rect.size.y-2)),Color("78894b80"))
+  var fill=progress
+  if view.purchase_animation.get("row",-1)==i:
+   fill=(float(level-1)+view.purchase_progress())/tiers
+  if fill>0:
+   view.draw_rect(Rect2(rect.position+Vector2.ONE,Vector2((rect.size.x-2)*fill,rect.size.y-2)),Color("78894b80"))
   view.draw_texture_rect(ICONS[i],Rect2(rect.position+Vector2(18,5),Vector2(56,50)),false)
   view.text_at(rect.position+Vector2(21,70),str(roundi(progress*100))+"%",16,INK)
   view.text_at(rect.position+Vector2(91,29),PASSIVES[i][0],24,INK)
