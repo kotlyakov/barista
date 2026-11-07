@@ -101,18 +101,39 @@ static func draw_equipment(view,state: Dictionary) -> void:
   paper_button(view,Rect2(rect.position+Vector2(28,368),Vector2(rect.size.x-56,56)),
    "Максимум" if level>=tiers else str(price),level<tiers and state.money>=price,level<tiers)
 
+static func passive_rect(i: int) -> Rect2:
+ return Rect2(132+681*floori(i/5.0),296+85*(i%5),651,76)
+
+static func passive_button_rect(i: int) -> Rect2:
+ var rect=passive_rect(i)
+ return Rect2(rect.end.x-143,rect.position.y+14,131,47)
+
+static func passive_description(i: int,level: int) -> String:
+ match i:
+  3: return "+%d известности за хорошую выдачу" % level
+  4: return "+%d к положительному приросту отношений" % level
+  5: return "Интервал входа −%d%%" % roundi((1.0-pow(0.97,level))*100)
+  8: return "+%d с на сбор оплаты" % (2*level)
+  _: return "+%d%% %s" % [level*(5 if i in [1,2] else 10),PASSIVES[i][1].to_lower()]
+
 static func draw_passives(view) -> void:
  view.text_at(Vector2(147,281),"ДОХОД И РЕПУТАЦИЯ",22,INK)
  view.text_at(Vector2(833,281),"ПОТОК И ОБСЛУЖИВАНИЕ",22,INK)
  for i in range(PASSIVES.size()):
-  var rect = Rect2(132+681*floori(i/5.0),296+85*(i%5),651,76)
+  var rect=passive_rect(i)
+  var career=view.game.Career
+  var level: int=career.passive_level(view.game.data,career.PASSIVE_IDS[i])
+  var tiers: int=career.PASSIVE_PRICES.size()
+  var progress=float(level)/tiers
+  var price: int=career.PASSIVE_PRICES[level] if level<tiers else 0
   card(view,rect)
+  if progress>0:
+   view.draw_rect(Rect2(rect.position+Vector2.ONE,Vector2((rect.size.x-2)*progress,rect.size.y-2)),Color("78894b80"))
   view.draw_texture_rect(ICONS[i],Rect2(rect.position+Vector2(18,5),Vector2(56,50)),false)
-  view.text_at(rect.position+Vector2(21,70),"0%",16,INK)
+  view.text_at(rect.position+Vector2(21,70),str(roundi(progress*100))+"%",16,INK)
   view.text_at(rect.position+Vector2(91,29),PASSIVES[i][0],24,INK)
-  view.text_at(rect.position+Vector2(91,58),PASSIVES[i][1],19,INK)
-  paper_button(view,Rect2(rect.end.x-143,rect.position.y+14,131,47),"—",false,true)
- view.text_at(Vector2(148,762),"Покупки пассивок откроются после настройки баланса.",21,COPPER)
+  view.text_at(rect.position+Vector2(91,58),passive_description(i,level),17,INK)
+  paper_button(view,passive_button_rect(i),"Макс." if level>=tiers else str(price),level<tiers and view.game.data.money>=price,level<tiers)
 
 static func card(view,rect: Rect2) -> void:
  view.draw_rect(rect,Color("846a4324"))

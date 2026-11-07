@@ -253,6 +253,12 @@ func shop_input(point: Vector2):
    if gear_rect(i).has_point(point):
     var id=EQUIPMENT_IDS[i]
     shop_message="Улучшение куплено" if act("buy_equipment",[id,int(game.data.upgrades[id])]) else "Максимум или не хватает монет"
+ elif shop_tab==2:
+  for i in range(Charcoal.PASSIVES.size()):
+   if Charcoal.passive_button_rect(i).has_point(point):
+    var id: String=game.Career.PASSIVE_IDS[i]
+    shop_message="Пассивка улучшена" if act("buy_passive",[id,game.Career.passive_level(game.data,id)]) else "Максимум или не хватает монет"
+    return
  elif shop_tab==3:
   for i in range(3):
    if offer_rect(i).has_point(point):

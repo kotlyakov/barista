@@ -70,6 +70,17 @@ func buy_equipment(station: String,level: int) -> bool:
  if data.money<price:return false
  data.money-=price;data.upgrades[station]=level+1;configure_cup();return true
 
+func buy_passive(id: String,level: int) -> bool:
+ if not shop_open() or not id in Career.PASSIVE_IDS or level<0 or level>=Career.PASSIVE_PRICES.size() or Career.passive_level(data,id)!=level:return false
+ var price: int=Career.PASSIVE_PRICES[level]
+ if data.money<price:return false
+ var levels: Dictionary=data.economy.get("passives",{})
+ levels[id]=level+1
+ data.economy.passives=levels
+ data.money-=price
+ configure_cup()
+ return true
+
 func buy_module(module: String) -> bool:
  if not shop_open() or not module in Career.MODULES or module in data.economy.owned_modules:return false
  var price=int(Career.MODULES[module].price)
@@ -153,8 +164,8 @@ func spawn_visit(customer_id="",wish_recipe="") -> bool:
  if customer_id=="": return false
  if wish_recipe=="": wish_recipe=roster.pick_recipe(customer_id,2.0 if data.has("economy") and data.shift.event_id=="milk" else 1.0,4.0 if data.has("economy") and data.shift.event_id=="regulars" else 2.0)
  data.rng_state=roster.rng_state()
- var budget=30+90*float(data.profiles[customer_id].trust_l)
- data.visits.append({"id":allocate_id(),"customer_id":customer_id,"wish_recipe":wish_recipe,"state":"WAITING","patience_budget":budget,"arrived_at":data.clock,"bubble_until":data.clock+3,"wish_shown_at":-1.0,"reaction_applied":false,"payment_id":0})
+ var budget=(30+90*float(data.profiles[customer_id].trust_l))*Career.passive_factor(data,"patience",0.10)
+ data.visits.append({"id":allocate_id(),"customer_id":customer_id,"wish_recipe":wish_recipe,"state":"WAITING","patience_budget":budget,"arrived_at":data.clock,"bubble_until":data.clock+Career.wish_seconds(data),"wish_shown_at":-1.0,"reaction_applied":false,"payment_id":0})
  if data.has("economy"):
   var visit=data.visits.back()
   visit.gift=data.economy.gifts[customer_id];data.economy.gifts[customer_id]=false
@@ -166,7 +177,7 @@ func remind_wish(visit_id: int) -> bool:
  var visit=find_visit(visit_id)
  if visit.is_empty() or visit.state!="WAITING" or data.clock>=visit.arrived_at+visit.patience_budget: return false
  if visit.has("wish_shown_at") and visit.wish_shown_at<0:visit.wish_shown_at=data.clock
- visit.bubble_until=data.clock+3
+ visit.bubble_until=data.clock+Career.wish_seconds(data)
  return true
 
 func show_arrival_wish(visit_id: int) -> bool:
@@ -233,7 +244,9 @@ func deliver(cup_id: int,visit_id: int) -> bool:
  if result.is_empty(): return false
  var profile=data.profiles[visit.customer_id]
  profile.trust_l=clampf(0.75*float(profile.trust_l)+0.25*result.C,0,1)
- profile.relationship=clampi(int(profile.relationship)+relationship_delta(result),-100,100)
+ var delta=relationship_delta(result)
+ if delta>0:delta+=Career.passive_level(data,"relationship")
+ profile.relationship=clampi(int(profile.relationship)+delta,-100,100)
  profile.mood=mood(result.J)
  profile.last_reaction=reaction(result)
  profile.visits+=1
@@ -245,13 +258,13 @@ func deliver(cup_id: int,visit_id: int) -> bool:
   if good:data.shift.stats.good+=1
  data.streak=int(data.streak)+1 if good else 0
  if data.has("economy") and good:
-  data.economy.fame+=1+(5 if visit.get("critic",false) and result.J>=90 else 0)
+  data.economy.fame+=1+Career.passive_level(data,"fame")+(5 if visit.get("critic",false) and result.J>=90 else 0)
   if visit.wish_recipe==profile.favorite and result.R==1:data.economy.goals[visit.customer_id]=mini(6,int(data.economy.goals[visit.customer_id])+1)
  var gift=visit.get("gift",false)
  var base=0 if gift else Career.base_price(data,visit.wish_recipe,visit.get("critic",false))
  var tip=0
  if not gift and good and (data.streak>=3 or profile.relationship>=30):
-  tip=int(floor(base*(0.10+0.10*maxi(0,int(profile.relationship))/100.0)))
+  tip=Career.tip_amount(data,base,int(profile.relationship))
  var payment_id=allocate_id()
  data.payments.append({"id":payment_id,"visit_id":visit.id,"cup_id":cup_id,"base":base,"tip":tip,"combo":1,"amount":base+tip,"deadline":data.clock+Career.effects(data).coins,"state":"COLLECTED" if gift else "PENDING"})
  visit.state="DEPARTING" if gift else "PAYMENT"
@@ -380,8 +393,8 @@ static func restore(snapshot_data: Dictionary):
   for key in s.data.shift.stats:s.data.shift.stats[key]=int(s.data.shift.stats[key])
  if s.data.has("economy"):
   for key in ["version","fame","league"]:s.data.economy[key]=int(s.data.economy[key])
-  for field in ["goals","claimed"]:
-   for key in s.data.economy[field]:s.data.economy[field][key]=int(s.data.economy[field][key])
+  for field in ["goals","claimed","passives"]:
+   for key in s.data.economy.get(field,{}):s.data.economy[field][key]=int(s.data.economy[field][key])
  if s.data.has("upgrades"):
   for key in s.data.upgrades:s.data.upgrades[key]=int(s.data.upgrades[key])
  for profile in s.data.profiles.values():

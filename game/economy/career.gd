@@ -11,6 +11,21 @@ const MODULES={
  "change":{"name":"Поднос для монет","price":450,"maintenance":0,"description":"Ещё 8 секунд на сбор монет; действует при установке."},
  "drive":{"name":"Быстрый привод","price":800,"maintenance":50,"description":"На 2 тапа помола меньше; 50 монет при старте смены. Можно бесплатно снять."}}
 const EQUIPMENT_PRICES=[400,800,1400,1900,2500,3200,4000,4900,5900,7000]
+const PASSIVE_IDS=["tips","espresso","milk_income","fame","relationship","flow","patience","warmth","payment","wish"]
+const PASSIVE_PRICES=[650,1200,2000,3100,4500]
+
+static func passive_level(data: Dictionary,id: String) -> int:
+ return int(data.get("economy",{}).get("passives",{}).get(id,0))
+
+static func passive_factor(data: Dictionary,id: String,step: float) -> float:
+ return 1.0+passive_level(data,id)*step
+
+static func wish_seconds(data: Dictionary) -> float:
+ return 3.0*passive_factor(data,"wish",0.10)
+
+static func tip_amount(data: Dictionary,base: int,relationship: int) -> int:
+ return int(floor(base*(0.10+0.10*maxi(0,relationship)/100.0)*passive_factor(data,"tips",0.10)))
+
 const GOAL_TARGETS=[3,6]
 const GOAL_REWARDS=[100,200]
 const LEAGUE_FAME=[0,30,100]
@@ -50,6 +65,9 @@ static func effects(data: Dictionary) -> Dictionary:
  if data.shift.event_id=="festival":result.flow*=0.85
  if data.shift.event_id=="rain":result.flow*=1.2
  result.flow*=1.0-0.05*int(e.claimed["guest-02"])
+ result.flow*=pow(0.97,passive_level(data,"flow"))
+ result.heat*=passive_factor(data,"warmth",0.10)
+ result.coins+=2.0*passive_level(data,"payment")
  return result
 static func targets(data: Dictionary,recipe: String) -> Array:
  var result=Cup.TARGETS[recipe].duplicate();var effect=effects(data)
@@ -61,15 +79,20 @@ static func base_price(data: Dictionary,recipe: String,critic: bool) -> int:
  var factor=LEAGUE_PRICE[int(data.economy.league)]
  if data.shift.event_id=="festival" or (data.shift.event_id=="milk" and recipe!="espresso"):factor*=1.1
  if critic:factor*=1.5
- return int(floor(base*factor))
+ return int(floor(base*factor*passive_factor(data,"espresso" if recipe=="espresso" else "milk_income",0.05)))
 static func equipment_price(data: Dictionary,level: int) -> int:
  return int(ceil(EQUIPMENT_PRICES[level]*(1.0-0.05*int(data.economy.claimed["guest-01"]))))
 static func maximum_receipt(data: Dictionary) -> int:
- return int(floor(base_price(data,"latte",data.get("shift",{}).get("event_id")=="critic")*1.2))
+ var base=base_price(data,"latte",data.get("shift",{}).get("event_id")=="critic")
+ return base+tip_amount(data,base,100)
 static func valid(e,data: Dictionary) -> bool:
- if not e is Dictionary or e.size()!=12 or not data.has("shift") or not data.has("upgrades") or data.has("legacy") or data.has("career"):return false
+ if not e is Dictionary or e.size()!=12+int(e.has("passives")) or not data.has("shift") or not data.has("upgrades") or data.has("legacy") or data.has("career"):return false
  if not data.shift is Dictionary or not data.shift.get("phase") in ["PREPARING","RUNNING","CLOSING","SUMMARY"] or not data.shift.get("event_id") in EVENTS:return false
  if e.get("version")!=1 or not e.get("offers") is Array or e.offers.size()!=3:return false
+ if e.has("passives"):
+  if not e.passives is Dictionary or e.passives.is_empty():return false
+  for id in e.passives:
+   if not id in PASSIVE_IDS or not Cup.whole(e.passives[id]) or e.passives[id]<1 or e.passives[id]>PASSIVE_PRICES.size():return false
  var unique=[]
  for item in e.offers:
   if not item in PERKS or item in unique:return false
