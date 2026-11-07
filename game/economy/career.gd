@@ -10,7 +10,7 @@ const MODULES={
  "heat":{"name":"Термостаканы","price":600,"maintenance":0,"description":"Остывание в 2 раза медленнее; действует при установке."},
  "change":{"name":"Поднос для монет","price":450,"maintenance":0,"description":"Ещё 8 секунд на сбор монет; действует при установке."},
  "drive":{"name":"Быстрый привод","price":800,"maintenance":50,"description":"На 2 тапа помола меньше; 50 монет при старте смены. Можно бесплатно снять."}}
-const EQUIPMENT_PRICES=[400,800,1400]
+const EQUIPMENT_PRICES=[400,800,1400,1900,2500,3200,4000,4900,5900,7000]
 const GOAL_TARGETS=[3,6]
 const GOAL_REWARDS=[100,200]
 const LEAGUE_FAME=[0,30,100]

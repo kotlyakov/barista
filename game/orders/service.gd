@@ -65,7 +65,7 @@ func skip_perk(day: int) -> bool:
  data.economy.choice="skip";return true
 
 func buy_equipment(station: String,level: int) -> bool:
- if not shop_open() or not station in ["grind","brew","milk","ads"] or level<0 or level>=3 or data.upgrades[station]!=level:return false
+ if not shop_open() or not station in ["grind","brew","milk","ads"] or level<0 or level>=Career.EQUIPMENT_PRICES.size() or data.upgrades[station]!=level:return false
  var price=Career.equipment_price(data,level)
  if data.money<price:return false
  data.money-=price;data.upgrades[station]=level+1;configure_cup();return true

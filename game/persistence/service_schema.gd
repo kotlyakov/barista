@@ -67,7 +67,8 @@ static func valid(s) -> bool:
  if s.has("upgrades"):
   if not s.upgrades is Dictionary or s.upgrades.size()!=LegacyStore.Session.UPGRADES.size():return false
   for key in LegacyStore.Session.UPGRADES:
-   if not integer(s.upgrades.get(key),0,LegacyStore.Session.UPGRADES[key]):return false
+   var maximum_level: int=Career.EQUIPMENT_PRICES.size() if s.has("economy") and key in ["grind","brew","milk","ads"] else LegacyStore.Session.UPGRADES[key]
+   if not integer(s.upgrades.get(key),0,maximum_level):return false
  if s.has("career"):
   var c=s.career
   if not c is Dictionary or not c.get("owned_modules") is Array or not c.get("equipped_modules") is Array or c.equipped_modules.size()>2 or c.owned_modules.size()>100:return false
