@@ -17,10 +17,6 @@ const ICONS = [
 ]
 const INK = Color("31271f")
 const COPPER = Color("9a4b27")
-const RITUAL_DESCRIPTIONS = {
- "warmth": "Кофе остывает медленнее", "change": "+6 секунд на сбор оплаты",
- "aroma": "Гости приходят чаще", "focus": "На 1 тап помола меньше"
-}
 const FORECAST = {
  "calm":"Обычное утро · привычный поток гостей", "rain":"Дождливое утро · гости приходят реже",
  "regulars":"Утро постоянников · чаще заказывают любимый кофе",
@@ -73,9 +69,9 @@ static func draw_rituals(view,state: Dictionary) -> void:
   var item: Dictionary = view.game.Career.PERKS[id]
   var rect: Rect2 = view.offer_rect(i)
   card(view,rect)
-  view.draw_texture_rect(RITUALS[id],Rect2(rect.position+Vector2(12,12),Vector2(rect.size.x-24,218)),false)
+  view.draw_texture_rect(RITUALS[item.art],Rect2(rect.position+Vector2(12,12),Vector2(rect.size.x-24,218)),false)
   centered(view,rect,rect.position.y+272,item.name,29)
-  centered(view,rect,rect.position.y+313,RITUAL_DESCRIPTIONS[id],22)
+  centered(view,rect,rect.position.y+313,item.description,22)
   var picked: bool = state.economy.choice==id
   var available: bool = state.economy.choice=="" and state.money>=item.price
   paper_button(view,Rect2(rect.get_center().x-95,rect.end.y-85,190,57),"✓" if picked else str(item.price),available,not picked)
@@ -141,6 +137,9 @@ static func card(view,rect: Rect2) -> void:
 
 static func centered(view,rect: Rect2,y: float,label: String,size: int) -> void:
  var width: float = view.font.get_string_size(label,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x
+ while width>rect.size.x-12 and size>14:
+  size-=1
+  width=view.font.get_string_size(label,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x
  view.text_at(Vector2(rect.get_center().x-width/2,y),label,size,INK)
 
 static func paper_button(view,rect: Rect2,label: String,active: bool,coin=false) -> void:

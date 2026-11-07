@@ -164,7 +164,7 @@ func spawn_visit(customer_id="",wish_recipe="") -> bool:
  if customer_id=="": return false
  if wish_recipe=="": wish_recipe=roster.pick_recipe(customer_id,2.0 if data.has("economy") and data.shift.event_id=="milk" else 1.0,4.0 if data.has("economy") and data.shift.event_id=="regulars" else 2.0)
  data.rng_state=roster.rng_state()
- var budget=(30+90*float(data.profiles[customer_id].trust_l))*Career.passive_factor(data,"patience",0.10)
+ var budget=(30+90*float(data.profiles[customer_id].trust_l))*Career.patience_factor(data)
  data.visits.append({"id":allocate_id(),"customer_id":customer_id,"wish_recipe":wish_recipe,"state":"WAITING","patience_budget":budget,"arrived_at":data.clock,"bubble_until":data.clock+Career.wish_seconds(data),"wish_shown_at":-1.0,"reaction_applied":false,"payment_id":0})
  if data.has("economy"):
   var visit=data.visits.back()
