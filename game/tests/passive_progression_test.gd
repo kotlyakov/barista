@@ -29,5 +29,19 @@ func run() -> void:
   push_error("Passive active effects or shift guard failed");quit(1);return
  if not s.Schema.valid(s.snapshot()):
   push_error("A valid live passive snapshot was rejected");quit(1);return
- print("PASS: ten passive purchases, no duplicate debit, stale rollback, live effects and reload")
+ var profile=s.data.profiles[v.customer_id]
+ profile.relationship=30
+ s.select_recipe(v.wish_recipe)
+ for station in range(3):
+  for n in range(s.cup.targets[station]):s.tap(station)
+ s.take_cup()
+ if not s.deliver(s.data.cup_id,v.id):quit(1);return
+ var payment=s.data.payments[0]
+ var expected_base=int(floor(s.PRICES[v.wish_recipe]*1.05))
+ var expected_tip=int(floor(expected_base*(0.10+0.10*profile.relationship/100.0)*1.10))
+ if payment.base!=expected_base or payment.tip!=expected_tip or payment.deadline!=14 or s.data.economy.fame!=2 or profile.relationship!=39:
+  push_error("Passive income, tips, payment window, fame or relationship did not reach the real delivery");quit(1);return
+ if not s.Schema.valid(s.snapshot()):
+  push_error("Delivery snapshot with passive effects rejected");quit(1);return
+ print("PASS: ten passive purchases, no duplicate debit, stale rollback, real service effects and reload")
  quit()

@@ -1,6 +1,7 @@
 config_version=5
 [application]
 config/name="Путь баристы — технический прототип"
+config/icon="res://content/art/charcoal/cup.webp"
 run/main_scene="res://ui/main_v2.tscn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 [display]
