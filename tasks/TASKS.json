@@ -2150,7 +2150,7 @@
       "id": "TASK-043",
       "title": "Сенсорный интерфейс свободной выдачи и полная регрессия",
       "role": "DEVELOPER",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "priority": 2,
       "dependencies": [
         "TASK-038",
@@ -2199,26 +2199,26 @@
         "Технический визуал отмечен; финальное оформление только после TASK037/утверждения; Android проверен на точном SHA"
       ],
       "verification": "Сценарии и границы: docs/plans/2026-11-05-v042-integration.md; реальный Godot FAIL→PASS и связанные регрессии; не засчитывать прошлую0.3.2.",
-      "owner": "Codex",
-      "session_id": "task043-20261106",
-      "lease_until": "2026-11-07T04:00:00+03:00",
+      "owner": null,
+      "session_id": null,
+      "lease_until": null,
       "branch": "task/TASK-043-free-service-ui",
       "issue_number": null,
       "pr_url": "https://github.com/kotlyakov/barista/pull/40",
-      "commit": "48797b53b0556b839bf077a09acd36d8567dd8de",
+      "commit": "c81d1a1a70ecb34abcad1a6f8c568bae3b6df12e",
       "evidence": [
-        "reports/native/TASK043.md",
-        "reports/native/TASK043_LEDGER.md",
-        "56 local/native Godot scripts;20 renders",
-        "bc574419 Android audio18s/touch/payment/restarts PASS; full-cycle NOT_VERIFIED"
+        "https://github.com/kotlyakov/barista/actions/runs/42265717265",
+        "57 Godot scripts, docs, 20 native renders PASS",
+        "Android runtime artifact 13526629792",
+        "reports/native/TASK043.md"
       ],
       "review": {
         "type": "INDEPENDENT_REVIEW_AND_SELF_REVIEW",
         "reviewer": "review_task043",
-        "status": "FIXES_NATIVE_VERIFIED_ANDROID_PENDING",
-        "notes": "7 Important groups RED-to-GREEN;no independent re-review. Music PCM loop bound later fixed with native RED-to-GREEN and Android18s/two loops PASS. Full300s/background/migrations/delivery pending."
+        "status": "FIXES_VERIFIED_FULL_CI_ANDROID",
+        "notes": "Seven initial findings reproduced and fixed. Final head passed Android and native checks. Earlier intermittent Android delivery rejection was not reproduced in the final run. Track repeatability in TASK-022."
       },
-      "blocker": "Local workspace unavailable; Android full runtime/signing/delivery/context ZIP not complete.",
+      "blocker": null,
       "approval_versions": {
         "SPEC-001": 5,
         "MECH-001": 1

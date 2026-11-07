@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "package_version": "0.4.2",
-  "updated_at": "2026-11-06",
-  "phase": "V042_UI_ANDROID_VALIDATION",
+  "updated_at": "2026-11-07",
+  "phase": "V042_UI_ANDROID_VERIFIED",
   "game_code_exists": true,
-  "current_task": "TASK-043",
-  "next_task": "TASK-043",
-  "next_action": "Завершить Android runtime на актуальном SHA; восстановить workspace для подписи/выдачи ARM64 и обновления контекстZIP. TASK037/022 после043.",
+  "current_task": null,
+  "next_task": "TASK-037",
+  "next_action": "TASK-037 — межсменное оформление и решение Артура по конкретному макету. TASK-022 — физический ARM64/Pixel, звук, повторяемость выдачи и баланс.",
   "repository": {
     "owner": "kotlyakov",
     "name": "barista",
@@ -17,8 +17,8 @@
     "pending_sync": false,
     "head_note": "Содержательныйкоммит принятиямеханик;далее может следоватькоммитметаданных. Проверятьtip вGit.",
     "working_branch": "task/TASK-043-free-service-ui",
-    "working_head": "48797b53b0556b839bf077a09acd36d8567dd8de",
-    "working_head_note": "Current game/QA source; subsequent commits may be metadata only. Check tip inGit."
+    "working_head": "c81d1a1a70ecb34abcad1a6f8c568bae3b6df12e",
+    "working_head_note": "Verified source. Later commits may contain project metadata only."
   },
   "blockers": [
     "TASK-022: physical Android/Pixel testing and 10 attempts per recipe calibration pending",
@@ -29,8 +29,8 @@
     "VISUAL-002/v9",
     "MECH-001/v1"
   ],
-  "last_verified_commit": "48797b53b0556b839bf077a09acd36d8567dd8de",
-  "ci_status": "PASS local56/native/docs/render20; Android partial (audio18s/two loops+touch/payment/restarts); full300s/bg/migrations pending; workspace unavailable.",
+  "last_verified_commit": "c81d1a1a70ecb34abcad1a6f8c568bae3b6df12e",
+  "ci_status": "PASS:57 Godot, docs, 20 native renders, full Android15/x86_64 runtime, signed ARM64 structural verification.",
   "spec_version": "0.4.2",
   "spec_pr_url": "https://github.com/kotlyakov/barista/pull/22",
   "web_prototype": {
@@ -47,39 +47,37 @@
   },
   "native": {
     "engine": "4.5.1.stable.official.f62fdbde1",
-    "tests": "56/56 Godot4.5.1 local/fullCI PASS",
+    "tests": "57 Godot scripts PASS",
     "linux_debug": "exported and headless launched",
-    "android_apk": "CANDIDATE_0.4.2_BUILT_RUNTIME_PARTIAL_NOT_DELIVERED",
+    "android_apk": "TECHNICAL_PREVIEW_0.4.2_SIGNED_SAVED",
     "art": "Original room + SVG rigs09; actual Linux and Android graphics rendered and inspected",
     "speed_combo": "production thresholds empty pending phone calibration",
     "zone_policy": "fixed UTC offset; DST backlog NAT-003",
     "branch": "task/TASK-043-free-service-ui",
     "pr_url": "https://github.com/kotlyakov/barista/pull/40",
     "pr_status": "OPEN_DRAFT",
-    "ci": "PASS native56/docs/render20;Android partial/pending",
+    "ci": "PASS:57 Godot, docs, 20 native renders, full Android15/x86_64 runtime, signed ARM64 structural verification.",
     "android_preview": {
-      "file": "Barista-0.3.2-cafe-preview.apk",
+      "file": "Barista-0.4.2-technical-preview.apk",
+      "library_file_id": "libfile_c3aeb9857c6c8191a4ac59e0bd2ac2b8",
       "package": "org.kotlyakov.barista",
-      "version": "0.3.2",
-      "version_code": 5,
+      "version": "0.4.2",
+      "version_code": 6,
       "abi": "arm64-v8a",
       "min_sdk": 24,
       "target_sdk": 35,
-      "size_bytes": 29946204,
-      "sha256": "f76a10bb18e7feb2c53ccfcd4561faedeee1de6c5ae2bc0ba2712b0a6c37d918",
-      "library_file_id": "libfile_5393467b72d88191a825a7cd930c7302",
-      "source_commit": "4bfe9de93144130df5b73e1b143d3e21698a058c",
-      "build_run": 41806172799,
-      "signature": "PASS:v2/v3,16KB alignment, original certificate",
-      "status": "PREVIEW_SAVED",
-      "runtime_run": 41806463440,
-      "runtime": "PASS:Android15 x86_64,real touch/missed drop/retry/payment/restart/mood; physical ARM64 not retested",
-      "runtime_artifact": 13308749985
+      "size_bytes": 30050831,
+      "sha256": "f01415757dfe9edddce4f805971082c738ddadd13b6eed3bb363c3bb06553603",
+      "source_commit": "c81d1a1a70ecb34abcad1a6f8c568bae3b6df12e",
+      "build_run": 42265717265,
+      "runtime_artifact": 13526629792,
+      "signature": "PASS v2/v3, 16 KB alignment, existing debug certificate",
+      "runtime": "PASS Android15 x86_64 emulator. Physical ARM64 pending."
     },
     "debug_signing_key_library_file_id": "libfile_76674d45c1b8819198ccdc529424af21",
     "shell": "main_v2 default;intro/play/menu/progress/isolated practice/technical intermission;Android full-cycle pending",
-    "audio": "Confirmed PCM music loop off-by-one:count→count-1; native contract RED→GREEN,Android18s/two complete loops PASS;physical retest pending.",
-    "render": "9 legacy+11 v2 native states;new states inspected after text/coin fixes",
+    "audio": "PCM music loop bound fixed. Two complete enabled loops on Android PASS.",
+    "render": "9 legacy + 11 v2 states PASS",
     "previous_android_previews": [
       {
         "file": "Barista-0.1.0-tech-preview.apk",
@@ -139,6 +137,25 @@
         "runtime_artifact": 12986123767,
         "owner_isolation": "Owner reports coffee taps work with sound disabled; underlying fault unresolved",
         "root_cause": "Native audio fault not identified; need owner report after physical crash"
+      },
+      {
+        "file": "Barista-0.3.2-cafe-preview.apk",
+        "package": "org.kotlyakov.barista",
+        "version": "0.3.2",
+        "version_code": 5,
+        "abi": "arm64-v8a",
+        "min_sdk": 24,
+        "target_sdk": 35,
+        "size_bytes": 29946204,
+        "sha256": "f76a10bb18e7feb2c53ccfcd4561faedeee1de6c5ae2bc0ba2712b0a6c37d918",
+        "library_file_id": "libfile_5393467b72d88191a825a7cd930c7302",
+        "source_commit": "4bfe9de93144130df5b73e1b143d3e21698a058c",
+        "build_run": 41806172799,
+        "signature": "PASS:v2/v3,16KB alignment, original certificate",
+        "status": "PREVIEW_SAVED",
+        "runtime_run": 41806463440,
+        "runtime": "PASS:Android15 x86_64,real touch/missed drop/retry/payment/restart/mood; physical ARM64 not retested",
+        "runtime_artifact": 13308749985
       }
     ],
     "owner_feedback": "05.11:единственный отказ —варка без помола;стакан от любого аппарата;промах позволяет доделать;единая формула удовольствия;до5 клиентов/свободная выдача/история терпения.",
@@ -152,30 +169,20 @@
         "TASK-042",
         "TASK-044"
       ],
-      "commit": "48797b53b0556b839bf077a09acd36d8567dd8de",
+      "commit": "c81d1a1a70ecb34abcad1a6f8c568bae3b6df12e",
       "native_ci": "https://github.com/kotlyakov/barista/actions/runs/42243087040",
       "docs_ci": "https://github.com/kotlyakov/barista/actions/runs/42243087124",
-      "status": "NATIVE_VERIFIED_ANDROID_PARTIAL",
-      "test_scripts": 56,
+      "status": "VERIFIED",
+      "test_scripts": 57,
       "rendered_states": 20,
       "local_domain_scripts": 38,
       "apk_changed": true,
       "ui_connected": true,
       "profile_migrated": false,
-      "legacy_import": "UI_CONNECTED_DOMAIN_VERIFIED;Android migration pending;owner phone untouched",
+      "legacy_import": "Android fixtures for summary and active legacy closing passed. Owner phone pending.",
       "career_shift": "Explicit enable_career;300s08–17,closing15s+finite payments,100-day and4-process checks",
       "career_economy": "Explicit enable_development; deterministic offers, purchases/modules/gifts/goals/fame/leagues/events, atomic persistence; calibration042-1",
       "legacy_candidate": "Verified preparation and explicit activate_legacy_candidate; D16 ACCEPTED, candidate/live receipts separated"
-    },
-    "android_candidate": {
-      "version": "0.4.2",
-      "version_code": 6,
-      "source_commit": "48797b53b0556b839bf077a09acd36d8567dd8de",
-      "game_tree": "511688c0577a19080e77bf145123ebfdf259e763",
-      "status": "BUILT_RUNTIME_PARTIAL_NOT_DELIVERED",
-      "signed_local_source": "bc574419cf4ffee15cd0c90d5f843cbc06e0e4f4",
-      "workspace": "unavailable",
-      "physical_arm64": "NOT_RUN"
     }
   },
   "android_sdk_license": {
@@ -233,13 +240,13 @@
     ],
     "commit": "d5f21b5d2757241a33ba4f8788cd1b609248f41d",
     "pr_url": "https://github.com/kotlyakov/barista/pull/32",
-    "implementation_status": "038/039/040/041/042/044 DONE;043 IN_PROGRESS Android/delivery;037 visual separate",
+    "implementation_status": "038/039/040/041/042/044/043 DONE. TASK-037 and TASK-022 next.",
     "legacy_activation_task": "TASK-044"
   },
   "legacy_activation": {
     "decision": "D16 ACCEPTED",
     "source_message": "Продолжай",
-    "status": "UI_CONNECTED_DOMAIN_VERIFIED_ANDROID_PENDING",
+    "status": "UI_CONNECTED_ANDROID_FIXTURES_PASS",
     "method": "activate_legacy_candidate(expected_source_hash)",
     "publication": "two canonical slots1/2 in v2-activate,then atomic rename to missingv2",
     "repeat": "same-generation current state unchanged,stale writer reloads progressed live",
@@ -247,12 +254,11 @@
     "profile_on_phone_migrated": false
   },
   "implementation_v042": {
-    "status": "TASK043 IN_PROGRESS",
-    "source_commit": "48797b53b0556b839bf077a09acd36d8567dd8de",
-    "report": "reports/native/TASK043.md",
+    "status": "TASK043 DONE",
+    "source_commit": "c81d1a1a70ecb34abcad1a6f8c568bae3b6df12e",
     "pr_url": "https://github.com/kotlyakov/barista/pull/40",
-    "android": "PARTIAL; current pipeline pending",
-    "visual": "technical;037 approval pending",
-    "delivery": "local workspace unavailable; signed APK/context ZIP not saved"
+    "android": "https://github.com/kotlyakov/barista/actions/runs/42265717265",
+    "report": "reports/native/TASK043.md",
+    "visual": "Техническое оформление, утверждение TASK-037 впереди"
   }
 }
