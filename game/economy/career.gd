@@ -2,15 +2,51 @@ extends RefCounted
 # Starting calibration042-1. No UI, real-money purchases or income simulator.
 const Cup=preload("res://brewing/cup.gd")
 const PERKS={
- "warmth":{"name":"Тёплые стаканы","price":100,"description":"Остывание в 1,5 раза медленнее. Только следующая смена."},
- "change":{"name":"Размен приготовлен","price":80,"description":"Ещё 6 секунд на сбор монет. Только следующая смена; автосбора нет."},
- "aroma":{"name":"Аромат на улицу","price":60,"description":"Интервал входа ×0.85, минимум 6 с. Только следующая смена."},
- "focus":{"name":"Рабочий ритм","price":120,"description":"На 1 тап помола меньше. Только следующая смена; минимум 1."}}
+ "warmth":{"name":"Тёплые стаканы","price":100,"description":"Кофе остывает медленнее","art":"warmth","heat":1.5},
+ "change":{"name":"Размен приготовлен","price":80,"description":"+6 секунд на сбор оплаты","art":"change","coins":6},
+ "aroma":{"name":"Аромат на улицу","price":60,"description":"Гости приходят чаще","art":"aroma","flow":0.85},
+ "focus":{"name":"Рабочий ритм","price":120,"description":"На 1 тап помола меньше","art":"focus","grind":1},
+ "pressure":{"name":"Прогрев кофеварки","price":120,"description":"На 1 тап варки меньше","art":"focus","brew":1},
+ "silky":{"name":"Тёплый питчер","price":120,"description":"На 1 тап молока меньше","art":"warmth","milk":1},
+ "workflow":{"name":"Разложить инструменты","price":200,"description":"На 1 тап меньше на каждом приборе","art":"focus","grind":1,"brew":1,"milk":1},
+ "quiet":{"name":"Тихий час","price":70,"description":"Гости приходят реже","art":"aroma","flow":1.18},
+ "seats":{"name":"Стулья у окна","price":105,"description":"Гости ждут на 20% дольше","art":"aroma","patience":1.2},
+ "notes":{"name":"Блокнот заказов","price":90,"description":"Заказ виден на 1,5 секунды дольше","art":"change","wish":1.5},
+ "winter":{"name":"Термочехол","price":155,"description":"Медленнее остывает, гости дольше ждут","art":"warmth","heat":1.3,"patience":1.1},
+ "tray":{"name":"Подготовить блюдца","price":155,"description":"+3 секунды на оплату, заказы видны дольше","art":"change","coins":3,"wish":1.0},
+ "filter":{"name":"Настроить помол и пролив","price":170,"description":"На 1 тап меньше для помола и варки","art":"focus","grind":1,"brew":1},
+ "steam":{"name":"Прогреть паровик","price":160,"description":"На 2 тапа молока меньше","art":"warmth","milk":2},
+ "welcome":{"name":"Тёплая встреча","price":150,"description":"Гости приходят чаще и дольше ждут","art":"aroma","flow":0.93,"patience":1.12},
+ "counter":{"name":"Свободная стойка","price":150,"description":"+4 секунды на оплату и на 1 тап варки меньше","art":"change","coins":4,"brew":1}}
+const FEATURED={"calm":"focus","rain":"warmth","regulars":"welcome","festival":"change","milk":"steam","critic":"pressure"}
 const MODULES={
  "heat":{"name":"Термостаканы","price":600,"maintenance":0,"description":"Остывание в 2 раза медленнее; действует при установке."},
  "change":{"name":"Поднос для монет","price":450,"maintenance":0,"description":"Ещё 8 секунд на сбор монет; действует при установке."},
  "drive":{"name":"Быстрый привод","price":800,"maintenance":50,"description":"На 2 тапа помола меньше; 50 монет при старте смены. Можно бесплатно снять."}}
-const EQUIPMENT_PRICES=[400,800,1400]
+const EQUIPMENT_PRICES=[400,800,1400,1900,2500,3200,4000,4900,5900,7000]
+const PASSIVE_IDS=["tips","espresso","milk_income","fame","relationship","flow","patience","warmth","payment","wish"]
+const PASSIVE_PRICES=[650,1200,2000,3100,4500]
+
+static func passive_level(data: Dictionary,id: String) -> int:
+ return int(data.get("economy",{}).get("passives",{}).get(id,0))
+
+static func passive_factor(data: Dictionary,id: String,step: float) -> float:
+ return 1.0+passive_level(data,id)*step
+
+static func wish_seconds(data: Dictionary) -> float:
+ return (3.0+float(ritual(data).get("wish",0.0)))*passive_factor(data,"wish",0.10)
+
+static func patience_factor(data: Dictionary) -> float:
+ return float(ritual(data).get("patience",1.0))*passive_factor(data,"patience",0.10)
+
+static func ritual(data: Dictionary) -> Dictionary:
+ var economy: Dictionary=data.get("economy",{})
+ var key="choice" if data.get("shift",{}).get("phase")=="PREPARING" else "active_perk"
+ return PERKS.get(economy.get(key,""),{})
+
+static func tip_amount(data: Dictionary,base: int,relationship: int) -> int:
+ return int(floor(base*(0.10+0.10*maxi(0,relationship)/100.0)*passive_factor(data,"tips",0.10)))
+
 const GOAL_TARGETS=[3,6]
 const GOAL_REWARDS=[100,200]
 const LEAGUE_FAME=[0,30,100]
@@ -30,18 +66,22 @@ static func make() -> Dictionary:
 static func offers(session) -> void:
  var rng=RandomNumberGenerator.new();rng.state=int(session.data.rng_state)
  var pool=PERKS.keys();var chosen=[]
+ var featured: String=FEATURED[session.data.shift.event_id]
  for n in range(3):
-  var index=rng.randi_range(0,pool.size()-1);chosen.append(pool[index]);pool.remove_at(index)
+  var ticket=rng.randi_range(0,pool.size()-1+int(featured in pool))
+  var index=pool.find(featured) if ticket==pool.size() else ticket
+  chosen.append(pool[index])
+  pool.remove_at(index)
  session.data.economy.offers=chosen;session.data.rng_state=str(rng.state)
 static func effects(data: Dictionary) -> Dictionary:
- var result={"heat":1.0,"coins":12.0,"grind":0,"flow":1.0,"maintenance":0}
+ var result={"heat":1.0,"coins":12.0,"grind":0,"brew":0,"milk":0,"flow":1.0,"maintenance":0}
  if not data.has("economy"):return result
  var e=data.economy
- var perk=e.active_perk if data.shift.phase!="PREPARING" else ("" if e.choice=="skip" else e.choice)
- if perk=="warmth":result.heat*=1.5
- if perk=="change":result.coins+=6
- if perk=="aroma":result.flow*=0.85
- if perk=="focus":result.grind+=1
+ var perk=ritual(data)
+ result.heat*=float(perk.get("heat",1.0))
+ result.coins+=float(perk.get("coins",0.0))
+ result.flow*=float(perk.get("flow",1.0))
+ for station in Cup.STATIONS:result[station]+=int(perk.get(station,0))
  for module in e.equipped_modules:
   if module=="heat":result.heat*=2
   if module=="change":result.coins+=8
@@ -50,10 +90,13 @@ static func effects(data: Dictionary) -> Dictionary:
  if data.shift.event_id=="festival":result.flow*=0.85
  if data.shift.event_id=="rain":result.flow*=1.2
  result.flow*=1.0-0.05*int(e.claimed["guest-02"])
+ result.flow*=pow(0.97,passive_level(data,"flow"))
+ result.heat*=passive_factor(data,"warmth",0.10)
+ result.coins+=2.0*passive_level(data,"payment")
  return result
 static func targets(data: Dictionary,recipe: String) -> Array:
  var result=Cup.TARGETS[recipe].duplicate();var effect=effects(data)
- for n in range(3):result[n]=maxi(1,int(result[n])-int(data.upgrades[Cup.STATIONS[n]])-(int(effect.grind) if n==0 else 0))
+ for n in range(3):result[n]=maxi(1,int(result[n])-int(data.upgrades[Cup.STATIONS[n]])-int(effect[Cup.STATIONS[n]]))
  return result
 static func base_price(data: Dictionary,recipe: String,critic: bool) -> int:
  var base={"espresso":50,"cappuccino":80,"latte":90}[recipe]
@@ -61,15 +104,20 @@ static func base_price(data: Dictionary,recipe: String,critic: bool) -> int:
  var factor=LEAGUE_PRICE[int(data.economy.league)]
  if data.shift.event_id=="festival" or (data.shift.event_id=="milk" and recipe!="espresso"):factor*=1.1
  if critic:factor*=1.5
- return int(floor(base*factor))
+ return int(floor(base*factor*passive_factor(data,"espresso" if recipe=="espresso" else "milk_income",0.05)))
 static func equipment_price(data: Dictionary,level: int) -> int:
  return int(ceil(EQUIPMENT_PRICES[level]*(1.0-0.05*int(data.economy.claimed["guest-01"]))))
 static func maximum_receipt(data: Dictionary) -> int:
- return int(floor(base_price(data,"latte",data.get("shift",{}).get("event_id")=="critic")*1.2))
+ var base=base_price(data,"latte",data.get("shift",{}).get("event_id")=="critic")
+ return base+tip_amount(data,base,100)
 static func valid(e,data: Dictionary) -> bool:
- if not e is Dictionary or e.size()!=12 or not data.has("shift") or not data.has("upgrades") or data.has("legacy") or data.has("career"):return false
+ if not e is Dictionary or e.size()!=12+int(e.has("passives")) or not data.has("shift") or not data.has("upgrades") or data.has("legacy") or data.has("career"):return false
  if not data.shift is Dictionary or not data.shift.get("phase") in ["PREPARING","RUNNING","CLOSING","SUMMARY"] or not data.shift.get("event_id") in EVENTS:return false
  if e.get("version")!=1 or not e.get("offers") is Array or e.offers.size()!=3:return false
+ if e.has("passives"):
+  if not e.passives is Dictionary or e.passives.is_empty():return false
+  for id in e.passives:
+   if not id in PASSIVE_IDS or not Cup.whole(e.passives[id]) or e.passives[id]<1 or e.passives[id]>PASSIVE_PRICES.size():return false
  var unique=[]
  for item in e.offers:
   if not item in PERKS or item in unique:return false

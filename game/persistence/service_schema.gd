@@ -67,7 +67,8 @@ static func valid(s) -> bool:
  if s.has("upgrades"):
   if not s.upgrades is Dictionary or s.upgrades.size()!=LegacyStore.Session.UPGRADES.size():return false
   for key in LegacyStore.Session.UPGRADES:
-   if not integer(s.upgrades.get(key),0,LegacyStore.Session.UPGRADES[key]):return false
+   var maximum_level: int=Career.EQUIPMENT_PRICES.size() if s.has("economy") and key in ["grind","brew","milk","ads"] else LegacyStore.Session.UPGRADES[key]
+   if not integer(s.upgrades.get(key),0,maximum_level):return false
  if s.has("career"):
   var c=s.career
   if not c is Dictionary or not c.get("owned_modules") is Array or not c.get("equipped_modules") is Array or c.equipped_modules.size()>2 or c.owned_modules.size()>100:return false
@@ -82,6 +83,7 @@ static func valid(s) -> bool:
    equipped[module]=true
  if s.has("economy") and not Career.valid(s.economy,s):return false
  var duration=Career.effects(s).coins
+ var wish_seconds=Career.wish_seconds(s)
  var maximum=Career.maximum_receipt(s) if s.has("economy") else 108
  var minimum=Career.base_price(s,"espresso",false) if s.has("economy") else 50
  if s.has("economy"):
@@ -113,12 +115,12 @@ static func valid(s) -> bool:
   for customer in s.profiles:
    total_visits+=int(s.profiles[customer].visits)
    if s.economy.goals[customer]>s.profiles[customer].visits:return false
-  if s.economy.fame>6*total_visits:return false
+  if s.economy.fame>(6+Career.passive_level(s,"fame"))*total_visits:return false
  var identities={int(s.cup_id):true};var visits={};var people={};var payments={};var cups={}
  for v in s.visits:
   if not v is Dictionary or not id(v.get("id"),s) or identities.has(int(v.id)) or not s.profiles.has(v.get("customer_id")) or people.has(v.customer_id) or not PRICES.has(v.get("wish_recipe")):return false
   if not v.get("state") in ["WAITING","PAYMENT","DEPARTING"] or not v.get("reaction_applied") is bool or not integer(v.get("payment_id")):return false
-  if not number(v.get("arrived_at"),0,s.clock) or not number(v.get("patience_budget"),30,120) or not number(v.get("bubble_until"),v.arrived_at,s.clock+3):return false
+  if not number(v.get("arrived_at"),0,s.clock) or not number(v.get("patience_budget"),30,120*Career.patience_factor(s)) or not number(v.get("bubble_until"),v.arrived_at,s.clock+wish_seconds):return false
   if s.has("economy"):
    if not v.get("gift") is bool or not v.get("critic") is bool:return false
    if s.economy.gifts[v.customer_id]:return false
@@ -126,7 +128,7 @@ static func valid(s) -> bool:
   elif v.has("gift") or v.has("critic"):return false
   if v.has("wish_shown_at"):
    if not number(v.wish_shown_at,-1,s.clock) or v.wish_shown_at!=-1 and v.wish_shown_at<v.arrived_at:return false
-   if v.wish_shown_at<0 and v.bubble_until!=v.arrived_at+3:return false
+   if v.wish_shown_at<0 and absf(v.bubble_until-v.arrived_at-wish_seconds)>0.000001:return false
   if v.has("reaction_until") and (not number(v.reaction_until,0,s.clock+3) or not v.has("evaluation")):return false
   var historical=histories.get(int(v.id),{})
   if not historical.is_empty() and historical.customer_id!=v.customer_id:return false
@@ -157,7 +159,7 @@ static func valid(s) -> bool:
    var issued_at=float(v.arrived_at)+(1.0-float(v.evaluation.W))*float(v.patience_budget)
    if absf(float(p.deadline)-issued_at-duration)>0.000001:return false
    var relationship=int(s.profiles[v.customer_id].relationship)
-   var allowed_tip=int(floor(float(p.base)*(0.10+0.10*maxi(0,relationship)/100.0)))
+   var allowed_tip=Career.tip_amount(s,int(p.base),relationship)
    if p.tip>0 and (v.evaluation.J<75 or p.tip!=allowed_tip):return false
    if v.get("gift",false) and (p.amount!=0 or p.state!="COLLECTED"):return false
   if p.state=="PENDING":

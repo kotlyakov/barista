@@ -72,6 +72,7 @@ func _ready() -> void:
  music.stream=loop
  for id in ["grind","brew","steam"]: sounds[id]=tone(.13,80 if id=="grind" else 150,id!="brew")
  sounds.coins=tone(.22,1200)
+ sounds.pencil=tone(.18,780,true)
  trace("audio ready complete")
 func set_active(value: bool,prefs: Dictionary) -> void:
  trace("set_active begin active="+str(value)+" muted="+str(prefs.get("muted",false)))
@@ -87,8 +88,8 @@ func set_active(value: bool,prefs: Dictionary) -> void:
   music.stream_paused=true
   voice.stop()
  trace("set_active returned")
-func effect(id: String) -> void:
- if not active or muted or Time.get_ticks_msec()-last_effect<90 or not sounds.has(id): return
+func effect(id: String,allow_inactive=false) -> void:
+ if (not active and not allow_inactive) or muted or Time.get_ticks_msec()-last_effect<90 or not sounds.has(id): return
  if DisplayServer.get_name()=="headless": return
  last_effect=Time.get_ticks_msec()
  trace("effect "+id+" before stream")

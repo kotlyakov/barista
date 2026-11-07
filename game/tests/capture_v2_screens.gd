@@ -9,11 +9,17 @@ func run():
  var args=OS.get_cmdline_user_args();if not args.is_empty():directory=args[0]
  DirAccess.make_dir_recursive_absolute(directory);root.size=Vector2i(1600,900)
  node=load("res://ui/main_v2.tscn").instantiate();node.save_directory="user://capture-v2-"+str(Time.get_ticks_usec());root.add_child(node);node.set_process(false)
+ node.game.data.money=1700;node.repository.checkpoint()
  await capture("v2-02-rituals")
  node.shop_tab=1;await capture("v2-03-modernizations")
  node.shop_tab=2;await capture("v2-04-passives")
+ node.shop_input(node.Charcoal.passive_button_rect(7).get_center())
+ node._process(.24);await capture("v2-12-passive-animating")
+ node._process(.30);await capture("v2-13-passive-purchased")
  node.shop_tab=3;await capture("v2-05-modules")
  node.shop_input(node.START_BUTTON.get_center())
+ node._process(.15);await capture("v2-14-fold")
+ node._process(.20)
  node.intro_elapsed=2;await capture("v2-01-intro");node.finish_intro()
  for id in node.NAMES:
   if node.game.data.visits.size()<5:node.act("spawn_visit",[id,""])
@@ -24,4 +30,4 @@ func run():
  node.act("deliver",[node.game.data.cup_id,node.game.data.visits[0].id]);node.dragging=false;node.cup_position=node.V2_CUP_HOME;node.sync_guest(true);await capture("v2-08-payment")
  node.open_menu();await capture("v2-09-menu");node.screen="progress";await capture("v2-10-progress")
  node.resume_game();node.repository.advance(400);node._process(0);await capture("v2-11-summary")
- node.queue_free();await process_frame;print("PASS: rendered11 actual Service v2 UI states");quit()
+ node.queue_free();await process_frame;print("PASS: rendered14 actual Service v2 UI states");quit()

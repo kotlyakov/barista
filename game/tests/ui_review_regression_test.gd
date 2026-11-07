@@ -11,7 +11,7 @@ func run():
  node.game.data.money=5000;node.repository.checkpoint();tap(node,node.tab_rect(1).get_center());var gear=node.gear_rect(0).get_center()
  input_touch(node,gear,true,0);input_touch(node,gear,true,1);input_touch(node,gear,false,1);input_touch(node,gear,false,0)
  check(node.game.data.upgrades.grind==1 and node.game.data.money==4600,"simultaneous second finger cannot buy another level")
- tap(node,node.START_BUTTON.get_center());node._process(2.5);node._process(0);var visit=node.game.data.visits[0]
+ tap(node,node.START_BUTTON.get_center());node._process(.35);node.finish_intro();node._process(2.5);node._process(0);var visit=node.game.data.visits[0]
  check(absf(visit.bubble_until-node.game.data.clock-3)<0.0001,"first wish gets3 full active seconds at counter")
  node._process(4);var before=visit.bubble_until;var point=node.visit_drop_rect(visit.id).get_center()
  input_touch(node,point,true);input_touch(node,point,false,0,true)
@@ -22,7 +22,7 @@ func run():
  tap(node,node.station_rects[1].get_center())
  check(node.game.cup.taps[1]==0 and str(node.get("speech_text"))=="Ой! Зёрна-то не помолола!","brew refusal has required spoken feedback")
  check(float(node.get("facepalm_until") if node.get("facepalm_until")!=null else -1)>node.game.data.clock,"brew refusal starts existing-hand facepalm")
- tap(node,node.RECIPE_BUTTONS[2].get_center());tap(node,node.station_rects[2].get_center());input_touch(node,node.CUP_HOME,true)
+ tap(node,node.RECIPE_BUTTONS[2].get_center());tap(node,node.station_rects[2].get_center());input_touch(node,node.V2_CUP_HOME,true)
  check(str(node.get("speech_text"))=="Одно молоко!!!","raw pickup speaks actual contents")
  input_touch(node,Vector2(200,200),false);node.act("take_cup");node.act("deliver",[node.game.data.cup_id,visit.id])
  tap(node,node.station_rects[0].get_center());tap(node,node.station_rects[1].get_center())

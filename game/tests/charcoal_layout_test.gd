@@ -22,6 +22,8 @@ func run() -> void:
  if node.shop_tab != 2:
   failures.append("The right-hand tab must open Passives.")
  tap(node, Vector2(1320, 820))
+ node._process(.35)
+ node.finish_intro()
  if node.game.data.shift.phase != "RUNNING":
   failures.append("Start Shift must work at the approved button position.")
  node.finish_intro()

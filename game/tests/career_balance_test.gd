@@ -25,7 +25,7 @@ func _init():
      var before_start=s.data.money
      s.start_shift(1)
      check(s.data.money==before_start-(50 if "drive" in pair else 0),"exact maintenance for installed pair")
-     check(s.cup.targets[0]==12-(2 if "drive" in pair else 0)-(1 if perk=="focus" else 0),"exact grind target for combined drive/perk")
+     check(s.cup.targets[0]==12-(2 if "drive" in pair else 0)-(1 if perk in ["focus","workflow","filter"] else 0),"exact grind target for combined drive/perk")
      check(S.Schema.valid(s.snapshot()),"combination valid at start")
      var clone=S.restore(JSON.parse_string(JSON.stringify(s.snapshot())))
      check(clone!=null,"combination JSON restore")
@@ -76,7 +76,7 @@ func _init():
   var output=[]
   var code=OS.execute(OS.get_executable_path(),["--headless","--path",ProjectSettings.globalize_path("res://"),"--script","res://tests/career_balance_test.gd","--",phase,path],output,true)
   check(code==0 and not "ERROR:" in "\n".join(output) and "PASS:" in "\n".join(output),"economy process "+phase+" "+"\n".join(output))
- if failures==0:print("PASS:216 effect combinations, finite closing, real play calibration and four economy processes")
+ if failures==0:print("PASS:864 effect combinations, finite closing, real play calibration and four economy processes")
  quit(0 if failures==0 else 1)
 func play_shift(seconds: float):
  var s=setup(73);s.data.money=0;s.skip_perk(1);s.start_shift(1)
