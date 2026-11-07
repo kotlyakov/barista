@@ -2150,7 +2150,7 @@
       "id": "TASK-043",
       "title": "Сенсорный интерфейс свободной выдачи и полная регрессия",
       "role": "DEVELOPER",
-      "status": "TODO",
+      "status": "DONE",
       "priority": 2,
       "dependencies": [
         "TASK-038",
@@ -2176,7 +2176,22 @@
         "game/ui/",
         "game/tests/",
         "tools/android/",
-        "reports/"
+        "reports/",
+        ".github/workflows/",
+        "game/project.godot",
+        "game/export_presets.cfg",
+        "game/persistence/",
+        "state/",
+        "tasks/",
+        "docs/",
+        "PROJECT_CURRENT.md",
+        "START_HERE.md",
+        "ARCHIVE_SCOPE.md",
+        "README.md",
+        "BACKLOG.md",
+        "CHANGELOG.md",
+        "game/orders/",
+        "game/economy/career.gd"
       ],
       "acceptance": [
         "Пять гостей/пузырей/платежей без пересечений; актуальные drop-зоны",
@@ -2187,15 +2202,35 @@
       "owner": null,
       "session_id": null,
       "lease_until": null,
-      "branch": null,
+      "branch": "task/TASK-043-free-service-ui",
       "issue_number": null,
-      "pr_url": null,
-      "commit": null,
-      "evidence": [],
-      "review": null,
+      "pr_url": "https://github.com/kotlyakov/barista/pull/40",
+      "commit": "c81d1a1a70ecb34abcad1a6f8c568bae3b6df12e",
+      "evidence": [
+        "https://github.com/kotlyakov/barista/actions/runs/42265717265",
+        "57 Godot scripts, docs, 20 native renders PASS",
+        "Android runtime artifact 13526629792",
+        "reports/native/TASK043.md"
+      ],
+      "review": {
+        "type": "INDEPENDENT_REVIEW_AND_SELF_REVIEW",
+        "reviewer": "review_task043",
+        "status": "FIXES_VERIFIED_FULL_CI_ANDROID",
+        "notes": "Seven initial findings reproduced and fixed. Final head passed Android and native checks. Earlier intermittent Android delivery rejection was not reproduced in the final run. Track repeatability in TASK-022."
+      },
       "blocker": null,
-      "approval_versions": {},
-      "decision_records": {}
+      "approval_versions": {
+        "SPEC-001": 5,
+        "MECH-001": 1
+      },
+      "decision_records": {
+        "D10": "D10",
+        "D11": "D11",
+        "D12": "D12",
+        "D13": "D13",
+        "D14": "D14",
+        "D15": "D15"
+      }
     },
     {
       "id": "TASK-044",

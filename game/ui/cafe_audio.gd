@@ -67,7 +67,8 @@ func _ready() -> void:
   bytes.encode_s16(i*2,int(sample*32767))
  loop.data=bytes
  loop.loop_mode=AudioStreamWAV.LOOP_FORWARD
- loop.loop_end=count
+ # Godot 4.5 mixes the loop-end sample inclusively; EOF is not a sample.
+ loop.loop_end=count-1
  music.stream=loop
  for id in ["grind","brew","steam"]: sounds[id]=tone(.13,80 if id=="grind" else 150,id!="brew")
  sounds.coins=tone(.22,1200)
