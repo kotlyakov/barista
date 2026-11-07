@@ -26,8 +26,8 @@ func run():
  node.repository.backend.session=Service.restore(snapshot);node.game=node.repository.session
  if not require_ok(node.repository.checkpoint(),"UI setup checkpoint failed: "+node.repository.error):return
  node.finish_intro();node.sync_guest(true)
- touch(node,Vector2(650,760),true)
- var move=InputEventScreenDrag.new();move.index=0;move.position=Vector2(1003.69866943359,475.073272705078);node._input(move)
+ touch(node,node.V2_CUP_HOME,true)
+ var move=InputEventScreenDrag.new();move.index=0;move.position=node.visit_drop_rect(2).get_center();node._input(move)
  touch(node,move.position,false)
  print("UI_DELIVERY payments=",node.game.data.payments.size()," error=",node.repository.error)
  if not require_ok(node.game.data.payments.size()==1,"Exact Android drag must create one payment: "+node.repository.error):return
