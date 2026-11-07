@@ -56,7 +56,7 @@ func configure_cup() -> void:
 
 func buy_perk(perk: String,day: int) -> bool:
  if not shop_open() or day!=data.shift.day_number or data.economy.choice!="" or not perk in data.economy.offers:return false
- var price=int(Career.PERKS[perk].price)
+ var price=Career.purchase_price(data,int(Career.PERKS[perk].price))
  if data.money<price:return false
  data.money-=price;data.economy.choice=perk;configure_cup();return true
 
@@ -72,7 +72,7 @@ func buy_equipment(station: String,level: int) -> bool:
 
 func buy_passive(id: String,level: int) -> bool:
  if not shop_open() or not id in Career.PASSIVE_IDS or level<0 or level>=Career.PASSIVE_PRICES.size() or Career.passive_level(data,id)!=level:return false
- var price: int=Career.PASSIVE_PRICES[level]
+ var price=Career.purchase_price(data,int(Career.PASSIVE_PRICES[level]))
  if data.money<price:return false
  var levels: Dictionary=data.economy.get("passives",{})
  levels[id]=level+1
@@ -83,7 +83,7 @@ func buy_passive(id: String,level: int) -> bool:
 
 func buy_module(module: String) -> bool:
  if not shop_open() or not module in Career.MODULES or module in data.economy.owned_modules:return false
- var price=int(Career.MODULES[module].price)
+ var price=Career.purchase_price(data,int(Career.MODULES[module].price))
  if data.money<price:return false
  data.money-=price;data.economy.owned_modules.append(module);return true
 
@@ -97,7 +97,7 @@ func remove_module(slot: int) -> bool:
 
 func reserve_gift(customer: String) -> bool:
  if not shop_open() or not data.profiles.has(customer) or data.economy.gifts[customer]:return false
- var price=int(PRICES[data.profiles[customer].favorite])
+ var price=Career.purchase_price(data,int(PRICES[data.profiles[customer].favorite]))
  if data.money<price:return false
  data.money-=price;data.economy.gifts[customer]=true;return true
 
@@ -117,6 +117,7 @@ func start_shift(expected_day: int) -> bool:
   data.money-=cost
   if data.economy.choice=="":data.economy.choice="skip"
   data.economy.active_perk="" if data.economy.choice=="skip" else data.economy.choice
+  if expected_day>=6:data.shift.market_rules=1
  data.shift.phase="RUNNING";data.shift.started_at=data.clock;data.shift.next_arrival_at=data.clock
  configure_cup()
  spawn_visit();schedule_arrival()
@@ -147,7 +148,7 @@ func can_prepare() -> bool:
 func schedule_arrival() -> void:
  var rng=RandomNumberGenerator.new();rng.state=int(data.rng_state)
  var base=CareerShift.arrival_base(int(data.shift.day_number))
- if data.has("economy"):base=clampf(base*Career.effects(data).flow,6,20)
+ if data.has("economy"):base=Career.arrival_interval(data,float(data.clock)-float(data.shift.started_at))
  data.shift.next_arrival_at=data.clock+rng.randf_range(0.75*base,1.25*base)
  data.rng_state=str(rng.state)
 
@@ -165,6 +166,8 @@ func spawn_visit(customer_id="",wish_recipe="") -> bool:
  if wish_recipe=="": wish_recipe=roster.pick_recipe(customer_id,2.0 if data.has("economy") and data.shift.event_id=="milk" else 1.0,4.0 if data.has("economy") and data.shift.event_id=="regulars" else 2.0)
  data.rng_state=roster.rng_state()
  var budget=(30+90*float(data.profiles[customer_id].trust_l))*Career.patience_factor(data)
+ if data.get("shift",{}).get("market_rules",0)==1 and Career.in_rush(int(data.shift.day_number),float(data.clock)-float(data.shift.started_at)):
+  budget=maxf(18.0,budget*(1.0-.07*Career.market_step(int(data.shift.day_number))))
  data.visits.append({"id":allocate_id(),"customer_id":customer_id,"wish_recipe":wish_recipe,"state":"WAITING","patience_budget":budget,"arrived_at":data.clock,"bubble_until":data.clock+Career.wish_seconds(data),"wish_shown_at":-1.0,"reaction_applied":false,"payment_id":0})
  if data.has("economy"):
   var visit=data.visits.back()

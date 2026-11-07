@@ -86,6 +86,7 @@ static func valid(s) -> bool:
  var wish_seconds=Career.wish_seconds(s)
  var maximum=Career.maximum_receipt(s) if s.has("economy") else 108
  var minimum=Career.base_price(s,"espresso",false) if s.has("economy") else 50
+ var patience_min=18 if s.get("shift",{}).get("market_rules",0)==1 else 30
  if s.has("economy"):
   var expected=Career.targets(s,s.cup.recipe)
   for n in range(3):
@@ -120,7 +121,7 @@ static func valid(s) -> bool:
  for v in s.visits:
   if not v is Dictionary or not id(v.get("id"),s) or identities.has(int(v.id)) or not s.profiles.has(v.get("customer_id")) or people.has(v.customer_id) or not PRICES.has(v.get("wish_recipe")):return false
   if not v.get("state") in ["WAITING","PAYMENT","DEPARTING"] or not v.get("reaction_applied") is bool or not integer(v.get("payment_id")):return false
-  if not number(v.get("arrived_at"),0,s.clock) or not number(v.get("patience_budget"),30,120*Career.patience_factor(s)) or not number(v.get("bubble_until"),v.arrived_at,s.clock+wish_seconds):return false
+  if not number(v.get("arrived_at"),0,s.clock) or not number(v.get("patience_budget"),patience_min,120*Career.patience_factor(s)) or not number(v.get("bubble_until"),v.arrived_at,s.clock+wish_seconds):return false
   if s.has("economy"):
    if not v.get("gift") is bool or not v.get("critic") is bool:return false
    if s.economy.gifts[v.customer_id]:return false

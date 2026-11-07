@@ -1,6 +1,7 @@
 extends RefCounted
 # Starting calibration042-1. No UI, real-money purchases or income simulator.
 const Cup=preload("res://brewing/cup.gd")
+const Shift=preload("res://shift/career_shift.gd")
 const PERKS={
  "warmth":{"name":"Тёплые стаканы","price":100,"description":"Кофе остывает медленнее","art":"warmth","heat":1.5},
  "change":{"name":"Размен приготовлен","price":80,"description":"+6 секунд на сбор оплаты","art":"change","coins":6},
@@ -98,15 +99,46 @@ static func targets(data: Dictionary,recipe: String) -> Array:
  var result=Cup.TARGETS[recipe].duplicate();var effect=effects(data)
  for n in range(3):result[n]=maxi(1,int(result[n])-int(data.upgrades[Cup.STATIONS[n]])-int(effect[Cup.STATIONS[n]]))
  return result
+static func market_step(day: int) -> int:
+ return mini(5,maxi(0,floori((day-1)/5.0)))
+
+static func purchase_price(data: Dictionary,base: int) -> int:
+ return ceili(base*(100+5*market_step(int(data.shift.day_number)))/100.0)
+
+static func sale_percent(day: int) -> int:
+ return 3*market_step(day)
+
+static func in_rush(day: int,elapsed: float) -> bool:
+ var start=Shift.rush_start(day)
+ return day>=6 and elapsed>=start and elapsed<start+60.0
+
+static func arrival_interval(data: Dictionary,elapsed: float) -> float:
+ var day: int=data.shift.day_number
+ var flow: float=effects(data).flow
+ if data.shift.get("market_rules",0)!=1:
+  return clampf(Shift.arrival_base(day)*flow,6,20)
+ # Keep event differences visible after all traffic upgrades reach the interval floor.
+ var event_factor=1.2 if data.shift.event_id=="rain" else (0.85 if data.shift.event_id=="festival" else 1.0)
+ var base=clampf(clampf(10.8-.10*(day-6),8,10.8)*flow/event_factor,6,20)
+ base=minf(20.0,base*event_factor)
+ if in_rush(day,elapsed):return base*(.86-.07*market_step(day))
+ var start=Shift.rush_start(day)
+ if elapsed>=start+60 and elapsed<start+100:return minf(20.0,base*1.45)
+ return base
+
 static func base_price(data: Dictionary,recipe: String,critic: bool) -> int:
  var base={"espresso":50,"cappuccino":80,"latte":90}[recipe]
  if not data.has("economy"):return base
  var factor=LEAGUE_PRICE[int(data.economy.league)]
  if data.shift.event_id=="festival" or (data.shift.event_id=="milk" and recipe!="espresso"):factor*=1.1
  if critic:factor*=1.5
- return int(floor(base*factor*passive_factor(data,"espresso" if recipe=="espresso" else "milk_income",0.05)))
+ var amount=base*factor*passive_factor(data,"espresso" if recipe=="espresso" else "milk_income",0.05)
+ if data.shift.get("market_rules",0)==1:amount*=(100+sale_percent(int(data.shift.day_number)))/100.0
+ return floori(amount)
 static func equipment_price(data: Dictionary,level: int) -> int:
- return int(ceil(EQUIPMENT_PRICES[level]*(1.0-0.05*int(data.economy.claimed["guest-01"]))))
+ var base: int=EQUIPMENT_PRICES[level]
+ var discount=1.0-0.05*int(data.economy.claimed["guest-01"])
+ return ceili(base*discount*(100+5*market_step(int(data.shift.day_number)))/100.0)
 static func maximum_receipt(data: Dictionary) -> int:
  var base=base_price(data,"latte",data.get("shift",{}).get("event_id")=="critic")
  return base+tip_amount(data,base,100)
