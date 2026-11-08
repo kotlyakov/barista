@@ -295,8 +295,7 @@ func draw_play() -> void:
  var order=game.data.order
  if order.state in ["BREWING","PAYMENT"] and guest.phase=="idle":
   var label=guest.position+Vector2(-90,-155)*guest.scale.x
-  text_at(label,"Бородач" if guest.actor_id=="beard" else "Гаваец",26)
-  text_at(label+Vector2(0,30),RECIPE_NAMES[order.recipe],23,Color("ddc6a6"))
+  text_at(label,RECIPE_NAMES[order.recipe],23,Color("ddc6a6"))
   if order.state=="PAYMENT":
    draw_style_box(panel(Color("eadbc0")),Rect2(890,440,230,60))
    text_at(Vector2(908,480),game.data.profiles[order.customer_id].last_reaction,25,Color("302628"))
