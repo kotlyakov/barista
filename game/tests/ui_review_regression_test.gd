@@ -22,23 +22,45 @@ func run():
  tap(node,node.station_rects[1].get_center())
  check(node.game.cup.taps[1]==0 and str(node.get("speech_text"))=="Ой! Зёрна-то не помолола!","brew refusal has required spoken feedback")
  check(float(node.get("facepalm_until") if node.get("facepalm_until")!=null else -1)>node.game.data.clock,"brew refusal starts existing-hand facepalm")
- tap(node,node.CARTON_RECT.get_center());tap(node,node.station_rects[2].get_center());input_touch(node,node.V2_CUP_HOME,true)
- check(str(node.get("speech_text"))=="Одно молоко!!!","raw pickup speaks actual contents")
+ node.speech_text="";node.speech_until=-1
+ tap(node,node.CARTON_RECT.get_center());tap(node,node.station_rects[2].get_center())
+ tap(node,Vector2(762,793))
+ check(node.game.cup.milk_doses==1 and not node.dragging,"former discard icon has no hit target")
+ input_touch(node,node.V2_CUP_HOME,true)
+ check(node.dragging and node.speech_text=="" and node.speech_until==-1,"raw pickup stays silent")
  input_touch(node,Vector2(200,200),false);node.act("take_cup");node.act("deliver",[node.game.data.cup_id,visit.id])
  tap(node,node.station_rects[0].get_center());tap(node,node.station_rects[1].get_center())
  check(node.game.cup.contents()=="espresso" and node.has_method("current_cup_label") and node.call("current_cup_label")=="Эспрессо","actual espresso is never labelled intended latte")
  var guest_id=""
- for id in node.NAMES:
+ for id in node.GUEST_IDS:
   if id!=visit.customer_id:guest_id=id;break
  node.act("spawn_visit",[guest_id,"latte"]);node.sync_guest(true);var receiver=node.game.data.visits.back()
  node.act("take_cup");node.act("deliver",[node.game.data.cup_id,receiver.id]);node.sync_guest(true)
  check(node.rigs[receiver.id].cup_recipe=="espresso","recipient holds actual delivered espresso,not wished latte")
- check(node.has_method("visit_speech") and str(node.call("visit_speech",receiver))!="","reaction is a timed speech")
- node.repository.advance(4);check(node.has_method("visit_speech") and node.call("visit_speech",receiver)=="","reaction expires after3 active seconds")
- for n in range(node.game.cup.targets[0]+1):node.act("tap",[0])
- var color=node.call("operation_color",0) if node.has_method("operation_color") else Color.WHITE
+ check(node.visit_speech(receiver)!="","stationary guest has a timed reaction")
+ var actor=node.rigs[receiver.id]
+ for phase in ["enter","turn","leave"]:
+  actor.phase=phase
+  check(node.visit_speech(receiver)=="","moving guest cannot speak: "+phase)
+ actor.phase="idle"
+ check(node.act("collect",[receiver.payment_id]),"reaction scenario collects its own payment")
+ node.sync_guest()
+ check(actor.phase=="wait_leave" and node.visit_speech(receiver)!="","collecting does not cut off a stationary reaction")
+ node.repository.advance(4)
+ check(node.visit_speech(receiver)=="","reaction expires after three active seconds")
+ node.sync_guest()
+ check(actor.phase in ["turn","leave"],"guest leaves once the reaction ends")
+ for n in range(node.game.cup.targets[0]-1):node.act("tap",[0])
+ check(node.operation_color(0)==node.STATION_COLORS[0],"ordinary taps keep their station color")
+ node.act("tap",[0])
+ check(node.operation_color(0)==node.PERFECT_COLOR,"exact target is bright green")
+ node.act("tap",[0])
+ var first_over: Color=node.operation_color(0)
+ check(first_over.g>first_over.r and first_over!=node.PERFECT_COLOR,"first extra tap only warms the green")
  for n in range(9):node.act("tap",[0])
- check(node.has_method("operation_color") and node.call("operation_color",0)!=color,"over-tap levels1and10 have distinct color")
+ check(node.operation_color(0)==node.OVERTAP_COLOR,"ten extra taps reach red")
+ node.open_menu();tap(node,node.MENU_DISCARD.get_center())
+ check(node.game.cup.is_empty() and not node.paused,"pause action empties the cup and returns to play")
  node.queue_free();await process_frame
  var path="user://ui-legacy-error-"+str(Time.get_ticks_usec());var B=load("res://ui/session_bridge.gd");var old=JSON.parse_string(FileAccess.get_file_as_string("res://tests/fixtures/v1/payment.json"));B.V2.LegacyStore.new(path).save(old)
  DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(path+"/v2-candidate"));var f=FileAccess.open(path+"/v2-candidate/slot0.json",FileAccess.WRITE);f.store_string("corrupt");f.close()

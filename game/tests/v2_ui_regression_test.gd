@@ -5,7 +5,7 @@ func check(ok: bool,message: String):
 func _init():call_deferred("run")
 func run():
  var node=load("res://ui/main_v2.tscn").instantiate();node.save_directory="user://v2-ui-reg-"+str(Time.get_ticks_usec());root.add_child(node);node.set_process(false);node.finish_intro();node.act("start_shift",[1]);node.screen=""
- for id in node.NAMES:
+ for id in node.GUEST_IDS:
   if node.game.data.visits.size()<5:node.act("spawn_visit",[id,""])
  node.sync_guest(true);check(node.slots.size()==5,"all five guests represented")
  node.repository.advance(75);var departed=node.game.data.visits[0].id;check(node.act("finish_departure",[departed]),"departure releases business slot")

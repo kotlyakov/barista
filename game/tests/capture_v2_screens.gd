@@ -21,13 +21,13 @@ func run():
  node._process(.15);await capture("v2-14-fold")
  node._process(.20)
  node.intro_elapsed=2;await capture("v2-01-intro");node.finish_intro()
- for id in node.NAMES:
+ for id in node.GUEST_IDS:
   if node.game.data.visits.size()<5:node.act("spawn_visit",[id,""])
  node.sync_guest(true);node.act("add_milk");node.act("tap",[2]);await capture("v2-06-five-guests")
  for station in range(3):
   for n in range(node.game.cup.targets[station]-node.game.cup.taps[station]):node.act("tap",[station])
- node.bar_progress=[1.0,1.0,1.0];node.act("take_cup");node.dragging=true;node.cup_position=node.visit_drop_rect(node.game.data.visits[0].id).get_center();await capture("v2-07-drag")
+ node._process(.25);node.bar_progress=[1.0,1.0,1.0];node.act("take_cup");node.dragging=true;node.cup_position=node.visit_drop_rect(node.game.data.visits[0].id).get_center();await capture("v2-07-drag")
  node.act("deliver",[node.game.data.cup_id,node.game.data.visits[0].id]);node.dragging=false;node.cup_position=node.V2_CUP_HOME;node.sync_guest(true);await capture("v2-08-payment")
  node.open_menu();await capture("v2-09-menu");node.screen="progress";await capture("v2-10-progress")
  node.resume_game();node.repository.advance(400);node._process(0);await capture("v2-11-summary")
- node.queue_free();await process_frame;print("PASS: rendered14 actual Service v2 UI states");quit()
+ node.queue_free();await process_frame;await process_frame;print("PASS: rendered 14 actual Service v2 UI states");quit()

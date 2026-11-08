@@ -12,18 +12,21 @@ const VISITORS = [
 const V2_CUP_HOME = Vector2(659, 827)
 const STATIONS = [Rect2(808, 490, 202, 373), Rect2(1197, 485, 377, 378), Rect2(1010, 527, 187, 336)]
 const STATION_BARS = [Rect2(823, 849, 158, 14), Rect2(1265, 849, 225, 14), Rect2(1037, 849, 164, 14)]
-const STATION_COLORS = [Color("bcff43"), Color("ffb546"), Color("40eafa")]
+const STATION_COLORS = [Color("cbd16b"), Color("ffb546"), Color("40eafa")]
+const PERFECT_COLOR = Color("49ff24")
+const OVERTAP_COLOR = Color("f33c31")
 const V2_MENU = Rect2(1490, 0, 110, 78)
 const START_BUTTON = Rect2(1145, 783, 350, 72)
-const EXTRA_BUTTON = Rect2(683, 783, 292, 62)
+const EXTRA_BUTTON = Rect2(1318, 0, 165, 48)
 const EQUIPMENT_IDS = ["grind", "milk", "brew", "ads"]
 const LESSON_BUTTON=Rect2(60,780,360,70)
 const NEXT_BUTTON=Rect2(560,710,480,85)
 const CARTON_RECT=Rect2(1038,360,130,167)
-const DISCARD_RECT=Rect2(725,758,75,70)
+const MENU_DISCARD=Rect2(560,785,480,80)
+const CUP_GRIP=preload("res://content/art/charcoal/cup-grip.svg")
 const CARTON=preload("res://content/art/charcoal/milk-carton.svg")
 const DROP=preload("res://content/art/charcoal/milk-drop.svg")
-const NAMES={"guest-01":"Бородач","guest-02":"Гаваец","guest-03":"Гость3","guest-04":"Гость4","guest-05":"Гость5","guest-06":"Гость6"}
+const GUEST_IDS=["guest-01","guest-02","guest-03","guest-04","guest-05","guest-06"]
 const EXTRA_TABS = ["Модули", "Постоянники", "Лига"]
 var rigs={}
 var slots={}
@@ -45,11 +48,15 @@ var speech_last={}
 var main_rigs={}
 var main_slots={}
 var main_bars=[]
+var bar_colors=STATION_COLORS.duplicate()
+var sheet_font=FontVariation.new()
 func _exit_tree():
  for rig in rigs.values():rig.free()
  for rig in main_rigs.values():rig.free()
  super._exit_tree()
 func _ready():
+ sheet_font.base_font=font
+ sheet_font.variation_transform=Transform2D(Vector2(1,0),Vector2(-0.22,1),Vector2.ZERO)
  repository=Bridge.new(save_directory);game=repository.session
  barista.enter("barista",true);sync_guest(true)
  screen="intro" if repository.ready else "error";paused=not repository.ready
@@ -132,7 +139,7 @@ func sync_guest(immediate=false):
   if actor.phase in ["enter","turn","leave"]:corridor=true
  if not corridor:
   for visit in game.data.visits:
-   if visit.state=="DEPARTING" and rigs[visit.id].phase in ["wait_enter","wait_leave","idle"]:
+   if visit.state=="DEPARTING" and rigs[visit.id].phase in ["wait_enter","wait_leave","idle"] and visit_speech(visit)=="":
     if rigs[visit.id].phase=="wait_enter":rigs[visit.id].phase="gone"
     else:rigs[visit.id].depart()
     corridor=true;break
@@ -171,7 +178,9 @@ func _process(delta: float):
  for id in rigs.keys():
   rigs[id].step(delta)
   if rigs[id].phase=="gone":act("finish_departure",[id])
- for i in range(3):bar_progress[i]=move_toward(bar_progress[i],clampf(float(game.cup.taps[i])/game.cup.targets[i],0,1),delta*3.5)
+ for i in range(3):
+  bar_progress[i]=move_toward(bar_progress[i],clampf(float(game.cup.taps[i])/game.cup.targets[i],0,1),delta*3.5)
+  bar_colors[i]=bar_colors[i].lerp(operation_color(i),1.0-exp(-delta*22.0))
  if game.data.clock>=facepalm_until:barista.set_emotion("neutral")
  if not dragging:cup_position=cup_position.lerp(V2_CUP_HOME,minf(1,delta*14))
  if OS.is_debug_build() and game.data.visits.size()==5:
@@ -190,9 +199,6 @@ func act(method: String,args: Array=[]) -> bool:
  if not repository.legacy:
   if method=="tap" and args[0]==2 and not result and game.can_prepare() and game.cup.milk_doses==0:speak("Сначала молоко из коробки.")
   if method=="tap" and args[0]==1 and not result and game.can_prepare() and game.cup.taps[0]==0:speak("Ой! Зёрна-то не помолола!",true)
-  if method=="take_cup" and result:
-   var line=game.cup.pickup_line()
-   if line!="":speak(line)
  if repository.error!="":message="Действие не сохранено. Прогресс сохранён до него."
  return result
 func open_menu():
@@ -243,6 +249,8 @@ func _input(event: InputEvent):
     update_audio()
    elif MENU_PROGRESS.has_point(point) and repository.ready:screen="progress"
    elif MENU_REPORT.has_point(point):DisplayServer.clipboard_set(audio.report());report_copied=true
+   elif MENU_DISCARD.has_point(point) and can_discard_cup():
+    if act("discard_cup"):bar_progress=[0.0,0.0,0.0];resume_game()
    queue_redraw();return
   if screen=="progress":
    if BACK_BUTTON.has_point(point):screen="menu"
@@ -261,8 +269,6 @@ func _input(event: InputEvent):
   if not coin_hit:
    if CARTON_RECT.has_point(point) and game.cup.milk_doses>=0:
     act("add_milk")
-   elif DISCARD_RECT.has_point(point) and not game.cup.is_empty():
-    if act("discard_cup"):bar_progress=[0.0,0.0,0.0]
    elif not game.cup.is_empty() and Rect2(cup_position-Vector2(56,142),Vector2(112,158)).has_point(point):
     if act("take_cup"):dragging=true;cup_grab_offset=cup_position-point
    else:
@@ -334,7 +340,7 @@ func shop_input(point: Vector2):
    if Rect2(370+slot*450,710,410,50).has_point(point):act("remove_module",[slot])
  elif shop_tab==4:
   for i in range(6):
-   var id=NAMES.keys()[i];var rect=regular_rect(i)
+   var id=GUEST_IDS[i];var rect=regular_rect(i)
    if Rect2(rect.position+Vector2(12,100),Vector2(270,40)).has_point(point):shop_message="Угощение оплачено на следующий визит" if act("reserve_gift",[id]) else "Уже оплачено или недостаточно монет"
    if Rect2(rect.position+Vector2(12,145),Vector2(270,40)).has_point(point):shop_message="Награда получена" if act("claim_goal",[id,int(e.claimed[id])]) else "Личная цель ещё не выполнена"
  elif shop_tab==5:
@@ -345,11 +351,11 @@ func draw_button(rect: Rect2,label: String,active=true) -> void:
  draw_style_box(panel(Color("426951") if active else Color("2b353d")),rect)
  text_at(rect.position+Vector2(16,rect.size.y*.5+size*.35),label,size,Color("efdec0") if active else Color("a9a7a2"))
 func tab_rect(i: int) -> Rect2:
- return [Rect2(150,143,408,112), Rect2(565,143,482,112), Rect2(1055,143,425,112)][i % 3]
+ return [Rect2(133,143,430,112), Rect2(570,143,489,112), Rect2(1064,143,419,112)][i % 3]
 func offer_rect(i: int) -> Rect2:
  if shop_tab>=3:return Rect2(100+i*490,330,450,230)
- return Rect2(142+i*454,324,426,430)
-func gear_rect(i: int) -> Rect2:return Rect2(132+i*347,310,327,450)
+ return Rect2(140+i*452,322,425,435)
+func gear_rect(i: int) -> Rect2:return Rect2(131+i*349,309,327,453)
 func regular_rect(i: int) -> Rect2:return Rect2(320+(i%3)*315,305+floori(i/3.0)*205,300,190)
 func wrapped(at: Vector2,value: String,width: float,size=22):
  var words=value.split(" ");var line="";var y=at.y
@@ -381,6 +387,7 @@ func _draw():
  elif screen=="menu":
   draw_rect(Rect2(0,100,1600,800),Color(.025,.035,.045,.85));text_at(Vector2(675,310),"ПАУЗА",48)
   draw_button(MENU_RESUME,"Продолжить",repository.ready);draw_button(MENU_SOUND,"Звук выключен" if audio.muted else "Звук включён",repository.ready);draw_button(MENU_PROGRESS,"Прогресс и обучение",repository.ready);draw_button(MENU_REPORT,"Скопировать отчёт")
+  if can_discard_cup():draw_button(MENU_DISCARD,"Вылить содержимое стакана")
   if not repository.ready:wrapped(Vector2(350,220),"Не удалось загрузить прогресс. Он не перезаписан. Перезапусти игру для повторной попытки.",900,26)
  else:draw_play()
  if repository.error!="":text_at(Vector2(35,882),"Не удалось сохранить действие. Прогресс не перезаписан.",20,Color("ee9a86"))
@@ -411,20 +418,31 @@ func draw_charcoal_header() -> void:
  if day>=6 and screen in ["between","fold"] and game.data.shift.phase=="PREPARING":
   var rush_minute: int=480+roundi(game.CareerShift.rush_start(day)*1.8)
   var market_text="Пик в %02d:%02d   ·   Покупки +%d%%   ·   Кофе +%d%%"%[rush_minute/60,rush_minute%60,5*game.Career.market_step(day),game.Career.sale_percent(day)]
-  text_at(Vector2(870,32),market_text,20,Color("f6bc8c"))
+  text_at(Vector2(858,32),market_text,16,Color("f6bc8c"))
  elif game.data.shift.get("market_rules",0)==1 and game.data.shift.phase=="RUNNING" and game.Career.in_rush(day,game.data.clock-game.data.shift.started_at):
   text_at(Vector2(897,34),"ЧАС ПИК",23,Color("f6bc8c"))
+ if screen=="between" and game.data.shift.phase=="PREPARING":
+  text_at(EXTRA_BUTTON.position+Vector2(12,32),"‹ Лист смены" if shop_tab>=3 else "Карьера ›",20)
  for i in range(3):
   draw_line(Vector2(1535,11+i*11),Vector2(1570,11+i*11),Color("eddfc8"),3,true)
 
+func can_discard_cup() -> bool:
+ return game.can_prepare() and not game.cup.is_empty() and not game.cup.carrying
+
 func operation_color(station: int) -> Color:
  var extra: int=game.cup.excess(station)
- if extra>0:return Color("ee9a86").lerp(Color("650b15"),float(clampi(extra,1,10)-1)/9)
- return STATION_COLORS[station]
+ if extra==0:return PERFECT_COLOR
+ if extra<0:return STATION_COLORS[station]
+ if extra>=10:return OVERTAP_COLOR
+ var amber=Color("f5c348")
+ if extra<=4:return PERFECT_COLOR.lerp(amber,smoothstep(0.0,4.0,extra))
+ return amber.lerp(OVERTAP_COLOR,smoothstep(4.0,10.0,extra))
 func content_sprite(contents: String) -> String:return contents if contents in RECIPE_NAMES else "cappuccino"
 func content_name(contents: String) -> String:return RECIPE_NAMES.get(contents,{"grounds":"Помол","milk":"Молоко","milk_grounds":"Молоко и помол","coffee_milk":"Кофе с молоком","empty":"Пусто"}.get(contents,contents))
 func current_cup_label() -> String:return content_name(game.cup.contents())
 func visit_speech(visit: Dictionary) -> String:
+ var actor=rigs.get(visit.id)
+ if actor==null or actor.phase not in ["idle","wait_leave"]:return ""
  if visit.state=="WAITING" and visit.get("wish_shown_at",0.0)>=0 and game.data.clock<visit.bubble_until:return RECIPE_NAMES[visit.wish_recipe]
  if visit.has("evaluation") and game.data.clock<visit.get("reaction_until",0.0):return game.data.profiles[visit.customer_id].last_reaction
  return ""
@@ -449,7 +467,7 @@ func draw_play():
  if repository.legacy:super.draw_play();return
  if game.cup.milk_doses>=0:draw_milk_carton()
  for i in range(3):
-  var color=operation_color(i)
+  var color: Color=bar_colors[i]
   var bar: Rect2 = STATION_BARS[i]
   draw_rect(bar.grow(2),Color("111116"))
   draw_rect(bar,Color(color,0.34))
@@ -459,27 +477,21 @@ func draw_play():
    draw_rect(filled.grow(3),Color(color,0.25))
    draw_rect(filled,color)
  for visit in game.data.visits:
-  if not rigs.has(visit.id) or rigs[visit.id].phase in ["wait_enter","gone"]:continue
-  var slot=int(slots[visit.id]);var bubble=Layout.bubble(slot)
   var line=visit_speech(visit)
-  if line!="":
-   var body: Rect2 = Layout.BODIES[slot]
-   var face: Vector2 = rigs[visit.id].position+Vector2(body.size.x*.08,-body.size.y*.37)
-   draw_bubble(bubble,NAMES[visit.customer_id]+": "+line,face,17)
-  else:text_at(bubble.position+Vector2(4,22),NAMES[visit.customer_id],20)
+  if line.is_empty():continue
+  var slot=int(slots[visit.id])
+  var body: Rect2 = Layout.BODIES[slot]
+  var face: Vector2 = rigs[visit.id].position+Vector2(body.size.x*.08,-body.size.y*.37)
+  draw_bubble(Layout.bubble(slot),line,face,17)
  for payment in game.data.payments:
   if payment.state!="PENDING" or not slots.has(payment.visit_id):continue
   var rect=visit_coin_rect(payment.visit_id);var label=str(payment.amount);var label_width=font.get_string_size(label,HORIZONTAL_ALIGNMENT_LEFT,-1,23).x
   draw_circle(rect.get_center(),26,Color("dba74a"));text_at(rect.get_center()+Vector2(-label_width/2,8),label,23,Color("302628"))
  if not game.cup.is_empty():
-  if dragging:draw_pov_hand(cup_position)
+  if dragging:draw_pov_sleeve(cup_position)
   draw_cup(cup_position)
-  if not dragging:
-   text_at(V2_CUP_HOME+Vector2(-75,45),current_cup_label(),18)
-   var c=DISCARD_RECT.get_center()
-   draw_rect(Rect2(c+Vector2(-10,-5),Vector2(20,19)),Color("d4b295"),false,2)
-   draw_line(c+Vector2(-14,-9),c+Vector2(14,-9),Color("d4b295"),2,true)
-   draw_line(c+Vector2(-5,-13),c+Vector2(5,-13),Color("d4b295"),2,true)
+  if dragging:draw_texture(CUP_GRIP,cup_position+Vector2(-50,-99))
+  else:text_at(V2_CUP_HOME+Vector2(-75,45),current_cup_label(),18)
  if game.data.clock<speech_until:draw_bubble(Rect2(930,288,360,80),speech_text,Vector2(1110,388),20)
  if repository.training:draw_button(Rect2(1100,800,460,65),"Закончить обучение")
  if screen=="lesson":wrapped(Vector2(30,225),lesson_hint(),600,21)
@@ -505,8 +517,8 @@ func draw_between():
    draw_button(Rect2(370+slot*450,710,410,50),"Снять бесплатно",id!="")
  elif shop_tab==4:
   for i in range(6):
-   var id=NAMES.keys()[i];var rect=regular_rect(i);draw_style_box(panel(Color("20323d")),rect)
-   text_at(rect.position+Vector2(12,28),NAMES[id]+" · "+RECIPE_NAMES[game.data.profiles[id].favorite],19)
+   var id=GUEST_IDS[i];var rect=regular_rect(i);draw_style_box(panel(Color("20323d")),rect)
+   text_at(rect.position+Vector2(12,28),"Постоянник "+str(i+1)+" · "+RECIPE_NAMES[game.data.profiles[id].favorite],19)
    text_at(rect.position+Vector2(12,58),"Цель "+str(e.goals[id])+"/"+str(3 if e.claimed[id]==0 else 6)+" → "+str(C.GOAL_REWARDS[mini(1,int(e.claimed[id]))])+" монет",18)
    text_at(rect.position+Vector2(12,86),"Скидка на приборы 5/10%" if i==0 else "Друзья приходят чаще" if i==1 else "Награда за любимый кофе",18)
    draw_button(Rect2(rect.position+Vector2(12,100),Vector2(270,40)),"Угощение оплачено" if e.gifts[id] else "След. визит · "+str(C.purchase_price(game.data,int(game.PRICES[game.data.profiles[id].favorite]))))
@@ -517,7 +529,6 @@ func draw_between():
   wrapped(Vector2(500,440),"Новая лига повышает поток и цены. Переход только по твоему выбору. Порог следующей: "+(str(C.LEAGUE_FAME[int(e.league)+1]) if e.league<2 else "достигнута верхняя лига"),650,24)
   draw_button(Rect2(560,570,480,70),"Повысить лигу",e.league<2)
  if shop_message!="":wrapped(Vector2(60,740 if shop_tab!=3 else 610),shop_message,1400,22)
- draw_button(EXTRA_BUTTON,"К листу смены")
  draw_button(START_BUTTON,"Начать смену")
 func draw_progress():
  if repository.legacy:super.draw_progress();return
@@ -584,13 +595,18 @@ func draw_cafe():
  for point in lip:uv.append(point/Vector2(1600,900))
  draw_polygon(lip,PackedColorArray([Color.WHITE]),uv,CAFE)
 
-func draw_pov_hand(at: Vector2) -> void:
- var start=Vector2(755,930)
- var grip=at+Vector2(20,-38)
- var side=(grip-start).normalized().orthogonal()
- draw_colored_polygon(PackedVector2Array([start-side*43,start+side*43,grip+side*17,grip-side*16]),Color("383034"))
- draw_circle(grip,22,Color("b29277"))
- draw_circle(grip+Vector2(-14,-11),11,Color("c1a087"))
+func draw_pov_sleeve(at: Vector2) -> void:
+ var cuff=at+Vector2(42,1)
+ var direction=(Vector2(755,930)-cuff).normalized()
+ var start=cuff+direction*185
+ var side=direction.orthogonal()
+ var left=cuff+side*15
+ var right=cuff-side*15
+ var cloth=Color("383034")
+ draw_polygon(PackedVector2Array([start+side*34,start-side*34,right,left]),
+  PackedColorArray([Color(cloth,0),Color(cloth,0),cloth,cloth]))
+ draw_line(left,right,Color("251e22"),4,true)
+ draw_line(left+direction*10,right+direction*10,Color("665255"),2,true)
 
 func draw_cup(at: Vector2):
  if repository.legacy:super.draw_cup(at);return
