@@ -22,7 +22,7 @@ func run():
  tap(node,node.station_rects[1].get_center())
  check(node.game.cup.taps[1]==0 and str(node.get("speech_text"))=="Ой! Зёрна-то не помолола!","brew refusal has required spoken feedback")
  check(float(node.get("facepalm_until") if node.get("facepalm_until")!=null else -1)>node.game.data.clock,"brew refusal starts existing-hand facepalm")
- tap(node,node.RECIPE_BUTTONS[2].get_center());tap(node,node.station_rects[2].get_center());input_touch(node,node.V2_CUP_HOME,true)
+ tap(node,node.CARTON_RECT.get_center());tap(node,node.station_rects[2].get_center());input_touch(node,node.V2_CUP_HOME,true)
  check(str(node.get("speech_text"))=="Одно молоко!!!","raw pickup speaks actual contents")
  input_touch(node,Vector2(200,200),false);node.act("take_cup");node.act("deliver",[node.game.data.cup_id,visit.id])
  tap(node,node.station_rects[0].get_center());tap(node,node.station_rects[1].get_center())

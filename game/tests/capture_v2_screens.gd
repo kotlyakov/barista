@@ -23,7 +23,7 @@ func run():
  node.intro_elapsed=2;await capture("v2-01-intro");node.finish_intro()
  for id in node.NAMES:
   if node.game.data.visits.size()<5:node.act("spawn_visit",[id,""])
- node.sync_guest(true);node.act("tap",[2]);await capture("v2-06-five-guests")
+ node.sync_guest(true);node.act("add_milk");node.act("tap",[2]);await capture("v2-06-five-guests")
  for station in range(3):
   for n in range(node.game.cup.targets[station]-node.game.cup.taps[station]):node.act("tap",[station])
  node.bar_progress=[1.0,1.0,1.0];node.act("take_cup");node.dragging=true;node.cup_position=node.visit_drop_rect(node.game.data.visits[0].id).get_center();await capture("v2-07-drag")

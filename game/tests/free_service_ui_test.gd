@@ -15,7 +15,7 @@ func run():
  var node=load("res://ui/main_v2.tscn").instantiate();node.save_directory="user://free-ui-"+str(Time.get_ticks_usec());root.add_child(node);node.set_process(false);node.finish_intro()
  check(node.game.data.shift.phase=="PREPARING","new UI opens preparation")
  touch(node,node.START_BUTTON.get_center());node._process(.35);node.finish_intro();check(node.game.data.shift.phase=="RUNNING","real start touch")
- touch(node,node.station_rects[2].get_center());check(node.game.cup.taps[2]==1 and not node.game.cup.is_empty(),"milk-first free cup")
+ touch(node,node.CARTON_RECT.get_center());touch(node,node.station_rects[2].get_center());check(node.game.cup.taps[2]==1 and not node.game.cup.is_empty(),"milk-first free cup")
  press(node,node.V2_CUP_HOME);release(node,Vector2(300,200));check(not node.game.cup.carrying and node.game.cup.taps[2]==1,"miss returns same unfinished cup")
  touch(node,node.station_rects[0].get_center());check(node.game.cup.taps[0]==1,"continue preparation after miss")
  press(node,node.V2_CUP_HOME);node.open_menu();check(not node.game.cup.carrying and not node.dragging,"menu cancels gesture without cup loss")

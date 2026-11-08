@@ -28,7 +28,7 @@ func run():
  tap(node,node.START_BUTTON.get_center());node._process(.35);node.finish_intro();check(node.game.data.shift.phase=="RUNNING","start after purchases")
  node.open_menu();node.screen="progress";var before=node.game.snapshot();tap(node,node.LESSON_BUTTON.get_center())
  check(node.repository.training and node.screen=="lesson","menu lesson uses new Service")
- tap(node,node.station_rects[2].get_center());node._process(0.5);node.finish_lesson()
+ tap(node,node.CARTON_RECT.get_center());tap(node,node.station_rects[2].get_center());node._process(0.5);node.finish_lesson()
  check(node.game.snapshot()==before,"UI lesson leaves career money/history/RNG/clock unchanged")
  node.resume_game();node.repository.advance(400);node._process(0);check(node.screen=="between" and node.game.data.shift.phase=="SUMMARY","real summary window")
  tap(node,node.NEXT_BUTTON.get_center());check(node.game.data.shift.day_number==2 and node.game.data.economy.choice=="","next day resets one-day decision")
