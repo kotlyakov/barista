@@ -35,6 +35,7 @@ func clear_finished(game) -> void:
 
 func simulated_shift(game,pace: float) -> Dictionary:
  var day: int=game.data.shift.day_number
+ game.enable_auto_recipe()
  if not game.start_shift(day):return {}
  var maximum_queue=0
  var rush_queue=0
@@ -52,12 +53,12 @@ func simulated_shift(game,pace: float) -> Dictionary:
    continue
   var guest: Dictionary=waiting[0]
   var recipe: String=guest.wish_recipe
-  if not game.select_recipe(recipe):
-   game.advance(1)
-   continue
+  if not game.cup.is_empty():game.discard_cup()
+  var doses: int=game.Cup.DOSE_RECIPES.find(recipe)
+  for dose in range(doses):game.add_milk()
   var cup_id: int=game.data.cup_id
   var stations=[0,1] if recipe=="espresso" else [0,1,2]
-  var elapsed=2.2
+  var elapsed=2.2+doses/pace
   for station in stations:elapsed+=game.cup.targets[station]/pace
   game.advance(elapsed)
   if game.data.shift.phase=="SUMMARY" or game.find_visit(guest.id).get("state")!="WAITING":continue
@@ -77,6 +78,7 @@ func simulated_shift(game,pace: float) -> Dictionary:
 
 func _init() -> void:
  var game=configured(1,false,77)
+ game.enable_auto_recipe()
  for day in range(1,501):
   var wallet: int=game.data.money
   check(game.start_shift(day),"start day "+str(day))

@@ -19,7 +19,10 @@ const EXTRA_BUTTON = Rect2(683, 783, 292, 62)
 const EQUIPMENT_IDS = ["grind", "milk", "brew", "ads"]
 const LESSON_BUTTON=Rect2(60,780,360,70)
 const NEXT_BUTTON=Rect2(560,710,480,85)
-const RECIPE_BUTTONS = [Rect2(930,108,234,46), Rect2(930,160,234,46), Rect2(930,212,234,46)]
+const CARTON_RECT=Rect2(1038,360,130,167)
+const DISCARD_RECT=Rect2(725,758,75,70)
+const CARTON=preload("res://content/art/charcoal/milk-carton.svg")
+const DROP=preload("res://content/art/charcoal/milk-drop.svg")
 const NAMES={"guest-01":"Бородач","guest-02":"Гаваец","guest-03":"Гость3","guest-04":"Гость4","guest-05":"Гость5","guest-06":"Гость6"}
 const EXTRA_TABS = ["Модули", "Постоянники", "Лига"]
 var rigs={}
@@ -185,6 +188,7 @@ func act(method: String,args: Array=[]) -> bool:
   if method=="tap":audio.effect(["grind","brew","steam"][args[0]])
   elif method=="collect":audio.effect("coins")
  if not repository.legacy:
+  if method=="tap" and args[0]==2 and not result and game.can_prepare() and game.cup.milk_doses==0:speak("Сначала молоко из коробки.")
   if method=="tap" and args[0]==1 and not result and game.can_prepare() and game.cup.taps[0]==0:speak("Ой! Зёрна-то не помолола!",true)
   if method=="take_cup" and result:
    var line=game.cup.pickup_line()
@@ -255,19 +259,19 @@ func _input(event: InputEvent):
     if act("collect",[payment.id]) and screen=="lesson":lesson_completed=true;repository.set_preference("tutorial_seen",true)
     coin_hit=true;break
   if not coin_hit:
-   var recipe_hit=false
-   for i in range(3):
-    if RECIPE_BUTTONS[i].has_point(point):act("select_recipe",[RECIPE_NAMES.keys()[i]]);recipe_hit=true
-   if not recipe_hit:
-    if not game.cup.is_empty() and Rect2(cup_position-Vector2(56,142),Vector2(112,158)).has_point(point):
-     if act("take_cup"):dragging=true;cup_grab_offset=cup_position-point
-    else:
-     var hit=false
-     for i in range(3):
-      if station_rects[i].has_point(point) or STATION_BARS[i].grow(4).has_point(point):act("tap",[i]);hit=true;break
-     if not hit:
-      for visit in game.data.visits:
-       if visit_drop_rect(visit.id).has_point(point):pending_reminder=visit.id;press_at=point;break
+   if CARTON_RECT.has_point(point) and game.cup.milk_doses>=0:
+    act("add_milk")
+   elif DISCARD_RECT.has_point(point) and not game.cup.is_empty():
+    if act("discard_cup"):bar_progress=[0.0,0.0,0.0]
+   elif not game.cup.is_empty() and Rect2(cup_position-Vector2(56,142),Vector2(112,158)).has_point(point):
+    if act("take_cup"):dragging=true;cup_grab_offset=cup_position-point
+   else:
+    var hit=false
+    for i in range(3):
+     if station_rects[i].has_point(point) or STATION_BARS[i].grow(4).has_point(point):act("tap",[i]);hit=true;break
+    if not hit:
+     for visit in game.data.visits:
+      if visit_drop_rect(visit.id).has_point(point):pending_reminder=visit.id;press_at=point;break
  elif action.action=="move":
   if pending_reminder>=0 and point.distance_to(press_at)>12:pending_reminder=-1
   if dragging and not paused:cup_position=point+cup_grab_offset
@@ -414,7 +418,7 @@ func draw_charcoal_header() -> void:
   draw_line(Vector2(1535,11+i*11),Vector2(1570,11+i*11),Color("eddfc8"),3,true)
 
 func operation_color(station: int) -> Color:
- var extra=int(game.cup.taps[station])-int(game.cup.targets[station])
+ var extra: int=game.cup.excess(station)
  if extra>0:return Color("ee9a86").lerp(Color("650b15"),float(clampi(extra,1,10)-1)/9)
  return STATION_COLORS[station]
 func content_sprite(contents: String) -> String:return contents if contents in RECIPE_NAMES else "cappuccino"
@@ -443,8 +447,8 @@ func draw_bubble(rect: Rect2,line: String,mouth: Vector2,size=18):
  text_at(Vector2(rect.position.x+8,y),current,size,Color("302628"))
 func draw_play():
  if repository.legacy:super.draw_play();return
+ if game.cup.milk_doses>=0:draw_milk_carton()
  for i in range(3):
-  draw_button(RECIPE_BUTTONS[i],("✓ " if game.cup.recipe==RECIPE_NAMES.keys()[i] else "")+RECIPE_NAMES.values()[i],game.cup.recipe==RECIPE_NAMES.keys()[i])
   var color=operation_color(i)
   var bar: Rect2 = STATION_BARS[i]
   draw_rect(bar.grow(2),Color("111116"))
@@ -470,7 +474,12 @@ func draw_play():
  if not game.cup.is_empty():
   if dragging:draw_pov_hand(cup_position)
   draw_cup(cup_position)
-  if not dragging:text_at(V2_CUP_HOME+Vector2(-75,45),current_cup_label(),18)
+  if not dragging:
+   text_at(V2_CUP_HOME+Vector2(-75,45),current_cup_label(),18)
+   var c=DISCARD_RECT.get_center()
+   draw_rect(Rect2(c+Vector2(-10,-5),Vector2(20,19)),Color("d4b295"),false,2)
+   draw_line(c+Vector2(-14,-9),c+Vector2(14,-9),Color("d4b295"),2,true)
+   draw_line(c+Vector2(-5,-13),c+Vector2(5,-13),Color("d4b295"),2,true)
  if game.data.clock<speech_until:draw_bubble(Rect2(930,288,360,80),speech_text,Vector2(1110,388),20)
  if repository.training:draw_button(Rect2(1100,800,460,65),"Закончить обучение")
  if screen=="lesson":wrapped(Vector2(30,225),lesson_hint(),600,21)
@@ -532,9 +541,17 @@ func finish_lesson():
 func clear_rigs():
  for rig in rigs.values():rig.free()
  rigs.clear();slots.clear()
+func draw_milk_carton() -> void:
+ var art=Rect2(CARTON_RECT.position+Vector2(0,8),CARTON_RECT.size)
+ draw_texture_rect(CARTON,art,false)
+ for i in range(2):
+  var front=art.position+CARTON_RECT.size*Vector2((16+i*14)/64.0,33.0/86.0)
+  var size=CARTON_RECT.size*Vector2(12.0/64.0,16.0/86.0)
+  draw_texture_rect(DROP,Rect2(front,size),false,Color("ffe6a9") if i<game.cup.milk_doses else Color("768780"))
+
 func lesson_hint() -> String:
  if repository.legacy:return super.lesson_hint()
- return "Готовь в любом порядке. Варка требует хотя бы одного тапа помола. Можно отдать любой стакан любому гостю; монеты нужно собрать." if not lesson_completed else "Заказ пройден! Можно продолжить тренировку или закончить."
+ return "Эспрессо — помол и варка. Для капучино добавь одну порцию молока, для латте две. Коробка сверху, прогрев снизу. Передай стакан гостю и собери монеты." if not lesson_completed else "Заказ пройден! Можно продолжить тренировку или закончить."
 func draw_cafe():
  if repository==null:return
  if repository.legacy:super.draw_cafe();return

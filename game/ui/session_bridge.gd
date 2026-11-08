@@ -32,7 +32,9 @@ func initialize_career():
  if not backend.session.data.has("shift"):
   if not backend.apply("enable_career"):init_error="CAREER_INIT";return
  if not backend.session.data.has("economy"):
-  if not backend.apply("enable_development"):init_error="DEVELOPMENT_INIT"
+  if not backend.apply("enable_development"):init_error="DEVELOPMENT_INIT";return
+ if not backend.session.data.has("auto_recipe"):
+  if not backend.apply("enable_auto_recipe"):init_error="AUTO_RECIPE_INIT"
 func try_migrate() -> bool:
  if training:return false
  if legacy:
@@ -48,7 +50,9 @@ func try_migrate() -> bool:
  var candidate=target.prepare_legacy_candidate()
  if not candidate.ok:init_error=candidate.error;return false
  if not target.activate_legacy_candidate(candidate.snapshot.migration.source_hash):init_error=target.error;return false
- backend=target;legacy=false;init_error="";return true
+ backend=target;legacy=false;init_error=""
+ initialize_career()
+ return ready
 func preferences() -> Dictionary:return backend.session.data.get("preferences",V2.LegacyStore.Session.DEFAULT_PREFERENCES)
 func set_preference(key: String,value) -> bool:return backend.set_preference(key,value)
 func checkpoint() -> bool:return backend.checkpoint()
@@ -60,7 +64,7 @@ func cancel_carry():
 func apply(method: String,args: Array=[]) -> bool:
  if not ready:return false
  if training:
-  if not method in ["select_recipe","tap","take_cup","return_cup","deliver","collect","remind_wish","show_arrival_wish","finish_departure"]:return false
+  if not method in ["add_milk","discard_cup","tap","take_cup","return_cup","deliver","collect","remind_wish","show_arrival_wish","finish_departure"]:return false
   return bool(practice.callv(method,args))
  return backend.apply(method,args)
 func advance(seconds: float,paused=false):
@@ -78,7 +82,7 @@ func advance(seconds: float,paused=false):
   if not backend.checkpoint():backend.session=V1.Session.restore(before);backend.since_save=since
 func begin_lesson() -> bool:
  if training or not ready or legacy or not suspend():return false
- practice=V2.Service.new(884);practice.enable_career();practice.enable_development();practice.start_shift(1);training=true
+ practice=V2.Service.new(884);practice.enable_career();practice.enable_development();practice.enable_auto_recipe();practice.start_shift(1);training=true
  return true
 func begin_training() -> bool:return begin_lesson()
 func end_training() -> bool:

@@ -49,6 +49,19 @@ func enable_development() -> bool:
 func shop_open() -> bool:
  return data.has("economy") and data.shift.phase=="PREPARING"
 
+func enable_auto_recipe() -> bool:
+ if not data.has("economy") or data.has("auto_recipe"):return false
+ data.auto_recipe=true
+ if cup.is_empty():reset_cup()
+ return true
+
+func reset_cup() -> void:
+ if data.get("auto_recipe",false):
+  cup=Cup.new("espresso")
+  cup.milk_doses=0
+ else:cup=Cup.new(cup.recipe)
+ configure_cup()
+
 func configure_cup() -> void:
  if not data.has("economy"):return
  cup.select_recipe(cup.recipe,Career.targets(data,cup.recipe))
@@ -127,7 +140,7 @@ func finish_summary(summary_id: int) -> bool:
  if not data.has("shift") or data.shift.phase!="SUMMARY" or summary_id!=data.shift.summary_id:return false
  var day=int(data.shift.day_number)+1
  data.shift=CareerShift.make(day,draw_forecast(day),summary_id)
- cup=Cup.new(cup.recipe,cup.targets);data.cup_id=allocate_id()
+ reset_cup();data.cup_id=allocate_id()
  if data.has("economy"):
   data.shift.stats.gifted=0
   data.economy.choice="";data.economy.active_perk="";data.economy.critic_spawned=false
@@ -189,6 +202,7 @@ func show_arrival_wish(visit_id: int) -> bool:
  return remind_wish(visit_id)
 
 func select_recipe(recipe: String) -> bool:
+ if data.get("auto_recipe",false):return false
  if data.has("shift") and data.shift.phase!="PREPARING" and not can_prepare():return false
  if data.has("economy"):
   var selected=cup.select_recipe(recipe,Career.targets(data,recipe)) if Cup.TARGETS.has(recipe) else false
@@ -199,6 +213,18 @@ func select_recipe(recipe: String) -> bool:
 func tap(station: int) -> bool:
  if not can_prepare():return false
  return cup.tap(station,float(data.clock))
+
+func add_milk() -> bool:
+ if not can_prepare() or cup.milk_doses<0 or cup.milk_doses>=2:return false
+ var recipe_id: String=Cup.DOSE_RECIPES[cup.milk_doses+1]
+ var targets=Career.targets(data,recipe_id)
+ return cup.add_milk(float(data.clock),int(targets[2]))
+
+func discard_cup() -> bool:
+ if not can_prepare() or cup.is_empty() or cup.carrying:return false
+ reset_cup()
+ data.cup_id=allocate_id()
+ return true
 
 func take_cup() -> bool:
  if not can_prepare():return false
@@ -277,8 +303,7 @@ func deliver(cup_id: int,visit_id: int) -> bool:
  visit.evaluation=result
  visit.reaction_until=data.clock+3
  visit.payment_id=payment_id
- cup=Cup.new(cup.recipe)
- configure_cup()
+ reset_cup()
  data.cup_id=allocate_id()
  process_shift_due()
  return true

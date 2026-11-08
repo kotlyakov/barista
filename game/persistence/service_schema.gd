@@ -7,7 +7,7 @@ const CareerShift=preload("res://shift/career_shift.gd")
 const PRICES={"espresso":50,"cappuccino":80,"latte":90}
 const MOODS=["neutral","happy","annoyed","delighted","disappointed","very_unhappy","disgusted"]
 const REQUIRED=["clock","money","next_id","cup_id","streak","rng_state","profiles","visits","payments","cup"]
-const OPTIONAL=["preferences","upgrades","legacy","career","shift","economy","migration"]
+const OPTIONAL=["preferences","upgrades","legacy","career","shift","economy","migration","auto_recipe"]
 static func number(v,lo=0.0,hi=1.0e12) -> bool:
  return Cup.finite_number(v,lo,hi)
 static func integer(v,lo=0,hi=2147483647) -> bool:
@@ -42,6 +42,9 @@ static func valid(s) -> bool:
  var limit="9223372036854775808" if s.rng_state.begins_with("-") else "9223372036854775807"
  if digits.length()>19 or (digits.length()==19 and digits>limit) or str(int(s.rng_state))!=s.rng_state:return false
  if not Cup.valid(s.cup) or s.cup.last_tap>s.clock:return false
+ if s.has("auto_recipe") and (not s.auto_recipe is bool or not s.auto_recipe or not s.has("economy")):return false
+ if s.cup.has("milk_doses") and not s.has("auto_recipe"):return false
+ if s.has("auto_recipe") and s.cup.first_tap<0 and not s.cup.has("milk_doses"):return false
  if not s.profiles is Dictionary or s.profiles.size()!=6 or not s.visits is Array or s.visits.size()>5 or not s.payments is Array or s.payments.size()>5:return false
  var old={}
  if s.has("migration"):
@@ -182,7 +185,7 @@ static func valid(s) -> bool:
    var sid=int(s.shift[key])
    if sid>0 and (identities.has(sid) or histories.has(sid) or history_cups.has(sid) or cups.has(sid)):return false
   if s.shift.phase in ["PREPARING","SUMMARY"] and (not s.visits.is_empty() or not s.payments.is_empty()):return false
-  if s.shift.phase=="PREPARING" and (s.cup.taps[0]+s.cup.taps[1]+s.cup.taps[2]>0):return false
+  if s.shift.phase=="PREPARING" and s.cup.first_tap>=0:return false
   var pending=0;var waiting=0;var collected=0;var expired=0;var known_earnings=0;var known_gifts=0
   for v in s.visits:
    if v.arrived_at<s.shift.started_at or v.arrived_at>=s.shift.started_at+300:return false

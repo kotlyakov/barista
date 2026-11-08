@@ -30,6 +30,7 @@ func run() -> void:
  tap(node, Vector2(900, 754))
  if node.game.cup.taps[0] != 1:
   failures.append("The grinder on the right must accept a tap.")
+ tap(node, node.CARTON_RECT.get_center())
  tap(node, Vector2(1100, 754))
  if node.game.cup.taps[2] != 1:
   failures.append("The center appliance must be the steamer.")
