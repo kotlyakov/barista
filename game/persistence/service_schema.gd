@@ -88,7 +88,7 @@ static func valid(s) -> bool:
  var duration=Career.effects(s).coins
  var wish_seconds=Career.wish_seconds(s)
  var maximum=Career.maximum_receipt(s) if s.has("economy") else 108
- var minimum=Career.base_price(s,"espresso",false) if s.has("economy") else 50
+ var minimum=Career.base_price(s,"espresso",false)/2
  var patience_min=18 if s.get("shift",{}).get("market_rules",0)==1 else 30
  if s.has("economy"):
   var expected=Career.targets(s,s.cup.recipe)
@@ -154,18 +154,26 @@ static func valid(s) -> bool:
   if not p is Dictionary or not id(p.get("id"),s) or identities.has(int(p.id)) or not id(p.get("visit_id"),s) or not visits.has(int(p.visit_id)) or payments.has(int(p.id)) or not id(p.get("cup_id"),s) or cups.has(int(p.cup_id)):return false
   var v=visits[int(p.visit_id)]
   if v.payment_id!=p.id or not v.reaction_applied:return false
-  if not p.get("state") in ["PENDING","COLLECTED","EXPIRED"] or not number(p.get("deadline"),0,s.clock+duration):return false
+  if not p.get("state") in ["PENDING","COLLECTED","EXPIRED","REFUSED"] or not number(p.get("deadline"),0,s.clock+duration):return false
   if not integer(p.get("base"),0,1000) or not integer(p.get("combo"),1,2) or not integer(p.get("tip"),0,1000) or not integer(p.get("amount"),0,1000) or p.amount!=p.base*p.combo+p.tip:return false
+  var discounted=p.has("discounted")
+  if discounted and p.discounted!=true:return false
   if v.get("legacy_delivery",false):
-   if old.is_empty() or p.amount!=old.order.payment.amount:return false
+   if discounted or old.is_empty() or p.amount!=old.order.payment.amount:return false
   else:
-   if p.base!=(0 if v.get("gift",false) else Career.base_price(s,v.wish_recipe,v.get("critic",false))) or p.combo!=1 or histories[int(v.id)].cup_id!=p.cup_id:return false
+   var expected=0 if v.get("gift",false) else Career.base_price(s,v.wish_recipe,v.get("critic",false))
+   if discounted:
+    if v.get("gift",false) or v.evaluation.R>=1.0 or p.tip!=0:return false
+    expected=Career.substitute_price(expected,v.evaluation)
+   if p.base!=expected or p.combo!=1 or histories[int(v.id)].cup_id!=p.cup_id:return false
+   if (p.state=="REFUSED")!=(discounted and expected==0):return false
    var issued_at=float(v.arrived_at)+(1.0-float(v.evaluation.W))*float(v.patience_budget)
    if absf(float(p.deadline)-issued_at-duration)>0.000001:return false
    var relationship=int(s.profiles[v.customer_id].relationship)
    var allowed_tip=Career.tip_amount(s,int(p.base),relationship)
    if p.tip>0 and (v.evaluation.J<75 or p.tip!=allowed_tip):return false
    if v.get("gift",false) and (p.amount!=0 or p.state!="COLLECTED"):return false
+  if p.state=="REFUSED" and not discounted:return false
   if p.state=="PENDING":
    if v.state!="PAYMENT" or p.deadline<=s.clock:return false
   elif v.state!="DEPARTING":return false
@@ -186,7 +194,7 @@ static func valid(s) -> bool:
    if sid>0 and (identities.has(sid) or histories.has(sid) or history_cups.has(sid) or cups.has(sid)):return false
   if s.shift.phase in ["PREPARING","SUMMARY"] and (not s.visits.is_empty() or not s.payments.is_empty()):return false
   if s.shift.phase=="PREPARING" and s.cup.first_tap>=0:return false
-  var pending=0;var waiting=0;var collected=0;var expired=0;var known_earnings=0;var known_gifts=0
+  var pending=0;var waiting=0;var collected=0;var expired=0;var refused=0;var known_earnings=0;var known_gifts=0
   for v in s.visits:
    if v.arrived_at<s.shift.started_at or v.arrived_at>=s.shift.started_at+300:return false
    if v.state=="WAITING":waiting+=1
@@ -196,8 +204,10 @@ static func valid(s) -> bool:
     collected+=1;known_earnings+=int(p.amount)
     if p.base==0:known_gifts+=1
    elif p.state=="EXPIRED":expired+=1
+   elif p.state=="REFUSED":refused+=1
    if p.deadline>s.shift.started_at+315+duration:return false
-  if pending!=s.shift.stats.served-s.shift.stats.collected-s.shift.stats.expired:return false
+  var total_refused=int(s.shift.stats.get("refused",0))
+  if refused>total_refused or pending!=s.shift.stats.served-s.shift.stats.collected-s.shift.stats.expired-total_refused:return false
   if collected>s.shift.stats.collected or expired>s.shift.stats.expired:return false
   var gifted=int(s.shift.stats.get("gifted",0))
   if known_gifts>gifted or collected-known_gifts>s.shift.stats.collected-gifted:return false

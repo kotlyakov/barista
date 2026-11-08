@@ -135,6 +135,9 @@ static func base_price(data: Dictionary,recipe: String,critic: bool) -> int:
  var amount=base*factor*passive_factor(data,"espresso" if recipe=="espresso" else "milk_income",0.05)
  if data.shift.get("market_rules",0)==1:amount*=(100+sale_percent(int(data.shift.day_number)))/100.0
  return floori(amount)
+static func substitute_price(full_price: int,score: Dictionary) -> int:
+ return full_price/2 if score.R>0 and score.J>=35.0 else 0
+
 static func equipment_price(data: Dictionary,level: int) -> int:
  var base: int=EQUIPMENT_PRICES[level]
  var discount=1.0-0.05*int(data.economy.claimed["guest-01"])

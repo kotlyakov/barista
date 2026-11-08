@@ -291,12 +291,23 @@ func deliver(cup_id: int,visit_id: int) -> bool:
   if visit.wish_recipe==profile.favorite and result.R==1:data.economy.goals[visit.customer_id]=mini(6,int(data.economy.goals[visit.customer_id])+1)
  var gift=visit.get("gift",false)
  var base=0 if gift else Career.base_price(data,visit.wish_recipe,visit.get("critic",false))
+ var wrong=result.R<1.0 and not gift
+ if wrong:base=Career.substitute_price(base,result)
+ var refused=wrong and base==0
  var tip=0
- if not gift and good and (data.streak>=3 or profile.relationship>=30):
+ if not gift and not wrong and good and (data.streak>=3 or profile.relationship>=30):
   tip=Career.tip_amount(data,base,int(profile.relationship))
  var payment_id=allocate_id()
- data.payments.append({"id":payment_id,"visit_id":visit.id,"cup_id":cup_id,"base":base,"tip":tip,"combo":1,"amount":base+tip,"deadline":data.clock+Career.effects(data).coins,"state":"COLLECTED" if gift else "PENDING"})
- visit.state="DEPARTING" if gift else "PAYMENT"
+ var receipt={"id":payment_id,"visit_id":visit.id,"cup_id":cup_id,"base":base,"tip":tip,"combo":1,"amount":base+tip,"deadline":data.clock+Career.effects(data).coins,"state":"PENDING"}
+ if wrong:
+  receipt.discounted=true
+  profile.last_reaction += " За это не плачу." if refused else " Заплачу половину."
+ if gift:receipt.state="COLLECTED"
+ elif refused:receipt.state="REFUSED"
+ data.payments.append(receipt)
+ visit.state="DEPARTING" if gift or refused else "PAYMENT"
+ if refused and data.has("shift"):
+  data.shift.stats.refused=int(data.shift.stats.get("refused",0))+1
  if gift and data.has("shift"):
   data.shift.stats.collected+=1;data.shift.stats.gifted+=1
  visit.reaction_applied=true

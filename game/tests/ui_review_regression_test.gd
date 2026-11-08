@@ -35,6 +35,8 @@ func run():
  for id in node.GUEST_IDS:
   if id!=visit.customer_id:guest_id=id;break
  node.act("spawn_visit",[guest_id,"latte"]);node.sync_guest(true);var receiver=node.game.data.visits.back()
+ for station in [0,1]:
+  for n in range(node.game.cup.targets[station]-node.game.cup.taps[station]):node.act("tap",[station])
  node.act("take_cup");node.act("deliver",[node.game.data.cup_id,receiver.id]);node.sync_guest(true)
  check(node.rigs[receiver.id].cup_recipe=="espresso","recipient holds actual delivered espresso,not wished latte")
  check(node.visit_speech(receiver)!="","stationary guest has a timed reaction")
@@ -48,8 +50,10 @@ func run():
  check(actor.phase=="wait_leave" and node.visit_speech(receiver)!="","collecting does not cut off a stationary reaction")
  node.repository.advance(4)
  check(node.visit_speech(receiver)=="","reaction expires after three active seconds")
- node.sync_guest()
- check(actor.phase in ["turn","leave"],"guest leaves once the reaction ends")
+ for step in range(8):
+  if actor.phase in ["turn","leave"]:break
+  node._process(.6)
+ check(actor.phase in ["turn","leave"],"guest leaves once the reaction ends and corridor is free")
  for n in range(node.game.cup.targets[0]-1):node.act("tap",[0])
  check(node.operation_color(0)==node.STATION_COLORS[0],"ordinary taps keep their station color")
  node.act("tap",[0])

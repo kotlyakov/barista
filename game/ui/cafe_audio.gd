@@ -48,6 +48,41 @@ func tone(seconds: float,frequency: float,noise=false) -> AudioStreamWAV:
   bytes.encode_s16(i*2,int(sample*envelope*32767))
  stream.data=bytes
  return stream
+func equipment_sound(id: String,seconds: float) -> AudioStreamWAV:
+ var stream=AudioStreamWAV.new()
+ stream.mix_rate=22050
+ stream.format=AudioStreamWAV.FORMAT_16_BITS
+ var count=int(seconds*stream.mix_rate)
+ var bytes=PackedByteArray()
+ bytes.resize(count*2)
+ var rng=RandomNumberGenerator.new()
+ rng.seed=7331
+ var low=0.0
+ for i in range(count):
+  var t=float(i)/stream.mix_rate
+  var noise=rng.randf_range(-1,1)
+  low=lerpf(low,noise,.09)
+  var sample=0.0
+  match id:
+   "grind":
+    var judder=.62+.38*sin(TAU*31*t)
+    var motor=sin(TAU*(92-86*t)*t)+.50*sin(TAU*(143-92*t)*t)
+    sample=(.22*low+.13*motor)*judder
+   "brew":
+    var knock=.25*exp(-27*t)*sin(TAU*72*t)
+    var pump=.075*(sin(TAU*54*t)+sin(TAU*78*t))*sin(TAU*16*t)
+    sample=knock+pump+.14*low
+   "steam":
+    var whistle=sin(TAU*(396-292*t)*t)+.62*sin(TAU*(418-290*t)*t)
+    sample=(noise-low)*.115*(.65+.35*sin(TAU*13*t))+.045*whistle+.055*sin(TAU*61*t)
+   "pour":
+    var bubbles=sin(TAU*(185+33*sin(TAU*6*t))*t)
+    sample=.22*low+.065*bubbles*sin(TAU*19*t)
+  var envelope=minf(1,t*180)*minf(1,(seconds-t)*13)
+  bytes.encode_s16(i*2,roundi(sample*envelope*32767))
+ stream.data=bytes
+ return stream
+
 func _ready() -> void:
  trace("audio ready begin")
  add_child(music)
@@ -70,7 +105,8 @@ func _ready() -> void:
  # Godot 4.5 mixes the loop-end sample inclusively; EOF is not a sample.
  loop.loop_end=count-1
  music.stream=loop
- for id in ["grind","brew","steam"]: sounds[id]=tone(.13,80 if id=="grind" else 150,id!="brew")
+ var equipment={"grind":.24,"brew":.31,"steam":.36,"pour":.26}
+ for id in equipment:sounds[id]=equipment_sound(id,equipment[id])
  sounds.coins=tone(.22,1200)
  sounds.pencil=tone(.18,780,true)
  trace("audio ready complete")

@@ -37,6 +37,10 @@ var stroke_progress=1.0
 var purchase_animation: Dictionary={}
 const FOLD_SECONDS=0.32
 const PURCHASE_SECONDS=0.48
+const COIN_TRAVEL=0.40
+const COIN_ANIMATION=0.88
+const WALLET_COIN=Vector2(414,24)
+var coin_flights: Array[Dictionary]=[]
 var selected_module=""
 var perf_elapsed=0.0
 var pending_reminder=-1
@@ -105,9 +109,19 @@ func purchase_progress() -> float:
 
 func display_balance() -> int:
  return roundi(lerpf(float(purchase_animation.get("from",game.data.money)),float(game.data.money),purchase_progress()))
+func collection_progress(elapsed: float) -> float:
+ return smoothstep(COIN_TRAVEL,COIN_ANIMATION,elapsed)
+
+func collection_balance() -> int:
+ var pending=0.0
+ for flight in coin_flights:
+  pending+=float(flight.amount)*(1.0-collection_progress(flight.elapsed))
+ return int(game.data.money)-roundi(pending)
+
 func route_phase():
  if repository.legacy or repository.training or not repository.ready:return
- if game.data.shift.phase in ["PREPARING","SUMMARY"]:screen="between"
+ if game.data.shift.phase in ["PREPARING","SUMMARY"]:
+  if coin_flights.is_empty():screen="between"
  elif screen=="between":screen=""
 func sync_guest(immediate=false):
  if repository==null:return
@@ -175,6 +189,8 @@ func _process(delta: float):
  if not repository.ready:return
  if screen in ["menu","progress","between"]:return
  repository.advance(delta);game=repository.session;visual_clock+=delta;barista.step(delta);sync_guest()
+ for flight in coin_flights:flight.elapsed+=delta
+ while not coin_flights.is_empty() and coin_flights[0].elapsed>=COIN_ANIMATION:coin_flights.pop_front()
  for id in rigs.keys():
   rigs[id].step(delta)
   if rigs[id].phase=="gone":act("finish_departure",[id])
@@ -195,6 +211,7 @@ func act(method: String,args: Array=[]) -> bool:
  var result=repository.apply(method,args);game=repository.session
  if result and audio:
   if method=="tap":audio.effect(["grind","brew","steam"][args[0]])
+  elif method=="add_milk":audio.effect("pour")
   elif method=="collect":audio.effect("coins")
  if not repository.legacy:
   if method=="tap" and args[0]==2 and not result and game.can_prepare() and game.cup.milk_doses==0:speak("Сначала молоко из коробки.")
@@ -264,7 +281,10 @@ func _input(event: InputEvent):
   var coin_hit=false
   for payment in game.data.payments:
    if payment.state=="PENDING" and visit_coin_rect(payment.visit_id).has_point(point):
-    if act("collect",[payment.id]) and screen=="lesson":lesson_completed=true;repository.set_preference("tutorial_seen",true)
+    var source=visit_coin_rect(payment.visit_id).get_center()
+    if act("collect",[payment.id]):
+     coin_flights.append({"source":source,"elapsed":0.0,"amount":payment.amount,"tip":payment.tip})
+     if screen=="lesson":lesson_completed=true;repository.set_preference("tutorial_seen",true)
     coin_hit=true;break
   if not coin_hit:
    if CARTON_RECT.has_point(point) and game.cup.milk_doses>=0:
@@ -406,8 +426,8 @@ func draw_charcoal_header() -> void:
  draw_circle(Vector2(46,20),10,Color("d9c8ac"),false,2,true)
  draw_arc(Vector2(50,20),10,0,PI*.5,8,Color("d9c8ac"),2,true)
  text_at(Vector2(75,34),"Путь баристы",29)
- draw_circle(Vector2(414,24),10,Color("d9c8ac"),false,2,true)
- var shown=display_balance() if screen in ["between","fold"] else int(game.data.money)
+ draw_circle(WALLET_COIN,10,Color("d9c8ac"),false,2,true)
+ var shown=display_balance() if screen in ["between","fold"] else collection_balance()
  text_at(Vector2(437,34),str(shown),29)
  if screen in ["between","fold"] and not purchase_animation.is_empty():
   text_at(Vector2(516,34-6*purchase_progress()),"−"+str(purchase_animation.amount),19,Color(Color("f6bc8c"),1.0-purchase_progress()))
@@ -485,8 +505,9 @@ func draw_play():
   draw_bubble(Layout.bubble(slot),line,face,17)
  for payment in game.data.payments:
   if payment.state!="PENDING" or not slots.has(payment.visit_id):continue
-  var rect=visit_coin_rect(payment.visit_id);var label=str(payment.amount);var label_width=font.get_string_size(label,HORIZONTAL_ALIGNMENT_LEFT,-1,23).x
-  draw_circle(rect.get_center(),26,Color("dba74a"));text_at(rect.get_center()+Vector2(-label_width/2,8),label,23,Color("302628"))
+  var center=visit_coin_rect(payment.visit_id).get_center()
+  draw_coin(center,int(payment.amount),int(payment.tip),1.0,true)
+ draw_coin_flights()
  if not game.cup.is_empty():
   if dragging:draw_pov_sleeve(cup_position)
   draw_cup(cup_position)
@@ -495,6 +516,41 @@ func draw_play():
  if game.data.clock<speech_until:draw_bubble(Rect2(930,288,360,80),speech_text,Vector2(1110,388),20)
  if repository.training:draw_button(Rect2(1100,800,460,65),"Закончить обучение")
  if screen=="lesson":wrapped(Vector2(30,225),lesson_hint(),600,21)
+func draw_coin(center: Vector2,amount: int,tip: int,scale: float,on_counter: bool) -> void:
+ var strength=float(tip)/(float(tip)+16.0)
+ var pulse=0.5+0.5*sin(visual_clock*5.0+center.x*.012)
+ var breathing=scale*(1.0+strength*pulse*.30)
+ draw_set_transform(center,0.0,Vector2(1.0,.64)*breathing)
+ if on_counter:draw_circle(Vector2(0,6),35,Color("18100cb0"),true,-1,true)
+ if tip>0:
+  for ring in range(4,0,-1):
+   draw_circle(Vector2.ZERO,33+ring*2.8,Color(1.0,.76,.28,strength*(.14+.18*pulse)),true,-1,true)
+ draw_circle(Vector2(0,4),33,Color("65401f"),true,-1,true)
+ draw_circle(Vector2.ZERO,33,Color("c88f40").lerp(Color("fff2a2"),strength*(.35+.45*pulse)),true,-1,true)
+ draw_arc(Vector2.ZERO,29,0,TAU,48,Color("f6d28c"),2.5,true)
+ draw_arc(Vector2.ZERO,25,0,TAU,40,Color("91602e"),1.5,true)
+ draw_set_transform(Vector2.ZERO)
+ var label=str(amount)
+ var size=maxi(10,roundi(27*breathing))
+ var width=font.get_string_size(label,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x
+ text_at(center+Vector2(-width/2,size*.33),label,size,Color("30211b"))
+
+func draw_coin_flights() -> void:
+ var total=0
+ var arrived=1.0
+ for flight in coin_flights:
+  var elapsed: float=flight.elapsed
+  if elapsed<COIN_TRAVEL:
+   var t=elapsed/COIN_TRAVEL
+   var center: Vector2=flight.source.lerp(WALLET_COIN,smoothstep(0.0,1.0,t))
+   center.y-=sin(PI*t)*54
+   draw_coin(center,flight.amount,flight.tip,lerpf(1.0,.28,t),false)
+  else:
+   total+=int(flight.amount)
+   arrived=minf(arrived,(elapsed-COIN_TRAVEL)/(COIN_ANIMATION-COIN_TRAVEL))
+ if total>0:
+  text_at(WALLET_COIN+Vector2(13,51-13*arrived),"+"+str(total),24,Color(1.0,.83,.45,1.0-arrived))
+
 func draw_between():
  if game.data.shift.phase=="PREPARING" and shop_tab<3:
   Charcoal.draw_sheet(self)
@@ -504,7 +560,9 @@ func draw_between():
   text_at(Vector2(470,310),"Смена завершена",44)
   text_at(Vector2(470,380),"Выдано: "+str(shift.stats.served)+" · Хороших: "+str(shift.stats.good),28)
   text_at(Vector2(470,435),"Собрано: "+str(shift.stats.earned)+" монет",30,Color("ebbc76"))
-  text_at(Vector2(470,485),"Ушло без кофе: "+str(shift.stats.left),25);draw_button(NEXT_BUTTON,"Следующий день");return
+  text_at(Vector2(470,485),"Ушло без кофе: "+str(shift.stats.left),25)
+  if shift.stats.get("refused",0)>0:text_at(Vector2(470,532),"Отказались платить: "+str(shift.stats.refused),25)
+  draw_button(NEXT_BUTTON,"Следующий день");return
  var C=game.Career;var e=game.data.economy
  for i in range(3):draw_button(tab_rect(i+3),EXTRA_TABS[i],shop_tab==i+3)
  if shop_tab==3:
@@ -539,11 +597,13 @@ func draw_progress():
  draw_button(LESSON_BUTTON,"Потренироваться")
 func start_lesson():
  if repository.begin_lesson():
+  coin_flights.clear()
   main_rigs=rigs;main_slots=slots;main_bars=bar_progress.duplicate()
   rigs={};slots={};game=repository.session;screen="lesson";paused=false;lesson_completed=false
   speech_until=-1;facepalm_until=-1;speech_last.clear()
   sync_guest(true);bar_progress=[0.0,0.0,0.0];update_audio()
 func finish_lesson():
+ coin_flights.clear()
  clear_rigs();repository.end_training();game=repository.session
  rigs=main_rigs;slots=main_slots;bar_progress=main_bars
  main_rigs={};main_slots={};main_bars=[]

@@ -30,9 +30,10 @@ func _init():
      var clone=S.restore(JSON.parse_string(JSON.stringify(s.snapshot())))
      check(clone!=null,"combination JSON restore")
      var coins=S.Career.effects(s.data).coins
-     for station in range(3):
-      for n in range(s.cup.targets[station]):s.tap(station)
      var guest=s.data.visits[0]
+     s.select_recipe(guest.wish_recipe)
+     for station in range(2 if guest.wish_recipe=="espresso" else 3):
+      for n in range(s.cup.targets[station]):s.tap(station)
      var original={"espresso":50,"cappuccino":80,"latte":90}[guest.wish_recipe]
      var factor=[1.0,1.15,1.3][league]
      if event=="festival" or (event=="milk" and guest.wish_recipe!="espresso"):factor*=1.1
@@ -56,7 +57,10 @@ func _init():
   if v.state=="WAITING":receiver=v
  check(not receiver.is_empty(),"late guest waiting")
  if not receiver.is_empty():
-  s.tap(0);s.take_cup();s.deliver(s.data.cup_id,receiver.id)
+  s.select_recipe(receiver.wish_recipe)
+  for station in range(2 if receiver.wish_recipe=="espresso" else 3):
+   for n in range(s.cup.targets[station]):s.tap(station)
+  s.take_cup();s.deliver(s.data.cup_id,receiver.id)
   check(s.data.payments.back().deadline>340 and S.Schema.valid(s.snapshot()),"latest26s payment supported through closing")
   s.advance(25.99);check(s.collect(s.data.payments.back().id),"latest receipt collectible")
  s=setup();s.reserve_gift("guest-01");s.start_shift(1)

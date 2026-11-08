@@ -23,10 +23,12 @@ static func valid(s,clock: float,next_id: int,minimum=50,maximum=108,duration=12
  if s.day_number>1 and s.last_summary_id==0:return false
  if s.summary_id>0 and s.summary_id==s.last_summary_id:return false
  var stats_keys=STATS+(["gifted"] if allow_gifts else [])
- if not s.get("stats") is Dictionary or s.stats.size()!=stats_keys.size():return false
+ if not s.get("stats") is Dictionary:return false
+ if s.stats.has("refused"):stats_keys.append("refused")
+ if s.stats.size()!=stats_keys.size():return false
  for key in stats_keys:
   if not Cup.whole(s.stats.get(key)):return false
- if s.stats.good>s.stats.served or s.stats.collected+s.stats.expired>s.stats.served:return false
+ if s.stats.good>s.stats.served or s.stats.collected+s.stats.expired+s.stats.get("refused",0)>s.stats.served:return false
  var gifted=int(s.stats.get("gifted",0))
  if gifted>s.stats.collected:return false
  var paid=s.stats.collected-gifted

@@ -18,6 +18,7 @@ func _init() -> void:
  if Service==null: quit(1); return
  test_free_delivery_and_payments()
  test_real_contents()
+ test_wrong_receipts()
  test_expired_recipient()
  test_history()
  if failures==0: print("PASS: free recipients, unique payments, expiry, thermal serving snapshot, literal C/L history, relationships and restore idempotence")
@@ -88,7 +89,7 @@ func test_real_contents() -> void:
  check(s.deliver(s.data.cup_id,id),"wrong actual contents are still deliverable")
  var result=s.find_visit(id).evaluation
  check(result.contents=="milk_grounds" and result.R==0,"served contents compared to selected recipient")
- check(s.data.payments[0].amount==50,"wrong drink retains existing base-price rule, no tips")
+ check(s.data.payments[0].amount==0 and s.data.payments[0].state=="REFUSED","unfinished drink is refused with no money to collect")
  var cold=Service.new()
  cold.spawn_visit("guest-01","cappuccino")
  fill(cold)
@@ -142,3 +143,46 @@ func test_history() -> void:
  milk.deliver(milk.data.cup_id,milk.data.visits[0].id)
  check(near(milk.data.visits[0].evaluation.C,0.5248) and milk.data.profiles["guest-01"].mood=="disappointed","overheated milk history and expression use C/J")
  check("кипячёный" in milk.data.profiles["guest-01"].last_reaction.to_lower(),"reaction describes milk defect instead of an unrelated mood label")
+
+
+func test_wrong_receipts() -> void:
+ var s=Service.new()
+ s.enable_career()
+ check(s.start_shift(1),"start career shift for wrong receipts")
+ var visit=s.data.visits[0]
+ var other="cappuccino" if visit.wish_recipe=="espresso" else "espresso"
+ s.select_recipe(other)
+ fill(s)
+ s.take_cup()
+ check(s.deliver(s.data.cup_id,visit.id),"well made substitute delivered")
+ var receipt=s.data.payments[0]
+ var price=s.Career.base_price(s.data,visit.wish_recipe,visit.get("critic",false))
+ check(receipt.amount==price/2 and receipt.tip==0 and receipt.state=="PENDING","wrong hot drink earns half the order price, without tip")
+ var saved=s.snapshot()
+ var reloaded=Service.restore(saved)
+ check(reloaded!=null,"discounted receipt survives reload")
+ if reloaded!=null:
+  check(reloaded.collect(receipt.id) and not reloaded.collect(receipt.id),"discounted receipt collected exactly once")
+  check(reloaded.finish_departure(visit.id) and Service.restore(reloaded.snapshot())!=null,"partial revenue remains valid after guest leaves")
+ var old=saved.duplicate(true)
+ old.payments[0].erase("discounted")
+ old.payments[0].base=price
+ old.payments[0].amount=price
+ var prior=Service.restore(old)
+ check(prior!=null and prior.data.payments[0].amount==price,"already issued old full-price receipt remains collectible")
+ check(Service.restore(s.snapshot())!=null,"current profile remains valid")
+ var refused=Service.new()
+ refused.enable_career()
+ refused.start_shift(1)
+ refused.tap(0)
+ refused.take_cup()
+ var id=refused.data.visits[0].id
+ check(refused.deliver(refused.data.cup_id,id),"unfinished drink handed over")
+ var zero=refused.data.payments[0]
+ check(zero.state=="REFUSED" and not refused.collect(zero.id) and refused.data.shift.stats.collected==0,"refused receipt does not create collectible money or count as collection")
+ var reopened=Service.restore(refused.snapshot())
+ check(reopened!=null,"refused receipt survives career reload")
+ if reopened!=null:
+  reopened.finish_departure(id)
+  reopened.advance(400)
+  check(reopened.data.shift.phase=="SUMMARY" and Service.restore(reopened.snapshot())!=null,"refusal cannot block shift summary")
