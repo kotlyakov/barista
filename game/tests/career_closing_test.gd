@@ -8,6 +8,14 @@ func closing_case():
  for v in s.data.visits.duplicate():
   if v.state=="DEPARTING":s.finish_departure(v.id)
  return s
+func prepare_order(s,visit_id: int) -> bool:
+ var wish: String=s.find_visit(visit_id).wish_recipe
+ if not s.select_recipe(wish):return false
+ for station in range(2 if wish=="espresso" else 3):
+  for n in range(s.cup.targets[station]):
+   if not s.tap(station):return false
+ return s.take_cup()
+
 func _init() -> void:
  if not Service.new().has_method("enable_career"):
   print("FAIL: bounded closing absent");quit(1);return
@@ -21,7 +29,7 @@ func _init() -> void:
  var before=s.snapshot();s.advance(50,true)
  check(s.snapshot()==before,"closing/payment/heat remain paused")
  s.advance(14.999)
- check(s.tap(0) and s.take_cup(),"last working cup can still be completed within15s")
+ check(prepare_order(s,waiting[0]),"last working cup can still be completed within15s")
  check(s.deliver(s.data.cup_id,waiting[0]),"delivery just before closing cutoff succeeds")
  var payment=s.data.payments[0].duplicate(true)
  check(absf(payment.deadline-s.data.clock-12)<0.000001,"new payment retains its own12-second deadline")
@@ -36,7 +44,7 @@ func _init() -> void:
  for guest in expired.data.visits:
   if guest.state=="WAITING":v=guest
  check(not v.is_empty(),"waiting guest still has closing remainder")
- expired.tap(2);expired.take_cup();expired.deliver(expired.data.cup_id,v.id)
+ prepare_order(expired,v.id);expired.deliver(expired.data.cup_id,v.id)
  expired.advance(10000)
  check(expired.data.shift.phase=="SUMMARY" and expired.data.clock<327,"huge delta stops at final finite payment deadline")
  check(expired.data.money==0 and expired.data.shift.stats.expired==1,"missed final coins are not awarded by summary")
@@ -47,11 +55,11 @@ func _init() -> void:
  check(simultaneous.data.next_id==count,"at17:00 closing takes precedence over a scheduled arrival")
  var orphan=closing_case();orphan.advance(15.5)
  var id=orphan.data.visits[0].id
- orphan.tap(2);orphan.take_cup();orphan.deliver(orphan.data.cup_id,id)
+ prepare_order(orphan,id);orphan.deliver(orphan.data.cup_id,id)
  check(not orphan.tap(2) and not orphan.take_cup(),"payment-only closing cannot begin an orphan cup")
  var held=closing_case();held.spawn_visit();held.advance(15.5)
  var customer=held.data.visits[0].id
- held.tap(2);held.take_cup();held.deliver(held.data.cup_id,customer)
+ prepare_order(held,customer);held.deliver(held.data.cup_id,customer)
  var pending=held.data.payments[0].duplicate(true)
  held.tap(0);held.take_cup();check(held.cup.carrying,"remaining guest permits a legitimate final cup")
  held.advance(1)

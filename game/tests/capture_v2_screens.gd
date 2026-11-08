@@ -23,11 +23,20 @@ func run():
  node.intro_elapsed=2;await capture("v2-01-intro");node.finish_intro()
  for id in node.GUEST_IDS:
   if node.game.data.visits.size()<5:node.act("spawn_visit",[id,""])
+ var first=node.game.data.visits[0]
+ first.wish_recipe="cappuccino"
+ node.game.data.profiles[first.customer_id].relationship=60
  node.sync_guest(true);node.act("add_milk");node.act("tap",[2]);await capture("v2-06-five-guests")
  for station in range(3):
   for n in range(node.game.cup.targets[station]-node.game.cup.taps[station]):node.act("tap",[station])
  node._process(.25);node.bar_progress=[1.0,1.0,1.0];node.act("take_cup");node.dragging=true;node.cup_position=node.visit_drop_rect(node.game.data.visits[0].id).get_center();await capture("v2-07-drag")
  node.act("deliver",[node.game.data.cup_id,node.game.data.visits[0].id]);node.dragging=false;node.cup_position=node.V2_CUP_HOME;node.sync_guest(true);await capture("v2-08-payment")
+ var coin=InputEventScreenTouch.new()
+ coin.position=node.visit_coin_rect(first.id).get_center();coin.pressed=true;node._input(coin)
+ coin.pressed=false;node._input(coin)
+ coin=null
+ node._process(.2);await capture("v2-15-coin-flight")
+ node._process(.38);await capture("v2-16-wallet-count")
  node.open_menu();await capture("v2-09-menu");node.screen="progress";await capture("v2-10-progress")
  node.resume_game();node.repository.advance(400);node._process(0);await capture("v2-11-summary")
- node.queue_free();await process_frame;await process_frame;print("PASS: rendered 14 actual Service v2 UI states");quit()
+ node.queue_free();await process_frame;await process_frame;print("PASS: rendered 16 actual Service v2 UI states");quit()
